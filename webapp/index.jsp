@@ -18,6 +18,28 @@
 </head>
 <body class="tg-home tg-homevone">
 
+<%-- <%
+String id = null; 
+String saveId = null;
+Cookie[] cookies = request.getCookies(); 
+if(cookies != null){
+  for(Cookie cookie : cookies){
+    if(cookie.getName().equals("loginId")){
+      id = cookie.getValue(); 
+    }
+    if(cookie.getName().equals("saveId")){
+      saveId = cookie.getValue(); 
+    }
+
+  }
+}
+
+
+System.out.println("아이디           : "+ id);
+
+%> --%>
+
+
 	
 	<!--************************************
 			Wrapper Start
@@ -42,7 +64,27 @@
 											<a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>커뮤니티</span></a>
 											<a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>위시리스트</span></a>
 											<a class="tg-btn" href="<%=application.getContextPath()%>/wish/wish_list.jsp"><span>예약확인</span></a>
-											<a class="tg-btn" href="<%=application.getContextPath()%>/user/login.jsp"><span>로그인</span></a>
+											<a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>로그인</span></a>
+                      
+                      
+                      
+                      
+                      
+<%-- <%
+if(id != null){ //로그인o
+
+%>  
+	<a class="tg-btn" href="<%=application.getContextPath()%>/index.jsp"><span>로그아웃</span></a>
+<%  
+}else{//로그인 x
+%>
+	<a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>로그인</span></a>  
+<%
+}
+%> --%>
+
+
+                                            
 										</div>
 									</div>
 								</div>
