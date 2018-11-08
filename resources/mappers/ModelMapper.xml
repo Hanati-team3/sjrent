@@ -184,5 +184,19 @@
 		m.model_picture,
 		m.model_rental_count
 	</select>
+	
+		<!-- 검색 결과 모델 리스트 -->
+	<select id="checkEnableCar" parameterType="modelParams" resultType="Model"	resultMap="modelResultMap">
+		SELECT car_num 
+		FROM   rent 
+		WHERE  #{startDate} BETWEEN 
+		       rent_start_date AND rent_end_date 
+		       OR #{endDate} BETWEEN 
+		       rent_start_date AND rent_end_date 
+		       OR rent_start_date BETWEEN 
+		       #{startDate} AND  #{endDate} 
+		       OR rent_end_date BETWEEN 
+		       #{startDate} AND  #{endDate}
+	</select>
 
 </mapper>
