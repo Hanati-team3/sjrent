@@ -14,29 +14,22 @@
 </style>
 <script type="text/javascript">
    $(document).ready(function(){
-      <%-- $("#rentCar").submit(function(e){
+      $("#rentCar").submit(function(e){
          e.preventDefault();
-         var jsonArray = [];
-         var params = {
-        		 "car": [
-                     {"modelName":"modelName", "insuranceNumber": "aaa", "startDate": "bb","endDate": "zz", "pickupPlace": "ss", "paidAmount": "aa", "paymentOption": "ee"},
-                     {"modelName":"ddb", "insuranceNumber": "ccc", "startDate": "aaa","endDate": "xxx", "pickupPlace": "ddd", "paidAmount": "fff", "paymentOption": "ff"}
-                  ]
-         };
          $.ajax({
             type: "get",
             url : "<%=application.getContextPath()%>/rent/rent.rent",
-            contentType: 'application/json; charset=UTF-8',
-//           data: JSON.parse(JSON.stringify(params)),
-			data: {
-				modelName = "dd";
-			},
-            dataType: "text",
+            data:{
+               'datas':[
+                  {'insuranceNumber':'aaa', 'startDate':"bb","endDate":"zz","pickupPlace":"수령장소", "paidAmount":"차*날짜 가격", "paymentOption":"ee"}
+               ]
+            },
+            dataType: "json",
             success:function(data){
                alert('성공');
             }
          });
-      }); --%>
+      });
    });
 </script>
 </head>
@@ -82,7 +75,7 @@
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>이름</label>
-                                                <input type="text" value="hh" name="user_name" class="form-control" placeholder="" required readonly>
+                                                <input type="text" value="호진" name="user_name" class="form-control" placeholder="" required readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -106,32 +99,32 @@
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>시작날짜</label>
-                                                <input type="text" name="startDate" class="form-control" readonly>
+                                                <input type="text" name="rent_start_date" class="form-control" readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>종료날짜 </label>
-                                                <input type="text" name="endDate" class="form-control" readonly>
+                                                <input type="text" name="rent_end_date" class="form-control" readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>차량금액 </label>
-                                                <input type="text" name="paidAmount" class="form-control" readonly="readonly">
+                                                <input type="text" name="car_paid_amount" class="form-control" readonly="readonly">
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>수령장소 </label>
-                                                <input type="text" name="pickupPlace" class="form-control" readonly="readonly" value="seoul">
+                                                <input type="text" name="rent_pickup_place" class="form-control" readonly="readonly" value="서울지점">
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                              <div class="form-group">
                                                 <label>보험<sup>*</sup></label>
                                                 <span>
-                                                   <select name="insuranceNumber" class="ins_num" required>
+                                                   <select class="ins_num" required>
                                                       <option value="">보험종류 선택</option>
                                                       <option value="0">완전자차--</option>
                                                       <option value="1">일반자차--</option>
@@ -144,7 +137,7 @@
                                              <div class="form-group">
                                                 <label>결제정보 <sup>*</sup></label>
                                                 <span class="tg-select">
-                                                   <select name="paymentOption" class="rent_payment_option" required>
+                                                   <select class="rent_payment_option" required>
                                                       <option value="">결제방법 선택</option>
                                                       <option value="card">카드</option>
                                                       <option value="transfer">계좌이체</option>

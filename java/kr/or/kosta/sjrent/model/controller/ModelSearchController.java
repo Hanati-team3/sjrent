@@ -1,6 +1,5 @@
 package kr.or.kosta.sjrent.model.controller;
 
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -30,7 +29,6 @@ public class ModelSearchController implements Controller {
 	private ModelService modelService;
 	private ModelAndView mav;
 	private XMLObjectFactory factory;
-	private JSONArray jsonArray;
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
@@ -38,20 +36,20 @@ public class ModelSearchController implements Controller {
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
-		jsonArray = new JSONArray();
+		System.out.println("ModelSearchController");
+
 		
 		String startDate = request.getParameter("rent_start_date");
 		String endDate = request.getParameter("rent_end_date");
 		String type = request.getParameter("model_type");
-		if(startDate == null) {
-			startDate="2018-11-12";
-			endDate="2018-11-12";
-			type="all";
-		}
-		// 인자로 받은 date와 type
+
 		if (type.equals("all"))
 			type = null;
 
+		// 인자로 받은 date와 type
+		System.out.println(startDate);
+		System.out.println(endDate);
+		System.out.println(type);
 
 		// 검색 인자를 Params에 저장
 		ModelParams modelParams = new ModelParams();
@@ -60,35 +58,15 @@ public class ModelSearchController implements Controller {
 		modelParams.setType(type);
 
 		List<Model> list = null;
-
 		try {
 			// Params로 검색한 리스트를 list에 저장
 			list = modelService.listBySearch(modelParams);
-			for (Model model : list) {
-				JSONObject modelObject = new JSONObject();
-				modelObject.put("name", model.getName());
-				modelObject.put("fuelType", model.getFuelType());
-				modelObject.put("fuelEfficiency", model.getFuelEfficiency());
-				modelObject.put("seater", model.getSeater());
-				modelObject.put("transmission", model.getTransmission());
-				modelObject.put("navigation", model.getNavigation());
-				modelObject.put("cameraRear", model.getCameraRear());
-				modelObject.put("year", model.getYear());
-				modelObject.put("highpass", model.getHighpass());
-				modelObject.put("blackBox", model.getBlackBox());
-				modelObject.put("options", model.getOption());
-				modelObject.put("picture", model.getPicture());
-				modelObject.put("type", model.getWeekdayPrice());
-				modelObject.put("weekdayPrice", model.getWeekendPrice());
-				modelObject.put("weekendPrice", model.getType());
-				modelObject.put("evalScore", model.getEvalScore());
-				modelObject.put("rentalCount", model.getRentalCount());
-				jsonArray.add(modelObject);
-			}
-
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().print(jsonArray);
-			return null;
+			// 저장한 리스트를 mav에 추가
+			mav.addObject("list", list);
+			// rent/search.jsp로 이동
+			// 뷰에서 include로 처리하는 것이 좋을 듯
+			mav.setView("/index.jsp");
+			System.out.println("DD");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
