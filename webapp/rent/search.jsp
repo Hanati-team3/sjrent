@@ -11,10 +11,6 @@
 <script src="<%=application.getContextPath()%>/js/datepicker.min.js"></script>
 <script src="<%=application.getContextPath()%>/js/datepicker.en.js"></script>
 <style type="text/css">
-/* .modal {
-    overflow-x: hidden;
-    overflow-y: auto;
-} */
 .in {
    background: rgba(0, 0, 0, 0.8);
 }
@@ -34,7 +30,6 @@
 }
 </style>
 <script type="text/javascript">
-
 $(document).ready(function(){
     var rent_start_date;
     var rent_end_date;
@@ -64,7 +59,6 @@ $(document).ready(function(){
         year = d.getFullYear();
          if (month.length < 2) month = '0' + month;
        if (day.length < 2) day = '0' + day;
-
        return [year, month, day].join('-');
     }
    
@@ -100,6 +94,7 @@ $(document).ready(function(){
             type_name = 'all';
             break;
       }
+      
       $.ajax({
          type : "POST",
          url : "<%=application.getContextPath()%>/model/search.rent",
@@ -110,15 +105,23 @@ $(document).ready(function(){
          },
          dataType: "json",
          success: function(data){
-            
-            $("#tg-main").fadeIn();
+            //console.log(data);
+           	window.data = data;
+           	//setModelList(data);
+           	request.setAttribute("list", data);
          }
       });
+      
+      
    });
    
 });
-
-
+function setModelList(list) {
+	for ( var i in list) {
+    	console.log(i);
+		console.log(list[i]);
+	}
+}
 </script>
 </head>
 <body>
@@ -250,7 +253,7 @@ $(document).ready(function(){
       <!--************************************
             Main Start
       *************************************-->
-      <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight" style="display: none">
+      <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
       <div class="container" style="width: 90%">
          <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             <jsp:include page="search_detail.jsp"/>
@@ -264,9 +267,9 @@ $(document).ready(function(){
                            <h2>렌트카</h2>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="row">
-                           <!-- Car List 출력-->
-                           <c:forEach var="item" items="${list}">
+                        <div class="row" id="carListRow">
+                        <span>${list }</span>
+                        <c:forEach var="item" items="${list}">
                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4" data-toggle="modal" data-target="#detail_show">
                               <div class="tg-populartour"   >
                                  <figure>
@@ -298,6 +301,7 @@ $(document).ready(function(){
                               </div>
                            </div>
                            </c:forEach>
+                           <!-- Car List 출력-->
                            <div class="clearfix"></div>
                            <!-- <nav class="tg-pagination">
                               <ul>

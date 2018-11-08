@@ -1,6 +1,8 @@
 package kr.or.kosta.sjrent.rent.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,6 @@ import kr.or.kosta.sjrent.common.factory.XMLObjectFactory;
 import kr.or.kosta.sjrent.rent.domain.Rent;
 import kr.or.kosta.sjrent.rent.service.RentService;
 import kr.or.kosta.sjrent.rent.service.RentServiceImpl;
-import kr.or.kosta.sjrent.user.domain.User;
 import kr.or.kosta.sjrent.user.service.UserService;
 import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
@@ -38,7 +39,19 @@ public class RentController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
 		System.out.println("들어옴.");
-		System.out.println(request.getParameter("datas"));
+		System.out.println(request.getParameter("callback"));
+		System.out.println(request.getParameterNames());
+		
+		Enumeration en = request.getParameterNames();
+		String str = "";
+		while(en.hasMoreElements()){
+		   String paramName = (String)en.nextElement();
+		   String paramValue = request.getParameter(paramName);
+		   str = paramName + "=" + URLEncoder.encode(paramValue);
+		   System.out.println(str);
+		}
+		
+		
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 		rentService = (RentService) factory.getBean(RentServiceImpl.class);
@@ -55,8 +68,8 @@ public class RentController implements Controller {
 		JSONParser jsonparser = new JSONParser();
 		JSONArray jsonArray = null;
 		try {
-			jsonArray = (JSONArray)jsonparser.parse(request.getParameter("datas"));
-		
+			jsonArray = (JSONArray)jsonparser.parse(request.getParameter("car"));
+			System.out.println(jsonArray);
 		} catch (ParseException e1) {
 			System.out.println("잘못된 형식");
 		}
