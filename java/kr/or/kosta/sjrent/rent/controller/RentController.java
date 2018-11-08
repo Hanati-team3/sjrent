@@ -1,8 +1,8 @@
 package kr.or.kosta.sjrent.rent.controller;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
+import java.net.URLEncoder;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +16,9 @@ import org.json.simple.parser.ParseException;
 import kr.or.kosta.sjrent.common.controller.Controller;
 import kr.or.kosta.sjrent.common.controller.ModelAndView;
 import kr.or.kosta.sjrent.common.factory.XMLObjectFactory;
-import kr.or.kosta.sjrent.model.service.ModelService;
-import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
 import kr.or.kosta.sjrent.rent.domain.Rent;
 import kr.or.kosta.sjrent.rent.service.RentService;
 import kr.or.kosta.sjrent.rent.service.RentServiceImpl;
-import kr.or.kosta.sjrent.user.domain.User;
 import kr.or.kosta.sjrent.user.service.UserService;
 import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
@@ -35,7 +32,6 @@ public class RentController implements Controller {
 	private XMLObjectFactory factory;
 	private UserService userService;
 	private RentService rentService;
-	private ModelService modelService;
 	private ModelAndView mav;
 	private JSONObject obj;
 
@@ -43,11 +39,22 @@ public class RentController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
 		System.out.println("들어옴.");
-		System.out.println(request.getParameter("datas"));
+		System.out.println(request.getParameter("callback"));
+		System.out.println(request.getParameterNames());
+		
+		Enumeration en = request.getParameterNames();
+		String str = "";
+		while(en.hasMoreElements()){
+		   String paramName = (String)en.nextElement();
+		   String paramValue = request.getParameter(paramName);
+		   str = paramName + "=" + URLEncoder.encode(paramValue);
+		   System.out.println(str);
+		}
+		
+		
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 		rentService = (RentService) factory.getBean(RentServiceImpl.class);
-		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
 		obj = new JSONObject();
 		mav = new ModelAndView();
 
@@ -61,8 +68,8 @@ public class RentController implements Controller {
 		JSONParser jsonparser = new JSONParser();
 		JSONArray jsonArray = null;
 		try {
-			jsonArray = (JSONArray)jsonparser.parse(request.getParameter("datas"));
-		
+			jsonArray = (JSONArray)jsonparser.parse(request.getParameter("car"));
+			System.out.println(jsonArray);
 		} catch (ParseException e1) {
 			System.out.println("잘못된 형식");
 		}
@@ -72,19 +79,7 @@ public class RentController implements Controller {
 //			rent.setUserSeq(user.getSeq());
 //			rent.setUserId(user.getId());
 			rent.setInsuranceNumber(Integer.parseInt((String)rentValue.get("insuranceNumber")));
-			List<String> enableCarList = null;
-			try {
-				enableCarList = modelService.checkEnableCar((String)rentValue.get("startDate"), (String)rentValue.get("endDate"), (String)rentValue.get("modelName"));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(enableCarList.size()<1) {
-				
-			}else {
-				String choosedCarNumber = enableCarList.get((int)(Math.random() * enableCarList.size()));
-			}
-			rent.setCarNumber(request.getParameter("choosedCarNumber"));
+//			rent.setCarNumber(request.getParameter("carNumber"));
 			rent.setStartDate((String)rentValue.get("startDate"));
 			rent.setEndDate((String)rentValue.get("endDate"));
 			rent.setPickupPlace((String)rentValue.get("pickupPlace"));

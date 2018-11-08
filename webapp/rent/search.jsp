@@ -116,7 +116,6 @@ $(document).ready(function(){
    });
    
 });
-
 function setModelList(list) {
 	for ( var i in list) {
     	console.log(i);
