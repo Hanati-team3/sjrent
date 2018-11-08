@@ -2,7 +2,7 @@ package kr.or.kosta.sjrent.model.domain;
 
 public class Model {
 
-	private String name;				
+	private String name;
 	private String fuelType;
 	private double fuelEfficiency;
 	private int seater;
