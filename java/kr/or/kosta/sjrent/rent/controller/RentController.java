@@ -1,6 +1,8 @@
 package kr.or.kosta.sjrent.rent.controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import org.json.simple.parser.ParseException;
 import kr.or.kosta.sjrent.common.controller.Controller;
 import kr.or.kosta.sjrent.common.controller.ModelAndView;
 import kr.or.kosta.sjrent.common.factory.XMLObjectFactory;
+import kr.or.kosta.sjrent.model.service.ModelService;
+import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
 import kr.or.kosta.sjrent.rent.domain.Rent;
 import kr.or.kosta.sjrent.rent.service.RentService;
 import kr.or.kosta.sjrent.rent.service.RentServiceImpl;
@@ -31,6 +35,7 @@ public class RentController implements Controller {
 	private XMLObjectFactory factory;
 	private UserService userService;
 	private RentService rentService;
+	private ModelService modelService;
 	private ModelAndView mav;
 	private JSONObject obj;
 
@@ -42,6 +47,7 @@ public class RentController implements Controller {
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 		rentService = (RentService) factory.getBean(RentServiceImpl.class);
+		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
 		obj = new JSONObject();
 		mav = new ModelAndView();
 
@@ -66,7 +72,19 @@ public class RentController implements Controller {
 //			rent.setUserSeq(user.getSeq());
 //			rent.setUserId(user.getId());
 			rent.setInsuranceNumber(Integer.parseInt((String)rentValue.get("insuranceNumber")));
-//			rent.setCarNumber(request.getParameter("carNumber"));
+			List<String> enableCarList = null;
+			try {
+				enableCarList = modelService.checkEnableCar((String)rentValue.get("startDate"), (String)rentValue.get("endDate"), (String)rentValue.get("modelName"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(enableCarList.size()<1) {
+				
+			}else {
+				String choosedCarNumber = enableCarList.get((int)(Math.random() * enableCarList.size()));
+			}
+			rent.setCarNumber(request.getParameter("choosedCarNumber"));
 			rent.setStartDate((String)rentValue.get("startDate"));
 			rent.setEndDate((String)rentValue.get("endDate"));
 			rent.setPickupPlace((String)rentValue.get("pickupPlace"));
