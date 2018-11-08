@@ -5,9 +5,6 @@
                <div class="tg-navigationarea tg-headerfixed">
                   <strong class="tg-logo"><a href="<%=application.getContextPath()%>/index.jsp"><img src="<%=application.getContextPath()%>/images/logo.png" alt="company logo here"></a></strong>
                   <div class="tg-socialsignin">
-                     <ul class="tg-socialicons">
-                        <li><a href="javascript:void(0);"><i class="icon-facebook-logo-outline"></i></a></li>
-                     </ul>
                      <div class="tg-userbox">
                         <!-- 로그인 화면 띄우자 -->
                          <!-- 재민 수정 시작(1/2) -->
@@ -40,7 +37,7 @@
       
       <!-- 재민 수정 시작(2/2) -->
       <!--  로그인 화면  -->
-      <div id="tg-loginsingup" class="tg-loginsingup" data-vide-bg="poster: images/singup-img.jpg" data-vide-options="position: 0% 50%">
+      <div id="tg-loginsingup" class="tg-loginsingup" data-vide-bg="poster: <%=application.getContextPath()%>/images/singup-img.jpg" data-vide-options="position: 0% 50%">
       <div class="tg-contentarea tg-themescrollbar">
          <div class="tg-scrollbar">
             <button type="button" class="close">x</button>

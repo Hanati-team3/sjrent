@@ -5,12 +5,34 @@
 <html>
 <head>
 <jsp:include page="../common/commoncss.jsp" />
+<jsp:include page="../common/commonjs.jsp" />
 <style type="text/css">
 	input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 </style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#rentCar").submit(function(e){
+			e.preventDefault();
+			alert('aa');
+			$.ajax({
+				type: "get",
+				url : "<%=application.getContextPath()%>/rent/rent.rent",
+				data:{
+					'datas':[
+						{'insuranceNumber':'aaa', 'startDate':"bb","endDate":"zz","pickupPlace":"수령장소", "paidAmount":"차*날짜 가격", "paymentOption":"ee"}
+					]
+				},
+				dataType: "json",
+				success:function(data){
+					alert('성공');
+				}
+			});
+		});
+	});
+</script>
 </head>
 <body>
 
@@ -42,7 +64,7 @@
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<div id="tg-content" class="tg-content">
 								<div class="tg-billingdetail">
-									<form class="tg-formtheme tg-formbillingdetail">
+									<form id="rentCar" class="tg-formtheme tg-formbillingdetail" >
 										<fieldset>
 											<div class="tg-bookingdetail">
 												<div class="tg-box">
@@ -54,7 +76,7 @@
 														<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 															<div class="form-group">
 																<label>이름</label>
-																<input type="text" name="user_name" class="form-control" placeholder="" required readonly>
+																<input type="text" value="호진" name="user_name" class="form-control" placeholder="" required readonly>
 															</div>
 														</div>
 														<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -154,9 +176,8 @@
 												</div>
 											</div>
 										</fieldset>
-										
 										<fieldset>
-											<button type="submit" style="float: right" class="tg-btn" type="submit"><span>결제하기</span></button>
+												<button id="rentCarButton" type="submit" style="float: right" class="tg-btn">결제하기</button>
 										</fieldset>
 									</form>
 								</div>
@@ -170,6 +191,5 @@
 				Main End
 		*************************************-->
 	</div>
-	<jsp:include page="../common/commonjs.jsp" />
 </body>
 </html>

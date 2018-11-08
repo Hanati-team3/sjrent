@@ -34,38 +34,8 @@
 }
 </style>
 <script type="text/javascript">
-//   var datepicker = $('.datepicker-here').datepicker().data('datepicker');
-//   datepicker.update('minDate', new Date())
-   
-//   console.log(datepicker.date);
-   
-   
-/* function detailCar(){
-   var w = window.open('url','', 'width=','height=');
-   //ajax process
-   $.ajax({
-      url:"search_detail.jsp",
-      method:"POST",
-      data:"json",
-      success: function(response){
-         if(w) w.location.href = "search_detail.jsp";
-      }
-   });
-}
- */
-/* function detailCar(){
-    alert('asd');
-   console.log('asdasd');
-   var w = $(this).attr('href');
-   layer_popup($w);
-} 
- */
+
 $(document).ready(function(){
-    /* $(".tg-btn").click(function() {
-      var $e = $($(this).attr('href'));
-      $("#tg-main").fadeIn();
-      
-   }); */
     var rent_start_date;
     var rent_end_date;
     /* DatePicker */
@@ -73,11 +43,8 @@ $(document).ready(function(){
       minDate: new Date(),
        onSelect: function(selectedDate){
           if(selectedDate.includes('~')){
-//             console.log(selectedDate);
              rent_start_date = new Date(selectedDate.split('~')[0]);
              rent_end_date = new Date(selectedDate.split('~')[1]);
-//             console.log(rent_start_date);
-//             console.log(rent_end_date);
              var date = ((rent_end_date - rent_start_date) / (1000*60*60*24))+1; 
           }else{
              rent_start_date = selectedDate;
@@ -107,8 +74,7 @@ $(document).ready(function(){
    })
    
    $('#showCarList').submit(function(e) {
-//       e.preventDefault();
-//      var $e = $($(this).attr('href'));
+       e.preventDefault();
       var model_type = $('.selectpicker').val();
       var type_name;
       switch (model_type) {
@@ -134,7 +100,7 @@ $(document).ready(function(){
             type_name = 'all';
             break;
       }
-      <%-- $.ajax({
+      $.ajax({
          type : "POST",
          url : "<%=application.getContextPath()%>/model/search.rent",
          data : {
@@ -147,11 +113,7 @@ $(document).ready(function(){
             
             $("#tg-main").fadeIn();
          }
-      }); --%>
-      $('#showCarList')[0].on('submit',function(e){
-    	  alert(rent_end_date); 
-      });      
-      
+      });
    });
    
 });
