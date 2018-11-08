@@ -11,10 +11,6 @@
 <script src="<%=application.getContextPath()%>/js/datepicker.min.js"></script>
 <script src="<%=application.getContextPath()%>/js/datepicker.en.js"></script>
 <style type="text/css">
-/* .modal {
-    overflow-x: hidden;
-    overflow-y: auto;
-} */
 .in {
    background: rgba(0, 0, 0, 0.8);
 }
@@ -34,38 +30,7 @@
 }
 </style>
 <script type="text/javascript">
-//   var datepicker = $('.datepicker-here').datepicker().data('datepicker');
-//   datepicker.update('minDate', new Date())
-   
-//   console.log(datepicker.date);
-   
-   
-/* function detailCar(){
-   var w = window.open('url','', 'width=','height=');
-   //ajax process
-   $.ajax({
-      url:"search_detail.jsp",
-      method:"POST",
-      data:"json",
-      success: function(response){
-         if(w) w.location.href = "search_detail.jsp";
-      }
-   });
-}
- */
-/* function detailCar(){
-    alert('asd');
-   console.log('asdasd');
-   var w = $(this).attr('href');
-   layer_popup($w);
-} 
- */
 $(document).ready(function(){
-    /* $(".tg-btn").click(function() {
-      var $e = $($(this).attr('href'));
-      $("#tg-main").fadeIn();
-      
-   }); */
     var rent_start_date;
     var rent_end_date;
     /* DatePicker */
@@ -73,11 +38,8 @@ $(document).ready(function(){
       minDate: new Date(),
        onSelect: function(selectedDate){
           if(selectedDate.includes('~')){
-//             console.log(selectedDate);
              rent_start_date = new Date(selectedDate.split('~')[0]);
              rent_end_date = new Date(selectedDate.split('~')[1]);
-//             console.log(rent_start_date);
-//             console.log(rent_end_date);
              var date = ((rent_end_date - rent_start_date) / (1000*60*60*24))+1; 
           }else{
              rent_start_date = selectedDate;
@@ -97,7 +59,6 @@ $(document).ready(function(){
         year = d.getFullYear();
          if (month.length < 2) month = '0' + month;
        if (day.length < 2) day = '0' + day;
-
        return [year, month, day].join('-');
     }
    
@@ -107,8 +68,7 @@ $(document).ready(function(){
    })
    
    $('#showCarList').submit(function(e) {
-//       e.preventDefault();
-//      var $e = $($(this).attr('href'));
+       e.preventDefault();
       var model_type = $('.selectpicker').val();
       var type_name;
       switch (model_type) {
@@ -134,7 +94,8 @@ $(document).ready(function(){
             type_name = 'all';
             break;
       }
-      <%-- $.ajax({
+      
+      $.ajax({
          type : "POST",
          url : "<%=application.getContextPath()%>/model/search.rent",
          data : {
@@ -144,19 +105,23 @@ $(document).ready(function(){
          },
          dataType: "json",
          success: function(data){
-            
-            $("#tg-main").fadeIn();
+            //console.log(data);
+           	window.data = data;
+           	//setModelList(data);
+           	request.setAttribute("list", data);
          }
-      }); --%>
-      $('#showCarList')[0].on('submit',function(e){
-    	  alert(rent_end_date); 
-      });      
+      });
+      
       
    });
    
 });
-
-
+function setModelList(list) {
+	for ( var i in list) {
+    	console.log(i);
+		console.log(list[i]);
+	}
+}
 </script>
 </head>
 <body>
@@ -288,7 +253,7 @@ $(document).ready(function(){
       <!--************************************
             Main Start
       *************************************-->
-      <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight" style="display: none">
+      <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
       <div class="container" style="width: 90%">
          <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             <jsp:include page="search_detail.jsp"/>
@@ -302,9 +267,9 @@ $(document).ready(function(){
                            <h2>렌트카</h2>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="row">
-                           <!-- Car List 출력-->
-                           <c:forEach var="item" items="${list}">
+                        <div class="row" id="carListRow">
+                        <span>${list }</span>
+                        <c:forEach var="item" items="${list}">
                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4" data-toggle="modal" data-target="#detail_show">
                               <div class="tg-populartour"   >
                                  <figure>
@@ -336,6 +301,7 @@ $(document).ready(function(){
                               </div>
                            </div>
                            </c:forEach>
+                           <!-- Car List 출력-->
                            <div class="clearfix"></div>
                            <!-- <nav class="tg-pagination">
                               <ul>
