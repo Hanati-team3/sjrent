@@ -70,7 +70,7 @@
                   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                      <div id="tg-content" class="tg-content">
                         <div class="tg-billingdetail">
-                           <form id="rentCar" class="tg-formtheme tg-formbillingdetail" >
+                           <form id="rentCar" class="tg-formtheme tg-formbillingdetail"  action="rent/rent.rent" method="post">
                               <fieldset>
                                  <div class="tg-bookingdetail">
                                     <div class="tg-box">
