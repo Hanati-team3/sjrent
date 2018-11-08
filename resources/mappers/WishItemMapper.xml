@@ -4,4 +4,13 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.wishitem">
+		<resultMap type="WishItem" id="wishItemResultMap">
+		<result column="wishitem_seq" 			property="name" />
+		<result column="user_seq"  				property="name" />
+		<result column="user_id" 			property="name" />
+		<result column="model_name" 			property="name" />
+		<result column="wishitem_seq" 			property="name" />
+		<result column="wishitem_seq" 			property="name" />
+		
+	</resultMap>
 </mapper>
