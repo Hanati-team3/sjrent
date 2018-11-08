@@ -96,6 +96,11 @@ public class UserSignupController implements Controller {
 		}
 		// 회원가입 성공시 응답으로 success 보냄
 		else {
+<<<<<<< HEAD
+=======
+			mav.addObject("user", user);
+			mav.setView("/user/signup.jsp");
+>>>>>>> e5d5b770465aa56a83976178ffd56ab0b473b0af
 			obj.put("result", "success");
 			mav.addObject("user", user);
 			mav.setView("/index.jsp");
