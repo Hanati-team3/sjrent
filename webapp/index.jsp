@@ -88,7 +88,7 @@ System.out.println("아이디           : "+ id);
                                  <a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>커뮤니티</span></a>
                                  <a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>위시리스트</span></a>
                                  <a class="tg-btn" href="<%=application.getContextPath()%>/wish/wish_list.jsp"><span>예약확인</span></a>
-                                 <a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>로그인</span></a>
+                                 <a class="tg-btn" href="<%=application.getContextPath()%>/user/login.jsp"><span>로그인</span></a>
                       
                       
                       

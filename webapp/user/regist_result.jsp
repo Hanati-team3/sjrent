@@ -49,8 +49,7 @@
 									<h4 style="width: 100px">아이디 :</h4>
 									</div>
 									<div style="display: inline-block">
-									<input type="text" name="id" style="border: none;"
-									maxlength="10">
+									<input type="text" name="id" style="border: none;" maxlength="10">
 										</div>
 									</div>
 
@@ -59,8 +58,7 @@
 									<h4 style="width: 100px">이메일 :</h4>
 									</div>
 									<div style="display: inline-block">
-									<input type="text" name="email" style="border: none;"
-									maxlength="10">
+									<input type="text" name="email" style="border: none;" maxlength="10">
 										</div>
 									</div>
 									
@@ -69,8 +67,7 @@
 									<h4 style="width: 100px">휴대폰 :</h4>
 									</div>
 									<div style="display: inline-block">
-									<input type="text" name="phone" style="border: none;"
-									maxlength="10">
+									<input type="text" name="phone" style="border: none;" maxlength="10">
 										</div>
 									</div>
 

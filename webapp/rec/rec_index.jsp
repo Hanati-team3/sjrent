@@ -50,7 +50,8 @@
 	}
 	
 	.button:hover {
-	background-color: #c94c4c
+	/* background-color: #c94c4c */
+	background-color: #ff8080;
 	}
    </style>
 </head>
@@ -92,12 +93,9 @@
 									Content 시작
 							*************************************-->
 							
-							<img alt="게임시작화면" src="../images/rec_index화면1.jpg">
-							<button class="button"
-								style=" ">
-								START
-						    </button>
-
+							<img alt="게임시작화면" src="../images/rec/rec_index화면1.jpg">
+							<button class="button" onclick="alert('ddd')"> START  </button>
+							
 							<!--************************************
 									Content 종료
 							*************************************-->							
