@@ -30,18 +30,13 @@ if(cookies != null){
     if(cookie.getName().equals("saveId")){
       saveId = cookie.getValue(); 
     }
-
   }
 }
-
 zzz
 System.out.println("아이디           : "+ id);
-
 %> --%>
 
 
-<<<<<<< HEAD
-	
 	<!--************************************
 			Wrapper Start
 	*************************************-->
@@ -66,7 +61,6 @@ System.out.println("아이디           : "+ id);
 											<a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>위시리스트</span></a>
 											<a class="tg-btn" href="<%=application.getContextPath()%>/wish/wish_list.jsp"><span>예약확인</span></a>
 											<a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>로그인</span></a>
-=======
    
    <!--************************************
          Wrapper Start
@@ -91,8 +85,7 @@ System.out.println("아이디           : "+ id);
                                  <a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>커뮤니티</span></a>
                                  <a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>위시리스트</span></a>
                                  <a class="tg-btn" href="<%=application.getContextPath()%>/wish/wish_list.jsp"><span>예약확인</span></a>
-                                 <a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>로그인</span></a>
->>>>>>> e5d5b770465aa56a83976178ffd56ab0b473b0af
+                                 <a class="tg-btn" href="<%=application.getContextPath()%>/user/login.jsp"><span>로그인</span></a>
                       
                       
                       
@@ -100,7 +93,6 @@ System.out.println("아이디           : "+ id);
                       
 <%-- <%
 if(id != null){ //로그인o
-
 %>  
 <<<<<<< HEAD
 	<a class="tg-btn" href="<%=application.getContextPath()%>/index.jsp"><span>로그아웃</span></a>
@@ -121,7 +113,6 @@ if(id != null){ //로그인o
 
 
                                             
-<<<<<<< HEAD
 										</div>
 									</div>
 								</div>
@@ -138,7 +129,6 @@ if(id != null){ //로그인o
 				Main Start
 			*************************************-->
 	</div>
-=======
                               </div>
                            </div>
                         </div>
@@ -155,6 +145,5 @@ if(id != null){ //로그인o
             Main Start
          *************************************-->
    </div>
->>>>>>> e5d5b770465aa56a83976178ffd56ab0b473b0af
 </body>
 </html>

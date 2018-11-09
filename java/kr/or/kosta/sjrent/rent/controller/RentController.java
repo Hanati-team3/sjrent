@@ -2,12 +2,14 @@ package kr.or.kosta.sjrent.rent.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 import kr.or.kosta.sjrent.common.controller.Controller;
 import kr.or.kosta.sjrent.common.controller.ModelAndView;
@@ -28,11 +30,11 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  *
  */
 public class RentController implements Controller {
-   private XMLObjectFactory factory;
-   private UserService userService;
-   private RentService rentService;
-   private ModelService modelService;
-   private ModelAndView mav;
+	private XMLObjectFactory factory;
+	private UserService userService;
+	private RentService rentService;
+	private ModelService modelService;
+	private ModelAndView mav;
 
    @Override
    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
@@ -115,5 +117,5 @@ public class RentController implements Controller {
       mav.setView("/rent/rent_result.jsp");
       return mav;
    }
-
+   
 }
