@@ -70,6 +70,7 @@
                            <!--************************************
                                  차 리스트 보여주기
                               *************************************-->
+                              <% if (request.getAttribute("list") != null && (!((ArrayList)request.getAttribute("list")).isEmpty())){ %> 
                               <c:forEach var="item" items="${list}" varStatus="status">
                               <tr>
                                  <td style="vertical-align: middle;">
@@ -79,21 +80,22 @@
                                     <div class="tg-tourname" style="border-bottom: none;" > 
                                        <figure >
                                        		<!-- 사진 필요 -->
-                                       		 <a><img src="../images/cars/대형/2017GRANDEUR.jpg" style="width: 100px; height: 100px; margin-right: 15px" alt="#{item.modelName}"></a>
+                                       		 <a><img src="<%=application.getContextPath() %>/images/cars/${item.type}/${item.picture}" style="width: 100px; height: 100px; margin-right: 15px" alt="${item.modelName}"></a>
                                        </figure>
                                        <div class="tg-populartourcontent">
                                           <div class="tg-populartourtitle">
                                              <h3 style="vertical-align: middle; text-align: left; margin-bottom: 10px"><a class="modelName" href="javascript:void(0);">${item.modelName}</a></h3>
+                                          		 <span style="text-align: left; ">연료 : ${item.fuelType }</span>
                                           </div>
                                        </div>
                                     </div>
                                  </td>
                                  <td class="startDate" style="vertical-align: middle;"><span>${item.startDate}</span></td>
                                  <td class="endDate"   style="vertical-align: middle;"><span>${item.endDate}</span></td>
-                                 <%-- <td class="amountMoney" style="vertical-align: middle;">${item.amountMoney}</td> --%>
+                                 <td class="amountMoney" style="vertical-align: middle;">${item.amountMoney}</td>
                               </tr>
                               </c:forEach>
-                              <%if (((ArrayList)request.getAttribute("list")).isEmpty()){ %> 
+                              <%}else{ %>
                               <tr>
                               	<td colspan="5" style="height: 100px; vertical-align: middle;">위시리스트가 존재하지 않습니다.</td>
                               </tr>
@@ -103,7 +105,7 @@
                               *************************************-->
                            </tbody>
                         </table>
-                        <% if (!((ArrayList)request.getAttribute("list")).isEmpty()){ %> 
+                        <% if (request.getAttribute("list") != null && (!((ArrayList)request.getAttribute("list")).isEmpty())){ %> 
                        	 <fieldset>
                            	<button id="rentCarButton" type="submit" style="float: right" class="tg-btn">렌트하기</button>
                          </fieldset>	
