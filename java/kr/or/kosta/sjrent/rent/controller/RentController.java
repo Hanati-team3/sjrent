@@ -1,18 +1,13 @@
 package kr.or.kosta.sjrent.rent.controller;
 
-import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import kr.or.kosta.sjrent.common.controller.Controller;
 import kr.or.kosta.sjrent.common.controller.ModelAndView;
@@ -42,21 +37,21 @@ public class RentController implements Controller {
    @Override
    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
          throws ServletException {
-      System.out.println("들어옴.");
       factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
       userService = (UserService) factory.getBean(UserServiceImpl.class);
       rentService = (RentService) factory.getBean(RentServiceImpl.class);
       modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
       mav = new ModelAndView();
-
+      
       User user = null;
-//      try {
-//         user = userService.read((String)request.getAttribute("loginId"));
-//      } catch (Exception e) {
-//         mav.addObject("result", "fail");
-//         mav.setView("/rent/search.jsp");
-//         return mav;
-//      }
+      try {
+         user = userService.read((String)request.getAttribute("loginId"));
+         user = userService.read("gloomycloud");
+      } catch (Exception e) {
+         mav.addObject("result", "fail");
+         mav.setView("/rent/search.jsp");
+         return mav;
+      }
       
       String[] startDates = request.getParameterValues("startDate");
       String[] endDates = request.getParameterValues("endDate");
@@ -65,12 +60,14 @@ public class RentController implements Controller {
       String[] paidAmounts = request.getParameterValues("paidAmount");
       String[] paymentOptions = request.getParameterValues("paymentOption");
       String[] modelNames = request.getParameterValues("modelName");
-      List<Rent> resultRents = null;
+
+      List<Map<String,String>> resultRents = new ArrayList<Map<String,String>>();
       for(int i = 0; i < modelNames.length; i++) {
          List<String> enableCarList = null;
          try {
             enableCarList = modelService.checkEnableCar(startDates[i], endDates[i], modelNames[i]);
          } catch (Exception e) {
+        	 System.out.println("아웃");
             mav.addObject("result", "fail");
             mav.setView("/rent/search.jsp");
             return mav;
@@ -89,19 +86,27 @@ public class RentController implements Controller {
             rent.setUserId(user.getId());
             try {
                if(rentService.create(rent)){
-                  resultRents.add(rent);
+            	  Map<String, String> temp = new HashMap<String,String>();
+            	  temp.put("modelName", modelNames[i]);
+            	  temp.put("startDate", startDates[i]);
+            	  temp.put("endDate", endDates[i]);
+            	  temp.put("pickupPlace", pickupPlaces[i]);
+                  resultRents.add(temp);
                }else{
                   mav.addObject("result", "fail");
+                  mav.addObject("message", rent.toString()+": 렌트 등록을 할 수 없습니다.");
                   mav.setView("/rent/search.jsp");
                   return mav;
                }
             } catch (Exception e) {
                mav.addObject("result", "fail");
+               mav.addObject("message", rent.toString()+" : "+e);
                mav.setView("/rent/search.jsp");
                return mav;
             }
          }else {
             mav.addObject("result", "fail");
+            mav.addObject("message", modelNames[i]+"모델은 이용 가능한 차가 없습니다.");
             mav.setView("/rent/search.jsp");
             return mav;
          }
