@@ -78,9 +78,9 @@ public class ModelSearchController implements Controller {
 				modelObject.put("blackBox", model.getBlackBox());
 				modelObject.put("options", model.getOption());
 				modelObject.put("picture", model.getPicture());
-				modelObject.put("type", model.getWeekdayPrice());
-				modelObject.put("weekdayPrice", model.getWeekendPrice());
-				modelObject.put("weekendPrice", model.getType());
+				modelObject.put("type", model.getType());
+				modelObject.put("weekdayPrice", model.getWeekdayPrice());
+				modelObject.put("weekendPrice", model.getWeekendPrice());
 				modelObject.put("evalScore", model.getEvalScore());
 				modelObject.put("rentalCount", model.getRentalCount());
 				jsonArray.add(modelObject);
