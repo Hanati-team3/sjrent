@@ -117,7 +117,6 @@ $(document).ready(function(){
    });
    
 });
-
 function setModelList(list) {
 	var weekday = 0;
 	var weekend = 0;
@@ -125,7 +124,6 @@ function setModelList(list) {
 	var end = new Date(rent_end_date);
 	var output = "";
 	
-
 	for(var i = 0; i < date; i++) {
 		if(startDay == 0 || startDay == 6) {
 			weekend++;
