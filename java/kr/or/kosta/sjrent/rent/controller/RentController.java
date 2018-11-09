@@ -94,6 +94,7 @@ public class RentController implements Controller {
             	  temp.put("endDate", endDates[i]);
             	  temp.put("pickupPlace", pickupPlaces[i]);
                   resultRents.add(temp);
+                  modelService.changeCount(modelNames[i], 1);
                }else{
             	   System.out.println("test1");
                   mav.addObject("result", "fail");
