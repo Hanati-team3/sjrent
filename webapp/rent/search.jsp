@@ -11,10 +11,6 @@
 <script src="<%=application.getContextPath()%>/js/datepicker.min.js"></script>
 <script src="<%=application.getContextPath()%>/js/datepicker.en.js"></script>
 <style type="text/css">
-/* .modal {
-    overflow-x: hidden;
-    overflow-y: auto;
-} */
 .in {
    background: rgba(0, 0, 0, 0.8);
 }
@@ -34,55 +30,22 @@
 }
 </style>
 <script type="text/javascript">
-//   var datepicker = $('.datepicker-here').datepicker().data('datepicker');
-//   datepicker.update('minDate', new Date())
-   
-//   console.log(datepicker.date);
-   
-   
-/* function detailCar(){
-   var w = window.open('url','', 'width=','height=');
-   //ajax process
-   $.ajax({
-      url:"search_detail.jsp",
-      method:"POST",
-      data:"json",
-      success: function(response){
-         if(w) w.location.href = "search_detail.jsp";
-      }
-   });
-}
- */
-/* function detailCar(){
-    alert('asd');
-   console.log('asdasd');
-   var w = $(this).attr('href');
-   layer_popup($w);
-} 
- */
+var rent_start_date;
+var rent_end_date;
+var date;
 $(document).ready(function(){
-    /* $(".tg-btn").click(function() {
-      var $e = $($(this).attr('href'));
-      $("#tg-main").fadeIn();
-      
-   }); */
-    var rent_start_date;
-    var rent_end_date;
     /* DatePicker */
     $("#datepicker").datepicker({
       minDate: new Date(),
        onSelect: function(selectedDate){
           if(selectedDate.includes('~')){
-//             console.log(selectedDate);
              rent_start_date = new Date(selectedDate.split('~')[0]);
              rent_end_date = new Date(selectedDate.split('~')[1]);
-//             console.log(rent_start_date);
-//             console.log(rent_end_date);
-             var date = ((rent_end_date - rent_start_date) / (1000*60*60*24))+1; 
+             date = ((rent_end_date - rent_start_date) / (1000*60*60*24))+1; 
           }else{
              rent_start_date = selectedDate;
              rent_end_date = selectedDate;
-             var date = 1;
+             date = 1;
           }
              $('#total-time').val(date+'일 ('+date*24+'시간)'); 
              rent_start_date = formatDate(rent_start_date);
@@ -91,14 +54,14 @@ $(document).ready(function(){
    })
    
    function formatDate(date){
-       var d = new Date(date),
+    	var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-         if (month.length < 2) month = '0' + month;
-       if (day.length < 2) day = '0' + day;
-
-       return [year, month, day].join('-');
+    	
+    	if (month.length < 2) month = '0' + month;
+    	if (day.length < 2) day = '0' + day;
+    	return [year, month, day].join('-');
     }
    
    
@@ -107,8 +70,7 @@ $(document).ready(function(){
    })
    
    $('#showCarList').submit(function(e) {
-//       e.preventDefault();
-//      var $e = $($(this).attr('href'));
+       e.preventDefault();
       var model_type = $('.selectpicker').val();
       var type_name;
       switch (model_type) {
@@ -134,7 +96,8 @@ $(document).ready(function(){
             type_name = 'all';
             break;
       }
-      <%-- $.ajax({
+      
+      $.ajax({
          type : "POST",
          url : "<%=application.getContextPath()%>/model/search.rent",
          data : {
@@ -144,19 +107,73 @@ $(document).ready(function(){
          },
          dataType: "json",
          success: function(data){
-            
-            $("#tg-main").fadeIn();
+            //console.log(data);
+           	window.data = data;
+           	setModelList(data);
          }
-      }); --%>
-      $('#showCarList')[0].on('submit',function(e){
-    	  alert(rent_end_date); 
-      });      
+      });
+      
       
    });
    
 });
-
-
+function setModelList(list) {
+	var weekday = 0;
+	var weekend = 0;
+	var startDay = new Date(rent_start_date).getDay();
+	var end = new Date(rent_end_date);
+	var output = "";
+	
+	for(var i = 0; i < date; i++) {
+		if(startDay == 0 || startDay == 6) {
+			weekend++;
+		}
+		else {
+			weekday++;
+		}
+		startDay++;
+		if(startDay == 7) startDay = 0;
+	}
+	
+	console.log(weekday + ", " + weekend);
+	
+	for ( var i in list) {
+		output += "" + 
+		"                           <div class=\"col-xs-6 col-sm-6 col-md-4 col-lg-4\" data-toggle=\"modal\" data-target=\"#detail_show\">\r\n" + 
+		"                              <div class=\"tg-populartour\"   >\r\n" + 
+		"                                 <figure>\r\n" + 
+		"                                    <a><img\r\n" + 
+		"                                       src=\"../images/cars/"+list[i].type+"/"+list[i].picture+"\" alt=\"image destinations\"></a>\r\n" + 
+		"                                 </figure>\r\n" + 
+		"                                 <div class=\"tg-populartourcontent\">\r\n" + 
+		"                                    <div class=\"tg-populartourtitle\">\r\n" + 
+		"                                       <h3>\r\n" + 
+		"                                          <a class=\"car_detail\">"+ list[i].name +"</a> \r\n" + 
+		"                                       </h3>\r\n" + 
+		"                                    </div>\r\n" + 
+		"                                    <div class=\"tg-description\" style=\"height: 150px;\">\r\n" + 
+		"                                       <p>"+ list[i].options +"</p>\r\n" + 
+		"                                    </div>\r\n" + 
+		"                                    <div class=\"tg-populartourfoot\">\r\n" + 
+		"                                       <div class=\"tg-durationrating\">\r\n" + 
+		"                                          <span class=\"tg-tourduration tg-availabilty\"> weekday "+list[i].weekdayPrice+"<br/>weekend "+list[i].weekendPrice+"</span>" + 
+		"										   <span class=\"tg-stars\">"+
+		"											  <span style=\"width: "+list[i].evalScore*100+"%\"></span>" + 
+		"										   </span>\r\n" + 
+		"                                          <em>(3 Review)</em>\r\n" + 
+		"                                       </div>\r\n" + 
+		"                                       <div class=\"tg-pricearea\">\r\n" + 
+		"                                          <h4>"+ (list[i].weekdayPrice * weekday + list[i].weekendPrice * weekend)  +"</h4>\r\n" + 
+		"                                       </div>\r\n" + 
+		"                                    </div>\r\n" + 
+		"                                 </div>\r\n" + 
+		"                              </div>\r\n" + 
+		"                           </div>\r\n";
+    	console.log(i);
+		console.log(list[i]);
+		$("#carListRow").html(output);
+	}	//for 끝
+}
 </script>
 </head>
 <body>
@@ -288,7 +305,7 @@ $(document).ready(function(){
       <!--************************************
             Main Start
       *************************************-->
-      <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight" style="display: none">
+      <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
       <div class="container" style="width: 90%">
          <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             <jsp:include page="search_detail.jsp"/>
@@ -302,51 +319,8 @@ $(document).ready(function(){
                            <h2>렌트카</h2>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="row">
-                           <!-- Car List 출력-->
-                           <c:forEach var="item" items="${list}">
-                           <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4" data-toggle="modal" data-target="#detail_show">
-                              <div class="tg-populartour"   >
-                                 <figure>
-                                    <a><img
-                                       src="../images/cars/${item.getType()}/${item.getPicture()}" alt="image destinations"></a>
-                                 </figure>
-                                 <div class="tg-populartourcontent">
-                                    <div class="tg-populartourtitle">
-                                       <h3>
-                                          <a class="car_detail">City Tours in Europe,
-                                             Paris</a> 
-                                       </h3>
-                                    </div>
-                                    <div class="tg-description">
-                                       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                          elit, sed diam nonummy nibh...</p>
-                                    </div>
-                                    <div class="tg-populartourfoot">
-                                       <div class="tg-durationrating">
-                                          <span class="tg-tourduration tg-availabilty">2 Days</span> <span
-                                             class="tg-stars"><span style="width: 60%"></span></span>
-                                          <em>(3 Review)</em>
-                                       </div>
-                                       <div class="tg-pricearea">
-                                          <h4>￦2,500</h4>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           </c:forEach>
-                           <div class="clearfix"></div>
-                           <!-- <nav class="tg-pagination">
-                              <ul>
-                                 <li class="tg-active"><a href="javascript:void(0);">1</a></li>
-                                 <li><a href="javascript:void(0);">2</a></li>
-                                 <li><a href="javascript:void(0);">3</a></li>
-                                 <li><a href="javascript:void(0);">4</a></li>
-                                 <li class="tg-nextpage"><a href="javascript:void(0);"><i
-                                       class="fa fa-angle-right"></i></a></li>
-                              </ul>
-                           </nav> -->
+                        <div class="row" id="carListRow">
+
                         </div>
                      </div>
                   </div>
