@@ -81,33 +81,33 @@ function mykeydown(){
                            <fieldset>
                               <div class="form-group">
                                  <h4>아이디<sup>*</sup></h4>
-                                 <input type="text" name="id" class="form-control" onkeydown="mykeydown()" maxlength="10" style="text-transform: none;" required>
+                                 <input type="text" name="id" class="form-control" onkeydown="mykeydown()" maxlength="10" style="text-transform: none;">
                                  <span id="idSpan"></span>
                               </div>
                               
                               <div class="form-group">
                                  <h4>비밀번호<sup>*</sup></h4>
-                                 <input type="password" name="password" class="form-control" placeholder="" maxlength="10" style="text-transform: none;" required>
+                                 <input type="password" name="password" class="form-control" placeholder="" maxlength="10" style="text-transform: none;">
                               </div>
                               
                               <div class="form-group">
                                  <h4>이름<sup>*</sup></h4>
-                                 <input type="text" name="name" class="form-control" placeholder="" maxlength="10" style="text-transform: none;" required>
+                                 <input type="text" name="name" class="form-control" placeholder="" maxlength="10" style="text-transform: none;">
                               </div>
                                  
                               <div class="form-group">
                                  <h4>생년월일<sup>*</sup></h4>
                                  <div>
-                                    <input style="display: inline-block; text-transform: lowercase;" name="birthday" type="text" size="15" maxlength="6" placeholder="e.g. 910101" required> -   
-                                    <input style="display: inline-block;" type="text" name="gender" size="1" maxlength="1" required>
+                                    <input style="display: inline-block; text-transform: lowercase;" name="birthday" type="text" size="15" maxlength="6" placeholder="e.g. 910101" > -   
+                                    <input style="display: inline-block;" type="text" name="gender" size="1" maxlength="1">
                                     xxxxxx
                                  </div>
                               </div>
                               
                               <div class="form-group">
                                  <h4>이메일<sup>*</sup></h4>
-                                 <input type="text" name="email1" maxlength="10" size="12" style="text-transform: none;" required> @ 
-                                 <input type="text" name="email2" maxlength="10" size="12" style="text-transform: none;" required>  
+                                 <input type="text" name="email1" maxlength="10" size="12" style="text-transform: none;"> @ 
+                                 <input type="text" name="email2" maxlength="10" size="12" style="text-transform: none;">  
 
                                  <select name="email_select" style="text-transform: lowercase;" class="box" id="email_select" onChange="checkemailaddy();">
                                   <option value="" selected>선택하세요</option>

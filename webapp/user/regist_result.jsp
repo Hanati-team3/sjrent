@@ -47,7 +47,6 @@
 									<div class="form-group">
 										<div style="display: inline-block;">
 									<h4 style="width: 100px">아이디 : ${id} </h4>
-                                    <input type="text" name="id" style="border: none;" maxlength="10">
 									</div>
 									<div style="display: inline-block">
 									<!-- <input type="text" name="id" style="border: none;"
@@ -58,7 +57,6 @@
 									<div class="form-group">
 										<div style="display: inline-block;">
 									<h4 style="width: 100px">이메일 : ${email }</h4>
-                                    <input type="text" name="email" style="border: none;" maxlength="10">
 									</div>
 									<div style="display: inline-block">
 									<<!-- input type="text" name="email" style="border: none;"
@@ -69,7 +67,6 @@
 									<div class="form-group">
 										<div style="display: inline-block;">
 									<h4 style="width: 100px">휴대폰 : ${cellphone }</h4>
-                                    <input type="text" name="cellphone" style="border: none;" maxlength="10">
 									</div>
 									<div style="display: inline-block">
 									<!-- <input type="text" name="phone" style="border: none;"

@@ -50,15 +50,15 @@
                            <!--************************************
                                     Content 시작 (login 성공하면)
                               *************************************-->      
-                              <form class="tg-formtheme tg-formlogin" action="/sjrent/user/login.rent" method="get">
+                              <form class="tg-formtheme tg-formlogin" action="#" method="get">
                                  <fieldset>
                                     <div class="form-group">
                                        <h4>아이디<sup>*</sup></h4>
-                                       <input type="text" name="id" class="form-control" placeholder="" maxlength="10" required style="text-transform: none" required>
+                                       <input type="text" name="id" class="form-control" placeholder="" maxlength="10" required style="text-transform: none">
                                     </div>
                                     <div class="form-group">
                                        <h4>비밀번호<sup>*</sup></h4>
-                                       <input type="password" name="pw" class="form-control" placeholder="" maxlength="10" required style="text-transform: none" required>
+                                       <input type="password" name="pw" class="form-control" placeholder="" maxlength="10" required style="text-transform: none">
                                     </div>
                                     <div class="form-group">
                                        <div>
@@ -66,7 +66,7 @@
                                           <h6 style="display: inline;">아이디저장</h6>
                                        </div>
                                     </div>
-                                    <button type="submit" class="tg-btn tg-btn-lg"><span>로그인</span></button>								
+                                    <input id= "loginB" type="submit" class="tg-btn tg-btn-lg" style="font-size: 14pt"  value="로그인">
                                  </fieldset>
                               </form>
                            <!--************************************
