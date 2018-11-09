@@ -30,13 +30,10 @@ if(cookies != null){
     if(cookie.getName().equals("saveId")){
       saveId = cookie.getValue(); 
     }
-
   }
 }
-
 zzz
 System.out.println("아이디           : "+ id);
-
 %> --%>
 
 
@@ -96,7 +93,6 @@ System.out.println("아이디           : "+ id);
                       
 <%-- <%
 if(id != null){ //로그인o
-
 %>  
 <<<<<<< HEAD
 	<a class="tg-btn" href="<%=application.getContextPath()%>/index.jsp"><span>로그아웃</span></a>
