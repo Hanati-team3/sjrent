@@ -74,6 +74,7 @@ $(document).ready(function(){
        event.preventDefault();
    })
    
+   /** 검색버튼이 클릭됨 */
    $('#showCarList').submit(function(e) {
        e.preventDefault();
       var model_type = $('.selectpicker').val();
@@ -101,7 +102,7 @@ $(document).ready(function(){
             type_name = 'all';
             break;
       }
-      
+      /** 모델 목록을 불러오는 search controller로 요청 전달 */
       $.ajax({
          type : "POST",
          url : "<%=application.getContextPath()%>/model/search.rent",
@@ -116,11 +117,21 @@ $(document).ready(function(){
          }
       });
       
+      /** 랭킹 목록을 불러오는 poularController로 요청 전달. html로 받아서 표시*/
+    	$.ajax({	
+    		url:"<%=application.getContextPath()%>/model/popular.rent",
+    		dataType:"html",
+    		type:'GET', 
+    		success:function(result){
+    			$("#rank-list").html(result);
+    		}
+    	});
       
    });
    
 });
-/** 모델 list를 html로 표시하는 메소드 */
+
+/** list의 모델들을 html로 추가하는 함수 */
 function setModelList(list) {
 	var startDay = new Date(rent_start_date).getDay();
 	var end = new Date(rent_end_date);
@@ -358,7 +369,7 @@ function setModelList(list) {
                <!--************************************
                      Ranking Start
                *************************************-->
-               <jsp:include page="rank_list.jsp"/>
+               <div id="rank-list"> </div>
                <!--************************************
                      Ranking End
                *************************************-->
