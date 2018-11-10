@@ -36,27 +36,35 @@ public class RentListController implements Controller {
 		String type = request.getParameter("type");
 		System.out.println("RentListController id : " + id);
 		List<Rent> list = null;
-		if(type.equals("all")) {
+		if(type != null) {
+			if(type.equals("all")) {
+				try {
+					list = rentService.listByUser(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else if(type.equals("cancel")) {
+				try {
+					list = rentService.CancellistByUser(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else if(type.equals("uncancel")) {
+				try {
+					list = rentService.UncancellistByUser(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else if(type.equals("past")) {
+				try {
+					list = rentService.pastListByUser(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}{
 			try {
 				list = rentService.listByUser(id);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}else if(type.equals("cancel")) {
-			try {
-				list = rentService.CancellistByUser(id);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}else if(type.equals("uncancel")) {
-			try {
-				list = rentService.UncancellistByUser(id);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}else if(type.equals("past")) {
-			try {
-				list = rentService.pastListByUser(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
