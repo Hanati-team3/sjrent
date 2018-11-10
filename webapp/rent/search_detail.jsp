@@ -1,61 +1,43 @@
 <%@page import="kr.or.kosta.sjrent.model.domain.Model"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<%-- Model정보를 출력하는 jsp (search.jsp에 include됨)
+     컨트롤러로 부터 받은 정보 : model, startDate, endDate, weekday, weekend
+     위시리스트로 넘길 정보 :  model(name,picture,type,fueltype), startDate, endDate, amountMoney
+     예약화면으로 넘길 정보 :  model, startDate, endDate, amountMoney, location
+ --%>
+ 
 <% 
 Model model = (Model)request.getAttribute("model");
+int amountMoney = 0;
+if(model == null) {
+  System.out.println("null model"); 
+  model = new Model();
+  model.setEvalScore(10.0);
+  model.setFuelType("testFT");
+  model.setName("testName");
+  model.setPicture("NIRO.jpg");
+  model.setReviewCount(5);
+  model.setType("JSegment");
+  model.setWeekdayPrice(50000);
+  model.setWeekendPrice(100000);
+  
+}
+else {
+  amountMoney = model.getWeekdayPrice() * (Integer)request.getAttribute("weekday") + 
+                  model.getWeekendPrice() * (Integer)request.getAttribute("weekend");
+}
 String imagePath = "../images/cars/"+model.getType()+"/"+model.getPicture();
+String modelName = model.getName();
+String startDate = (String)request.getAttribute("startDate");
+String endDate = (String)request.getAttribute("endDate");
+String picture = model.getPicture();
+String type = model.getType();
+String fuelType = model.getFuelType();
+
 %>
-<script>
-/** 위시리스트에 저장 버튼이 눌렸을 때 Controller로 데이터를 보낸다.
-	Controller로부터 받은 데이터를 검사한다.
-*/
-function addToWishList1() {
-	$.ajax({	
-		url:"<%=application.getContextPath()%>/wish/add.rent",
-		dataType:"text",
-		type:'POST', 
-		data : {
-             //'model_name' : modelName,
-             //'weekday' : weekday,
-             //'weekend' : weekend
-        },
-		success:function(result){
-			// result 값에 따라 위시리스트에 저장했다고 알려주기
-			//$(e.currentTarget).html(result);
-		}
-	});
-}
-/** 위시리스트에 저장 버튼이 눌렸을 때 Controller로 데이터를 보낸다.
-Controller로부터 받은 데이터를 검사한다.
-*/
-function addToWishList2() {
-    var form = document.createElement("form");
-    form.setAttribute("method", "post");
-    form.setAttribute("action", '<%=application.getContextPath()%>/rent/rent.rent');
- 
-    var params = {
-  		startDate : '2018-11-15',
-  		endDate : '2018-11-20',
-  		insuranceNumber : '1',
-  		pickupPlace : '인천 서구',
-  		paidAmount : '50000',
-  		paymentOption : '카드결제',
-  		modelName : 'NIRO'
-    }
-    
-    //히든으로 값을 주입시킨다.
-    for(var key in params) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", params[key]);
-        form.appendChild(hiddenField);
-    }
- 
-    document.body.appendChild(form);
-    form.submit();
-}
-</script>
 <!--************************************
 		Rent_history Detail Start
 *************************************-->
@@ -79,7 +61,7 @@ function addToWishList2() {
 						<div class="tg-pricearea">
 							<span>총 금액</span>
 							<h4>
-								&#8361 ${model.weekdayPrice * weekday + model.weekendPrice * weekend }
+								&#8361 <%=amountMoney %>
 							</h4>
 						</div>
 						<div class="tg-description">
@@ -88,8 +70,16 @@ function addToWishList2() {
 						</div>
                         <div class="tg-description">
                           <ul class="my-tg-likeshare" >
-                            <li><a href="javascript:void(0);"><i class="icon-heart"></i>Wish List</a></li>
+                          <%
+                          // 로그인일때의 wish, reserver 버튼
+                          if(request.getAttribute("loginId")!= null ) { %> 
+                            <li><a onclick="addToWishList('<%=modelName%>', '<%=startDate%>', '<%=endDate%>', '<%=amountMoney%>', '<%=picture%>', '<%=type%>', '<%=fuelType%>')" id="wishListAnchor"><i class="icon-heart"></i>Wish List</a></li>
                             <li><a href="<%=application.getContextPath()%>/rent/rent.jsp"><i class="icon-eye"></i>Reserve</a></li>
+                          <% }
+                          // 로그아웃일때의 reserver 버튼(wish 없음)
+                          else { %> 
+                            <li><a href="<%=application.getContextPath()%>/rent/rent.jsp"><i class="icon-eye"></i>Reserve</a></li>
+                          <% } %>
                           </ul>
                         </div>
 					</div>

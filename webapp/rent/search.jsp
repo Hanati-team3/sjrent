@@ -130,7 +130,6 @@ $(document).ready(function(){
    });
    
 });
-
 /** list의 모델들을 html로 추가하는 함수 */
 function setModelList(list) {
 	var startDay = new Date(rent_start_date).getDay();
@@ -195,7 +194,7 @@ function setModelList(list) {
 			dataType:"html",
 			type:'POST', 
 			data : {
-	             'model_name' : modelName,
+	             'modelName' : modelName,
 	             'weekday' : weekday,
 	             'weekend' : weekend
 	        },
@@ -205,6 +204,34 @@ function setModelList(list) {
 		});
 	});
 }
+
+
+/** <위시리스트에 저장> 버튼이 눌렸을 때 Controller로 데이터를 보낸다.
+	Controller로부터 받은 데이터를 검사한다.
+*/
+function addToWishList(modelName, startDate, endDate, amountMoney, picture, type, fuelType) {
+	console.log("Addd");
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/wishitem/add.rent",
+		dataType:"text",
+		type:'POST', 
+		data : {
+	  		modelName : modelName,
+	  		startDate : startDate,
+	  		endDate : endDate,
+	  		amountMoney : amountMoney,
+	  		picture : picture,
+	  		type : type,
+	  		fuelType : fuelType
+        },
+		success:function(result){
+			// result 값에 따라 위시리스트에 저장했다고 알려주기
+			console.log(result);
+		}
+	});
+}
+
+
 </script>
 </head>
 <body>
@@ -339,13 +366,22 @@ function setModelList(list) {
       <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
       <div class="container" style="width: 90%">
          <!--************************************
-              Detail Model Start
+              Detail Modal Start
          *************************************-->
          <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            
+            <jsp:include page=""></jsp:include>
          </div>
          <!--************************************
-              Detail Model End
+              Detail Modal End
+         *************************************-->
+         
+         <!--************************************
+              Login Modal Start
+         *************************************-->
+         <div id = "login_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+         </div>
+         <!--************************************
+              Login Modal End
          *************************************-->
          <div class="row" id="ModelDisplayRow">
             <div id="tg-twocolumns" class="tg-twocolumns">
@@ -384,7 +420,7 @@ function setModelList(list) {
    <!--************************************
                Login method
    *************************************--> 
-   
+   <!-- 
    <div id="tg-loginsingup" class="tg-loginsingup col-6 " data-vide-bg="poster: ../images/singup-img.jpg" data-vide-options="position: 0% 50%">
       <div class="tg-contentarea tg-themescrollbar">
          <div class="tg-scrollbar">
@@ -423,5 +459,6 @@ function setModelList(list) {
          </div>
       </div>
    </div>
+   -->
 </body>
 </html>
