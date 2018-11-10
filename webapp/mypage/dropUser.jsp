@@ -62,7 +62,7 @@ String loginId = (String)request.getAttribute("loginId");
                               *************************************-->
 						<div>
                                <p style="text-align: center; ">
-                              <%=loginId %>님 환영합니다. 
+                              <%=loginId%>님 환영합니다. 
                               </p> 
                               </div>
 						<!--************************************
@@ -76,10 +76,7 @@ String loginId = (String)request.getAttribute("loginId");
 						<!--************************************
                                     회원탈퇴 시작 
                               *************************************-->
-						<div style="border: thin; margin-top: 100px; margin-left:300px; margin-right: 150px;background-color: grey">
-							<label>정말 탈퇴하시겠습니까? </label>
 						
-						</div>	
 						
 						
 						

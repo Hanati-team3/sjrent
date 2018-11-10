@@ -49,8 +49,8 @@ public class LoginCheckFilter implements Filter {
 		
 		// 회원 및 비회원 로그인 페이지 처리 
 		if(isLogin) {
-			chain.doFilter(request, response);
 			request.setAttribute("loginId", id);
+			chain.doFilter(request, response);
 		}else {
 			chain.doFilter(request, response);
 		}
