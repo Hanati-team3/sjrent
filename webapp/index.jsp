@@ -58,6 +58,7 @@
         <%
           }else{//로그인 안 된 경우 
         %>
+        
          <a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>로그인</span></a>
         <%}%>  
 	</div>
