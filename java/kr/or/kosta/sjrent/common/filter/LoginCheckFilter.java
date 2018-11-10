@@ -51,6 +51,7 @@ public class LoginCheckFilter implements Filter {
 		if(isLogin) {
 			request.setAttribute("loginId", id);
 			chain.doFilter(request, response);
+			System.out.println("test");
 		}else {
 			chain.doFilter(request, response);
 		}
