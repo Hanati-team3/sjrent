@@ -239,7 +239,7 @@ function addToWishList(modelName, startDate, endDate, amountMoney, picture, type
    <!--************************************
          Mobile Menu Start
    *************************************-->
-   <jsp:include page="../include/nav.jsp" />
+   <jsp:include page="../include/header.jsp" />
    <!--************************************
          Mobile Menu End
    *************************************-->
@@ -254,18 +254,18 @@ function addToWishList(modelName, startDate, endDate, amountMoney, picture, type
          class="tg-header tg-headervtwo tg-headerfixed tg-haslayout">
          <div class="container-fluid">
             <div class="row">
-               <strong class="tg-logo"><a
+              <%--  <strong class="tg-logo"><a
                   href="<%=application.getContextPath()%>/index.jsp"><img
                      src="<%=application.getContextPath()%>/images/logo2.png"
-                     alt="shoppingmall logo"></a></strong>
-               <nav class="tg-infonav">
+                     alt="shoppingmall logo"></a></strong> --%>
+<!--                <nav class="tg-infonav">
                   <ul>
-                     <!-- 로그인 화면 띄우자 -->
+                     로그인 화면 띄우자
                      <li><a id="tg-btnsignin" href="#tg-loginsingup">로그인</a></li>
-                     <!-- 로그인 되어 있는 경우 -->
+                     로그인 되어 있는 경우
                   </ul>
-               </nav>
-               <div class="tg-navigationarea">
+               </nav> -->
+<%--                <div class="tg-navigationarea">
                   <div class="tg-navigationholder">
                      <nav id="tg-nav" class="tg-nav">
                         <div id="tg-navigation"
@@ -289,7 +289,7 @@ function addToWishList(modelName, startDate, endDate, amountMoney, picture, type
                      </ul>
                   </div>
                </div>
-            </div>
+ --%>            </div>
          </div>
       </header>
       <!--************************************
