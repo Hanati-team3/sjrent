@@ -20,6 +20,8 @@
    
    	<!-- 마이페이지 로그인 -->
 	<bean type="controller" name="/mypage/login" class="kr.or.kosta.sjrent.mypage.controller.LoginController" />
+	<!-- 마이페이지 회원정보수정 -->
+	<bean type="controller" name="/mypage/update" class="kr.or.kosta.sjrent.mypage.controller.UpdateController" />
 
    <!-- QnA list 컨트롤러 -->
    <bean type="controller" name="/qna/qnaList" class="kr.or.kosta.sjrent.qna.controller.QnAListController" />
@@ -57,8 +59,19 @@
 	<!-- WishItem 목록 -->
 	<bean type="controller" name="/wishitem/list" class="kr.or.kosta.sjrent.wishitem.controller.WishItemListController" />
 	<!-- WishItem 추가 -->
-	<bean type="controller" name="/wishitem/add" class="kr.or.kosta.sjrent.wishitem.controller.AddWishItemController" />
+	<bean type="controller" name="/wishitem/add" class="kr.or.kosta.sjrent.wishitem.controller.WishItemAddController" />
 	<!-- WishItem 삭제 -->
-	<bean type="controller" name="/wishitem/delete" class="kr.or.kosta.sjrent.wishitem.controller.DeleteWishItemController" />
-	
+	<bean type="controller" name="/wishitem/delete" class="kr.or.kosta.sjrent.wishitem.controller.WishItemDeleteController" />
+
+	<!-- 리뷰 목록 -->
+	<bean type="controller" name="/review/list" class="kr.or.kosta.sjrent.review.controller.ReviewListController" />
+	<!-- 리뷰 Count-->
+	<bean type="controller" name="/review/count" class="kr.or.kosta.sjrent.review.controller.ReviewCountController" />
+	<!-- 리뷰 추가 -->
+	<bean type="controller" name="/review/add" class="kr.or.kosta.sjrent.review.controller.ReviewAddController" />
+	<!-- 리뷰 삭제 -->
+	<bean type="controller" name="/review/delete" class="kr.or.kosta.sjrent.review.controller.ReviewDeleteController" />
+	<!-- 리뷰 수정 -->
+	<bean type="controller" name="/review/update" class="kr.or.kosta.sjrent.review.controller.ReviewUpdateController" />
+		
 </beans>

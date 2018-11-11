@@ -24,12 +24,10 @@ import kr.or.kosta.sjrent.wishitem.service.WishItemServiceImpl;
  * @author 남수현
  */
 
-public class AddWishItemController implements Controller {
+public class WishItemAddController implements Controller {
 	private XMLObjectFactory factory;
 	private WishItemService wishItemService;
 	private UserService userService;
-	private JSONObject obj;
-	private ModelAndView mav;
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
@@ -85,6 +83,7 @@ public class AddWishItemController implements Controller {
 	    	  }
 	    	  
 	      } catch (Exception e) {
+	    	  e.printStackTrace();
 	    	out.println("fail");
 	      }
 		return null;

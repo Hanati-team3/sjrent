@@ -61,6 +61,7 @@ public class LoginController implements Controller {
 					response.addCookie(cookie);
 					
 					request.setAttribute("loginId", id);
+					request.setAttribute("loginPw", pw);
 					
 					mav.addObject("user", user);
 					mav.setView("/mypage/myPageLoginOK.jsp");

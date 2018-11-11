@@ -6,6 +6,7 @@
 <head>
 <jsp:include page="../common/commoncss.jsp" />
 <jsp:include page="../common/commonjs.jsp" />
+
 <!-- datePicker -->
 <link rel="stylesheet" href="<%=application.getContextPath()%>/css/datepicker.min.css" type="text/css">
 <script src="<%=application.getContextPath()%>/js/datepicker.min.js"></script>
@@ -36,6 +37,7 @@ var date;
 var weekday = 0;
 var weekend = 0;
 $(document).ready(function(){
+	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
 	// 검색된 모델과 랭킹을 시작할 때는 표시 안하게
 	$('#ModelDisplayRow').hide();
 	
@@ -57,18 +59,6 @@ $(document).ready(function(){
              rent_end_date = formatDate(rent_end_date);
        }
    })
-   
-   function formatDate(date){
-    	var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-    	
-    	if (month.length < 2) month = '0' + month;
-    	if (day.length < 2) day = '0' + day;
-    	return [year, month, day].join('-');
-    }
-   
    
    $("#datepicker").keydown(function (event) {
        event.preventDefault();
@@ -131,6 +121,19 @@ $(document).ready(function(){
    
 });
 
+/** datepicker에서 선택된 날짜를 필요한 형식으로 변환하는 함수 */
+function formatDate(date){
+ 	var d = new Date(date),
+     month = '' + (d.getMonth() + 1),
+     day = '' + d.getDate(),
+     year = d.getFullYear();
+ 	
+ 	if (month.length < 2) month = '0' + month;
+ 	if (day.length < 2) day = '0' + day;
+ 	return [year, month, day].join('-');
+ }
+ 
+
 /** list의 모델들을 html로 추가하는 함수 */
 function setModelList(list) {
 	var startDay = new Date(rent_start_date).getDay();
@@ -169,7 +172,7 @@ function setModelList(list) {
 		"                                       <div class=\"tg-durationrating\">\r\n" + 
 		"                                          <span class=\"tg-tourduration tg-availabilty\"> weekday "+list[i].weekdayPrice+"&#8361<br/>weekend "+list[i].weekendPrice+"&#8361</span>" + 
 		"										   <span class=\"tg-stars\">"+
-		"											  <span style=\"width: "+list[i].evalScore*100+"%\"></span>" + 
+		"											  <span style=\"width: "+list[i].evalScore*10+"%\"></span>" + 
 		"										   </span>\r\n" + 
 		"                                          <em>(3 Review)</em>\r\n" + 
 		"                                       </div>\r\n" + 
@@ -184,35 +187,105 @@ function setModelList(list) {
 	}	//for 끝
 	
 	$('#ModelDisplayRow').show();
+	
 	/** 모델 클릭 시 모델 이름을 모달에 전달 */
 	$('#detail_show').on('show.bs.modal', function(e) {
-	    //get data-id attribute of the clicked element
-	    var modelName = $(e.relatedTarget).data('model-name');
-		console.log("modelName : " + modelName);
-		window.modal =  $(this);
+		var modelName = $(e.relatedTarget).data('model-name');
+		window.e = $(e.currentTarget);
 		$.ajax({	
 			url:"<%=application.getContextPath()%>/model/detail.rent",
-			dataType:"html",
+			dataType:"json",
 			type:'POST', 
 			data : {
 	             'model_name' : modelName,
 	             'weekday' : weekday,
-	             'weekend' : weekend
+	             'weekend' : weekend,
+	             'startDate' : rent_start_date,
+	             'endDate' : rent_end_date
 	        },
 			success:function(result){
-				$(e.currentTarget).html(result);
-			}
+				//$(e.currentTarget).html(result);
+				setDetailModal(result);
+			},
+	        error : function(result) {
+	        	console.log('error in openning detail show' + result);
+	        }
 		});
 	});
 }
+
+
+/**
+ * 모델 디테일 정보를 표시하는 모달 setDetailModal의 정보를 model객체에서 가져와 설정하는 함수.
+ * 위시리스트로 넘길 정보 :  model(name,picture,type,fueltype), startDate, endDate, amountMoney
+ * 예약화면으로 넘길 정보 :  model, startDate, endDate, amountMoney, location
+ */
+function setDetailModal(model) {
+	var amountMoney = model.weekdayPrice * weekday + 
+					  model.weekendPrice * weekend;
+	var imagePath = "../images/cars/"+model.type+"/"+model.picture;
+	$('#detail-img').attr('src',imagePath);
+	$('#detail-name').html(model.name);
+	$('#detail-star').css('width', model.evalScore * 10 + '%');
+	$('#detail-review-count').html('(' + model.reviewCount + ' Review)');
+	$('#detail-amount-money').html('&#8361 '+ amountMoney);
+	if('<%=request.getAttribute("loginId")%>' == 'null') {
+		console.log('id null');
+	}
+	else {
+		console.log('<%=request.getAttribute("loginId")%>');
+		$('#wish-list-anchor').on('click', function(e) {
+			e.stopPropagation();
+			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
+		})
+	}
+}
+/** 
+ * <위시리스트에 저장> 버튼이 눌렸을 때 Controller로 데이터를 보낸다.
+ *	Controller로부터 받은 데이터를 검사한다.
+ */
+function addToWishList(modelName, startDate, endDate, amountMoney, picture, type, fuelType) {
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/wishitem/add.rent",
+		dataType:"text",
+		type:'POST', 
+		data : {
+	  		modelName : modelName,
+	  		startDate : startDate,
+	  		endDate : endDate,
+	  		amountMoney : amountMoney,
+	  		picture : picture,
+	  		type : type,
+	  		fuelType : fuelType
+        },
+		success:function(result){
+			// result 값에 따라 위시리스트에 저장했다고 알려주기
+			if($.trim(result) == 'success') {
+				$('#wish_result_modal_body').html('위시리스트에 담았습니다. 위시리스트로 이동하겠습니까?');
+			}
+			else {
+				$('#wish_result_modal_body').html('위시리스트에 담지 못했습니다. 위시리스트로 이동하겠습니까?');
+			}
+			$("#wish_result_modal").modal('show');
+		}
+	});
+}
+
+/** 
+ * 위시리스트 추가 결과 모달을 숨기는 함수.
+ * 위시리스트 추가 결과 모달에서 'not now' 버튼을 누르면 실행
+ */
+function wishResultHide() {
+	$("#wish_result_modal").modal('hide');
+}
+
 </script>
 </head>
 <body>
-
    <!--************************************
          Mobile Menu Start
    *************************************-->
-   <jsp:include page="../include/nav.jsp" />
+   
    <!--************************************
          Mobile Menu End
    *************************************-->
@@ -223,48 +296,7 @@ function setModelList(list) {
       <!--************************************
                Header Start
          *************************************-->
-      <header id="tg-header"
-         class="tg-header tg-headervtwo tg-headerfixed tg-haslayout">
-         <div class="container-fluid">
-            <div class="row">
-               <strong class="tg-logo"><a
-                  href="<%=application.getContextPath()%>/index.jsp"><img
-                     src="<%=application.getContextPath()%>/images/logo2.png"
-                     alt="shoppingmall logo"></a></strong>
-               <nav class="tg-infonav">
-                  <ul>
-                     <!-- 로그인 화면 띄우자 -->
-                     <li><a id="tg-btnsignin" href="#tg-loginsingup">로그인</a></li>
-                     <!-- 로그인 되어 있는 경우 -->
-                  </ul>
-               </nav>
-               <div class="tg-navigationarea">
-                  <div class="tg-navigationholder">
-                     <nav id="tg-nav" class="tg-nav">
-                        <div id="tg-navigation"
-                           class="collapse navbar-collapse tg-navigation">
-                           <ul>
-                              <li><a href="<%=application.getContextPath()%>/rent/search.jsp">실시간</a></li>
-                              <li class="menu-item-has-children"><a
-                                 href="javascript:void(0);">커뮤니티</a>
-                                 <ul class="sub-menu">
-                                    <li><a href="<%=application.getContextPath()%>/community/community.jsp">Q&A</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                    <li><a href="#">공지사항</a></li>
-                                 </ul></li>
-                              <li><a href="#">예약확인</a></li>
-                           </ul>
-                        </div>
-                     </nav>
-                     <ul class="tg-socialicons">
-                        <li><a href="javascript:void(0);"><i
-                              class="icon-facebook-logo-outline"></i></a></li>
-                     </ul>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </header>
+      <jsp:include page="/rent/search_include/search_header.jsp"/>
       <!--************************************
                Header End
          *************************************-->
@@ -341,11 +373,25 @@ function setModelList(list) {
          <!--************************************
               Detail Model Start
          *************************************-->
+
          <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             
          </div>
          <!--************************************
               Detail Model End
+
+         <jsp:include page="/rent/search_detail.jsp" />
+         <!--************************************
+              Detail Modal End
+         *************************************-->
+         
+         <!--************************************
+              Wish Result Modal Start
+         *************************************-->
+         <jsp:include page="/rent/search_include/wish_result_modal.jsp" />
+         <!--************************************
+              Wish Result Modal End
+
          *************************************-->
          <div class="row" id="ModelDisplayRow">
             <div id="tg-twocolumns" class="tg-twocolumns">
@@ -359,7 +405,8 @@ function setModelList(list) {
                         <!--************************************
                                Model List Start
                          *************************************-->
-                        <div class="row" id="carListRow"> </div>
+                        <div class="row" id="carListRow">
+                        </div>
                         <!--************************************
                                Model List End
                          *************************************-->
@@ -384,6 +431,7 @@ function setModelList(list) {
    <!--************************************
                Login method
    *************************************--> 
+
    
    <div id="tg-loginsingup" class="tg-loginsingup col-6 " data-vide-bg="poster: ../images/singup-img.jpg" data-vide-options="position: 0% 50%">
       <div class="tg-contentarea tg-themescrollbar">
@@ -423,5 +471,9 @@ function setModelList(list) {
          </div>
       </div>
    </div>
+
+   <jsp:include page="/rent/search_include/search_login.jsp"/>
+
+
 </body>
 </html>
