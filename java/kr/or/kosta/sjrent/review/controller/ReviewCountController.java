@@ -23,7 +23,7 @@ import kr.or.kosta.sjrent.review.service.ReviewService;
 import kr.or.kosta.sjrent.review.service.ReviewServiceImpl;
 
 /**
- * 유저 혹은 모델을 받아서 조건에 따라 리스트 출력 
+ * 유저 혹은 모델을 받아서 조건에 따라 리스트 count
  * @author 남수현
  */
 public class ReviewCountController implements Controller {
@@ -41,49 +41,26 @@ public class ReviewCountController implements Controller {
       jsonArray = new JSONArray();
       String modelName = request.getParameter("modelName");
       String userId = request.getParameter("userId");
-      String pageS = request.getParameter("page");
-      String listSizeS = request.getParameter("listSzie");
-      List<Review> reviewList = new ArrayList<Review>();
-      int page = 1;
-      int listSize = 10000;
-      if(pageS!=null&&!pageS.equals("")) {
-    	page = Integer.parseInt(pageS);  
-      }
-      if(listSizeS!=null&&!listSizeS.equals("")) {
-    	listSize = Integer.parseInt(listSizeS);  
-      }
+      int resultCount = 0;
       if(modelName != null) {
     	  try {
-			reviewList = reviewService.listByModelByPage(page, listSize, modelName);
+			resultCount = reviewService.countByModel(modelName);
 		} catch (Exception e) {
 			
 		}
       }else if(userId !=null) {
     	  try {
-			reviewList = reviewService.listByUserByPage(page, listSize, userId);
+			resultCount = reviewService.countByUser(userId);
 		} catch (Exception e) {
 
 		}
       }
-      for(Review review : reviewList) {
-    	  JSONObject reviewObject = new JSONObject();
-    	  reviewObject.put("number", review.getNumber());
-    	  reviewObject.put("modelName", review.getModelName());
-    	  reviewObject.put("userNumber", review.getUserNumber());
-    	  reviewObject.put("userId", review.getUserId());
-    	  reviewObject.put("title", review.getTitle());
-    	  reviewObject.put("content", review.getContent());
-    	  reviewObject.put("picutre", review.getPicture());
-    	  reviewObject.put("date", review.getPicture());
-    	  reviewObject.put("evalScore", review.getEvalScore());
-    	  jsonArray.add(reviewObject);
-      }
-      response.setCharacterEncoding("utf-8");
-      try {
-		response.getWriter().print(jsonArray);
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+      PrintWriter out = null;
+	  try {
+		out = response.getWriter();
+	  } catch (IOException e2) {
+	  }
+	  out.println(resultCount);
       return null;
    }
 }

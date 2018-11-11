@@ -28,8 +28,6 @@ public class WishItemAddController implements Controller {
 	private XMLObjectFactory factory;
 	private WishItemService wishItemService;
 	private UserService userService;
-	private JSONObject obj;
-	private ModelAndView mav;
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)

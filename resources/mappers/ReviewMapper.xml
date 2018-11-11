@@ -148,7 +148,7 @@
 	        <if test="picture != null">review_picture = #{picture},</if>
 	        <if test="evalScore != null">review_evalscore = #{evalScore},</if>
 	    </set>
-	    WHERE review_seq = #{review_seq}
+	    WHERE review_seq = #{number}
 	</update>
 	
 	<!-- 특정 모델 Review Count -->
