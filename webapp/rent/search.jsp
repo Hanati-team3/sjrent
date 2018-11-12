@@ -36,6 +36,10 @@ var rent_end_date;
 var date;
 var weekday = 0;
 var weekend = 0;
+
+/**
+ * search.jsp가 로드될 때 실행되는 함수
+ */
 $(document).ready(function(){
 	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
 	// 검색된 모델과 랭킹을 시작할 때는 표시 안하게
@@ -108,15 +112,13 @@ $(document).ready(function(){
       });
       
       /** 랭킹 목록을 불러오는 poularController로 요청 전달. html로 받아서 표시*/
-    	$.ajax({	
-    		url:"<%=application.getContextPath()%>/model/popular.rent",
-    		dataType:"html",
-    		type:'GET', 
-    		success:function(result){
-    			$("#rank-list").html(result);
-    		}
-    	});
-      
+      $.ajax({
+    	  url:"<%=application.getContextPath()%>/model/popular.rent",
+    	  type:'GET', 
+    	  success:function(result){
+    		  $("#rank-list").html(result);
+  		  }
+  	  });
    });
    
 });
@@ -137,9 +139,10 @@ function formatDate(date){
 /** list의 모델들을 html로 추가하는 함수 */
 function setModelList(list) {
 	var startDay = new Date(rent_start_date).getDay();
-	var end = new Date(rent_end_date);
-	var output = "";
+	var end = new Date(rent_end_date).getDay();
+	$("#carListRow").html("");
 	
+	// 주말, 주중 계산
 	for(var i = 0; i < date; i++) {
 		if(startDay == 0 || startDay == 6) {
 			weekend++;
@@ -152,43 +155,24 @@ function setModelList(list) {
 	}
 	
 	for ( var i in list) {
-		output += "" + 
-		"                           <div class=\"col-xs-6 col-sm-6 col-md-4 col-lg-4\" data-toggle=\"modal\" data-target=\"#detail_show\" id='eachModelCol' data-model-name='"+list[i].name+"'>\r\n" + 
-		"                              <div class=\"tg-populartour\"   >\r\n" + 
-		"                                 <figure>\r\n" + 
-		"                                    <a><img\r\n" + 
-		"                                       src=\"../images/cars/"+list[i].type+"/"+list[i].picture+"\" alt=\"image destinations\"></a>\r\n" + 
-		"                                 </figure>\r\n" + 
-		"                                 <div class=\"tg-populartourcontent\">\r\n" + 
-		"                                    <div class=\"tg-populartourtitle\">\r\n" + 
-		"                                       <h3>\r\n" + 
-		"                                          <a class=\"car_detail\">"+ list[i].name +"</a> \r\n" + 
-		"                                       </h3>\r\n" + 
-		"                                    </div>\r\n" + 
-		"                                    <div class=\"tg-description\" style=\"height: 150px;\">\r\n" + 
-		"                                       <p>"+ list[i].options +"</p>\r\n" + 
-		"                                    </div>\r\n" + 
-		"                                    <div class=\"tg-populartourfoot\">\r\n" + 
-		"                                       <div class=\"tg-durationrating\">\r\n" + 
-		"                                          <span class=\"tg-tourduration tg-availabilty\"> weekday "+list[i].weekdayPrice+"&#8361<br/>weekend "+list[i].weekendPrice+"&#8361</span>" + 
-		"										   <span class=\"tg-stars\">"+
-		"											  <span style=\"width: "+list[i].evalScore*10+"%\"></span>" + 
-		"										   </span>\r\n" + 
-		"                                          <em>(3 Review)</em>\r\n" + 
-		"                                       </div>\r\n" + 
-		"                                       <div class=\"tg-pricearea\">\r\n" + 
-		"                                          <h4>"+ (list[i].weekdayPrice * weekday + list[i].weekendPrice * weekend)  +"</h4>\r\n" + 
-		"                                       </div>\r\n" + 
-		"                                    </div>\r\n" + 
-		"                                 </div>\r\n" + 
-		"                              </div>\r\n" + 
-		"                           </div>\r\n";
-		$("#carListRow").html(output);
+		var params = {
+			imgPath : '/sjrent/images/cars/'+list[i].type+'/'+list[i].picture,
+			modelName : list[i].name,
+			options : list[i].options,
+			weekday : weekday,
+			weekend : weekend,
+			weekdayPrice : list[i].weekdayPrice,
+			weekendPrice : list[i].weekendPrice,
+			starPercent : list[i].evalScore * 10,
+			reviewCount : list[i].reviewCount
+		};
+		var model = $('<div></div>').load("<%=application.getContextPath()%>/rent/search_include/search_each.jsp", params);
+		$("#carListRow").append(model);
 	}	//for 끝
 	
 	$('#ModelDisplayRow').show();
 	
-	/** 모델 클릭 시 모델 이름을 모달에 전달 */
+	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
 		var modelName = $(e.relatedTarget).data('model-name');
 		window.e = $(e.currentTarget);
@@ -197,7 +181,7 @@ function setModelList(list) {
 			dataType:"json",
 			type:'POST', 
 			data : {
-	             'model_name' : modelName,
+	             'modelName' : modelName,
 	             'weekday' : weekday,
 	             'weekend' : weekend,
 	             'startDate' : rent_start_date,
@@ -211,6 +195,17 @@ function setModelList(list) {
 	        	console.log('error in openning detail show' + result);
 	        }
 		});
+	  	/** 리뷰 탭 클릭시 getReviewList 시작 */
+	  	/** 
+	  	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+	  		//e.target // newly activated tab
+	  		//e.relatedTarget // previous active tab
+	  		console.log(e.target.getAttribute('aria-controls'));
+	  		if(e.target.getAttribute('aria-controls') == 'review') {
+	  			getReviewList(modelName, 1, 10)
+	  		}
+	  	});
+	  	*/
 	});
 }
 
@@ -239,9 +234,18 @@ function setDetailModal(model) {
 			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
 		})
 	}
+	$('#go-reserve-anchor').on('click', function(e) {
+		e.stopPropagation();
+		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, '방문수령', model.type, model.picture);
+	})
+	
+	// 리뷰 목록 가져와서 설정
+	getReviewList(model.name, 1, 10);
+	// 리뷰탭 리뷰 개수, 별 css 설정
+	$('#review-list-count').html('(' + model.reviewCount + ' Review)');
 }
 /** 
- * <위시리스트에 저장> 버튼이 눌렸을 때 Controller로 데이터를 보낸다.
+ * <위시리스트에 저장> 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
  *	Controller로부터 받은 데이터를 검사한다.
  */
 function addToWishList(modelName, startDate, endDate, amountMoney, picture, type, fuelType) {
@@ -279,6 +283,84 @@ function wishResultHide() {
 	$("#wish_result_modal").modal('hide');
 }
 
+/**
+ * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
+ */
+ function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
+	// 로그인 중
+	if( '<%=request.getAttribute("loginId")%>' != 'null'){
+		// post로 데이터 전달
+	    var form = document.createElement("form");
+	    form.setAttribute("method", "post");
+	    form.setAttribute("action", '<%=application.getContextPath()%>/rent/page.rent');
+	 
+	    var params = {
+		  		startDate : startDate,
+		  		endDate : endDate,
+		  		amountMoney : amountMoney,
+		  		pickupPlace : pickupPlace,
+		  		type : type,
+		  		picture : picture
+	    }
+	    
+	    //히든으로 값을 주입시킨다.
+	    for(var key in params) {
+	        var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", key);
+	        hiddenField.setAttribute("value", params[key]);
+	        form.appendChild(hiddenField);
+	    }
+	    document.body.appendChild(form);
+	    form.submit();
+	}
+	else {
+		//alert('로그인필요');
+		$("#login_modal").modal('show');
+	}
+}
+	
+/** 
+ * 리뷰 리스트를 컨트롤러에 요청하여 가져오는 함수.
+ * 
+ */
+function getReviewList(modelName, page, listSize) {
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/review/list.rent",
+		dataType:"json",
+		type:'POST', 
+		data : {
+	  		modelName : modelName,
+	  		page : page,
+	  		listSzie : listSize
+        },
+		success:function(result){
+			console.log("ok review list \n" + result);
+			setReviewList(result);
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
+}
+
+/**
+ * 리뷰 리스트를 화면에 출력하는 함수 
+ */
+function setReviewList(list) {
+	$("#each_review_ul").html("");
+	for ( var i in list) {
+		var params = {
+			imgPath : '/sjrent/images/review/image1.jpg',
+			userId : list[i].userId,
+			evalScore : list[i].evalScore,
+			date : list[i].date,
+			content : list[i].content
+		};
+		var review = $('<li></li>').load("<%=application.getContextPath()%>/rent/search_include/review_each.jsp", params);
+		$("#each_review_ul").append(review);
+	}
+}
 </script>
 </head>
 <body>
@@ -303,6 +385,7 @@ function wishResultHide() {
       <!--************************************
                Inner Banner Start
          *************************************-->
+         
       <div class="tg-homebannerslider"
          class="tg-homebannerslider tg-haslayout">
          <div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
@@ -371,18 +454,11 @@ function wishResultHide() {
       <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
       <div class="container" style="width: 90%">
          <!--************************************
-              Detail Model Start
+              Detail Model Modal Start
          *************************************-->
-
-         <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            
-         </div>
+          <jsp:include page="/rent/search_detail.jsp" />
          <!--************************************
-              Detail Model End
-
-         <jsp:include page="/rent/search_detail.jsp" />
-         <!--************************************
-              Detail Modal End
+              Detail Model Modal End
          *************************************-->
          
          <!--************************************
@@ -391,8 +467,16 @@ function wishResultHide() {
          <jsp:include page="/rent/search_include/wish_result_modal.jsp" />
          <!--************************************
               Wish Result Modal End
-
          *************************************-->
+         
+         <!--************************************
+              Search Login Modal Start
+         *************************************-->
+         <jsp:include page="/rent/search_include/search_login_modal.jsp" />
+         <!--************************************
+              Search Login Modal End
+         *************************************-->
+         
          <div class="row" id="ModelDisplayRow">
             <div id="tg-twocolumns" class="tg-twocolumns">
                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-left">
@@ -431,46 +515,6 @@ function wishResultHide() {
    <!--************************************
                Login method
    *************************************--> 
-
-   
-   <div id="tg-loginsingup" class="tg-loginsingup col-6 " data-vide-bg="poster: ../images/singup-img.jpg" data-vide-options="position: 0% 50%">
-      <div class="tg-contentarea tg-themescrollbar">
-         <div class="tg-scrollbar">
-            <button type="button" class="close">x</button>
-            <div class="tg-logincontent">
-               <div class="tg-themetabs">
-                  <ul style= "text-align: center;">
-                     <li style="list-style: none;"><h2>로그인</h2></li>
-                  </ul>
-                  <div class="tg-tabcontent tab-content">
-                     <div role="tabpanel" class="tab-pane active fade in" id="home">
-                        <form class="tg-formtheme tg-formlogin">
-                           <fieldset>
-                              <div class="form-group">
-                                 <label>아이디 <sup>*</sup></label>
-                                 <input type="text" name="firstname" class="form-control" placeholder="" maxlength="10">
-                              </div>
-                              <div class="form-group">
-                                 <label>비밀번호 <sup>*</sup></label>
-                                 <input type="password" name="password" class="form-control" placeholder="" maxlength="10">
-                              </div>
-                              <div class="form-group">
-                                 <div class="tg-checkbox">
-                                    <input type="checkbox" name="remember" id="rememberpass">
-                                    <label for="rememberpass">아이디 저장</label>
-                                 </div>
-                              </div>
-                              <button class="tg-btn tg-btn-lg"><span>로그인</span></button>
-                           </fieldset>
-                        </form>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
 
    <jsp:include page="/rent/search_include/search_login.jsp"/>
 

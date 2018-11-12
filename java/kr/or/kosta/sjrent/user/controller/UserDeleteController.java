@@ -16,7 +16,11 @@ import kr.or.kosta.sjrent.user.service.UserService;
 import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
 /**
- * user 탈퇴 컨트롤러
+ * 
+ * 회원정보 삭제 역할을 수행하는 컨트롤러
+ * 
+ * @author 윤형철
+ *
  */
 
 public class UserDeleteController implements Controller {

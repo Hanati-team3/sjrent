@@ -63,21 +63,38 @@
 	<bean type="controller" name="/model/detail"
 		class="kr.or.kosta.sjrent.model.controller.ModelDetailController" />
 	<!-- 인기모델 -->
+
 	<bean type="controller" name="/model/popular"
 		class="kr.or.kosta.sjrent.model.controller.ModelPopularController" />
+
+	<bean type="controller" name="/model/popular" class="kr.or.kosta.sjrent.model.controller.ModelPopularController" />
+	<!-- 모델추천 -->
+	<bean type="controller" name="/model/recommend" class="kr.or.kosta.sjrent.model.controller.ModelRecommendController" />
+	<!-- 모델명으로 안 되는 날짜 받기-->
+	<bean type="controller" name="/model/detailperiod" class="kr.or.kosta.sjrent.model.controller.ModelPeriodController" />
+
+	
 
 	<!-- 예약 -->
 	<bean type="controller" name="/rent/rent"
 		class="kr.or.kosta.sjrent.rent.controller.RentController" />
 	<!-- 예약목록 -->
+
 	<bean type="controller" name="/rent/list"
 		class="kr.or.kosta.sjrent.rent.controller.RentListController" />
 	<!-- 예약상세 -->
 	<bean type="controller" name="/rent/detail"
 		class="kr.or.kosta.sjrent.rent.controller.RentDetailController" />
 	<!-- 예약취소 -->
-	<bean type="controller" name="/rent/cancel"
-		class="kr.or.kosta.sjrent.rent.controller.RentCancelController" />
+	<bean type="controller" name="/rent/cancel"/>
+
+	<bean type="controller" name="/rent/list" class="kr.or.kosta.sjrent.rent.controller.RentListController" />
+	<!-- 예약상세-->
+	<bean type="controller" name="/rent/detail" class="kr.or.kosta.sjrent.rent.controller.RentDetailController" />
+	<!-- 예약취소-->
+	<bean type="controller" name="/rent/cancel" class="kr.or.kosta.sjrent.rent.controller.RentCancelController" />
+	<!-- 예약페이지로 데이터 전달-->
+	<bean type="controller" name="/rent/page" class="kr.or.kosta.sjrent.rent.controller.RentPageDataController" />
 
 	<!-- 보험 -->
 	<bean type="controller" name="/insurance/list"

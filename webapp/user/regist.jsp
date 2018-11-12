@@ -9,21 +9,30 @@
 
 
 <style type="text/css">
-.buttonEmail{
+
+.buttonId{
      position: relative;
-     top: 470px;
+     top: 75px;
      left: 450px; 
      /* transform: translate(-50%, -50%);
      -ms-transform: translate(-50%, -50%);  */
 }
 
-.buttonId{
+.buttonEmail{
      position: relative;
-     top: 75px;
-     left: 370px; 
+     top: 513px;
+     left: 360px; 
      /* transform: translate(-50%, -50%);
      -ms-transform: translate(-50%, -50%);  */
 }
+
+
+
+/* .idCheckResult{
+	 position: relative;
+     top: 45px;
+     left: 550px; 
+} */ 
 </style>
 
 
@@ -36,7 +45,88 @@
 	function idCheck() {
 
 		var id = $('#id').val();
+<<<<<<< HEAD
 		//var id = document.getElementById("id").value;
+=======
+		//console.log("넣은아이디" + id);
+		alert(id); 
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
+
+		$.ajax({
+			url : '/sjrent/user/checkId.rent',
+			type : 'post',
+			data : {
+				id : id
+			},
+			success : function(data) {
+				if($.trim(data) != null){
+					if ($.trim(data) == "success") {
+						$('#checkMsg').html(
+								"<span style='COLOR: blue'>사용가능한 아이디입니다.</span>");
+					} else if($.trim(data) == "fail"){
+						$('#checkMsg').html(
+								"<p style='COLOR: red'>이미 사용중인 아이디입니다.</p>");
+				}else{
+					
+					$('#checkMsg').html(
+					"<p style='COLOR: green'>입력값없음.....</p>");
+				}
+				}
+				
+			},
+			error : function() {
+				alert("관리자에게 문의해주세요.");
+			}
+		});
+		
+		
+
+	}
+<<<<<<< HEAD
+=======
+	
+	
+	/* function checkEmail() {
+
+		var email1 = $('#email1').val();
+		console.log("넣은email1" + email1);
+
+		var email2 = $('#email2').val();
+		console.log("넣은email2" + email2);
+
+		var email = email1 + email2;
+		
+		console.log("넣은이메일" + email);
+
+		$.ajax({
+			url : '/sjrent/user/checkEmail.rent',
+			type : 'post',
+			data : {
+				email : email
+			},
+			success : function(data) {
+				if ($.trim(data) == "success") {
+					$('#checkMsg2').html(
+							"<p style='COLOR: blue'>사용가능한 이메일입니다.</p>");
+				} else{
+					$('#checkMsg2').html(
+					"<p style='COLOR: red'>이미 사용중인 이메일입니다.</p>");
+				}
+			},
+			error : function() {
+				alert("에러입니다");
+			}
+		});
+
+	} */
+	
+	//재민 시작-----------------------------------------------------------------
+	
+	function idCheck() {
+		//alert('e');
+		var id = $('#id').val();
+		//console.log("넣은아이디" + id);
+		//alert(id);
 
 		$.ajax({
 			url : '/sjrent/user/checkId.rent',
@@ -61,11 +151,12 @@
 				
 			},
 			error : function() {
-				alert("관리자에게 문의해주세요.");
+				alert("에러입니다");
 			}
 		});
-
+		
 	}
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
 
 	function emailSelect() {
 		//alert('dddd');
@@ -104,7 +195,11 @@
 		
 	}
 	
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
 </script>
 
 
@@ -146,10 +241,15 @@
                   <div class="container"> 
                <div class="tg-tabcontent tab-content" style="padding: 0px 350px 0;">
                   <div role="tabpanel" class="tab-pane active fade in" id="home">
-                     <div style="text-align: center; margin: 70px 0px"><h2>회원가입</h2></div>
+                     <div style="text-align: center; margin: 70px 0px 0px"><h2>회원가입</h2></div>
                      <div>
-                     <button type="button" class="btn buttonEmail " style="height: 40px; margin-left: 10px; " onclick="emailCheck()" >중복확인 </button>
+                     
                      <button type="button" class="btn buttonId " style="height: 40px; " onclick="idCheck()" >중복확인 </button>
+                     <button type="button" class="btn buttonEmail " style="height: 40px; margin-left: 10px; " onclick="emailCheck()" >중복확인 </button>
+                     
+                    <!--  <div id="checkMsg" class="idCheckResult"></div> -->
+ 
+                    
                      </div>
                         <form class="tg-formtheme tg-formlogin" action="/sjrent/user/signup.rent" method="post" >
                            <fieldset>
@@ -167,17 +267,33 @@
                               </div> -->
                               
                               
+                              <!-- <span style="border: none; " id="checkMsg" class="idCheckResult"></span> -->
                               
+<<<<<<< HEAD
                               <div class="form-group">
                                  <h4>아이디<sup>*</sup></h4>
                                  <input type="text" name="id" id="id" class="form-control" maxlength="10" style="text-transform: none;" required placeholder="최대 10자 입력 가능">
                                  <div style="float:left; border: none; display: inline-block; margin-top: 10px; margin-bottom: 0" id="checkMsg"></div>
                               </div>
+=======
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
                               
                               
                               <div class="form-group">
+	                             <h4>아이디<sup>*</sup></h4>
+                                 <input type="text" name="id" class="form-control" id="id" maxlength="10" style="text-transform: none; " required placeholder="최대 10자 입력 가능">
+								 <div style="float:left; border: none; margin-top: 10px;" id="checkMsg"></div>                    
+                              </div>
+                             
+                              <div class="form-group">
                                  <h4>비밀번호<sup>*</sup></h4>
                                  <input type="password" name="password" class="form-control" maxlength="10" style="text-transform: none;" required placeholder="최대 10자 입력 가능">
+                              </div>
+                              
+                              
+                               <div class="form-group">
+                                 <h4>비밀번호확인<sup>*</sup></h4>
+                                 <input type="password" name="password2" class="form-control" maxlength="10" style="text-transform: none;" required placeholder="최대 10자 입력 가능">
                               </div>
                               
                               <div class="form-group">
@@ -199,6 +315,8 @@
                                  <h4 style="display: inline-block;" >이메일<sup>*</sup></h4>
                                  
                                 </div>
+                                
+                               
                                <div style="vertical-align: middle;">
                                   <input type="text" name="email1" id="email1" maxlength="15" size="12" style="text-transform: none;" required> @ 
                                   <input type="text" name="email2" id="email2" maxlength="15" size="12" style="text-transform: none;" required>
@@ -213,6 +331,7 @@
                                     <option value="yahoo.co.kr" id="yahoo">yahoo.co.kr</option>
                                     <option value="">직접입력</option>
                                  </select>
+                                  
                                  <!-- <div style="display: inline-block;">
                                  <button type="button" class="btn btn-outline-success" style="height: 40px; margin-left: 10px; " onclick="emailCheck()" >중복확인 </button>
                                  </div> -->
