@@ -199,7 +199,7 @@ function setModelList(list) {
 			dataType:"json",
 			type:'POST', 
 			data : {
-	             'model_name' : modelName,
+	             'modelName' : modelName,
 	             'weekday' : weekday,
 	             'weekend' : weekend,
 	             'startDate' : rent_start_date,
@@ -213,7 +213,11 @@ function setModelList(list) {
 	        	console.log('error in openning detail show' + result);
 	        }
 		});
+		
+		getReviewList(modelName, 1, 10);
+		
 	  	/** 리뷰 탭 클릭시 getReviewList 시작 */
+	  	/** 
 	  	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
 	  		//e.target // newly activated tab
 	  		//e.relatedTarget // previous active tab
@@ -222,6 +226,7 @@ function setModelList(list) {
 	  			getReviewList(modelName, 1, 10)
 	  		}
 	  	});
+	  	*/
 	});
 }
 
@@ -465,16 +470,9 @@ function setReviewList(list) {
          <!--************************************
               Detail Model Start
          *************************************-->
-
-         <div id = "detail_show" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            
-         </div>
+          <jsp:include page="/rent/search_detail.jsp" />
          <!--************************************
               Detail Model End
-
-         <jsp:include page="/rent/search_detail.jsp" />
-         <!--************************************
-              Detail Modal End
          *************************************-->
          
          <!--************************************
