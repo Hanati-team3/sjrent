@@ -41,7 +41,7 @@ public class LoginCheckFilter implements Filter {
 				if(cookie.getName().equals("loginId")) {
 					isLogin = true;
 					id = cookie.getValue();
-					logger.debug("filter 거친 id : " + id);
+					//logger.debug("filter 거친 id : " + id);
 					break;
 				}
 			}
@@ -49,8 +49,9 @@ public class LoginCheckFilter implements Filter {
 		
 		// 회원 및 비회원 로그인 페이지 처리 
 		if(isLogin) {
-			chain.doFilter(request, response);
 			request.setAttribute("loginId", id);
+			chain.doFilter(request, response);
+			
 		}else {
 			chain.doFilter(request, response);
 		}

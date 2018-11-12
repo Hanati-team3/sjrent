@@ -1,4 +1,4 @@
-package kr.or.kosta.sjrent.user.controller;
+package kr.or.kosta.sjrent.mypage.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,11 +20,11 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 /**
  * 로그인 역할을 수행하는 컨트롤러
  * 
- * @author 유예겸
+ * @author 최재민
  *
  */
 
-public class UserLoginController2 implements Controller {
+public class LoginController implements Controller {
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -33,43 +33,59 @@ public class UserLoginController2 implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String cellphone = request.getParameter("cellphone");
+		String id = request.getParameter("id");
+		String pw = request.getParameter("pw");
 		
-		System.out.println("넘어온 name : " + name);
-		System.out.println("넘어온 email : " + email);
-		System.out.println("넘어온 cellphone : " + cellphone);
+		//System.out.println("[Debug] Controller에서 받은 아이디 : "+id);
+
 		
-		// 비회원 로그인 실패시 응답으로 fail 보냄
-		if (email == null) {
-			// return type은 json으로
-			obj.put("result", "fail");
+		User user = null;
+		Cookie cookie = null; 
+
+		if (id != null) { //로그인 
 			try {
-				response.getWriter().print(obj);
-				return null;
-			} catch (IOException e) {
+				// 회원가입여부 확인 
+				user = userService.certify(id, pw);
+				//System.out.println("[Debug] 서버에서 넘어온 user : " + user);
+				
+				if (user != null) {// 회원인 경우 
+					cookie = new Cookie("loginId", id);
+					cookie.setMaxAge(60*60*24*30);
+					cookie.setPath("/");
+					response.addCookie(cookie);
+					
+					request.setAttribute("loginId", id);
+					request.setAttribute("loginPw", pw);
+					
+					mav.addObject("user", user);
+					mav.setView("/mypage/myPageLoginOK.jsp");
+					//System.out.println(mav);
+					
+					
+				}else {//회원이 아닌 경우 
+					response.sendRedirect("/mypage/myPage.jsp");
+					return null;
+				}
+				
+			} catch (Exception e) {
 				e.printStackTrace();
-			}
-		}
-		// 비회원 로그인 성공시 응답으로 success 보내고 쿠키에 추가
-		else {
-			obj.put("result", "success");
-		    Cookie cookie = new Cookie("loginEmail", email);
-		    cookie.setPath("/");
-		    response.addCookie(cookie);
-		    request.getServletContext().setAttribute("loginEmail", email);
-		    
-			mav.setView("/index.jsp");
+				
+				}	
 			
-		}
+			
+			}
+			
+	
 
 		return mav;
+
+	}
+		
 	}
 
-}
