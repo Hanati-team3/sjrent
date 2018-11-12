@@ -12,26 +12,6 @@
     margin: 0;
 }
 </style>
-<script type="text/javascript">
-   $(document).ready(function(){
-     <%--  $("#rentCar").submit(function(e){
-         e.preventDefault();
-         $.ajax({
-            type: "get",
-            url : "<%=application.getContextPath()%>/rent/rent.rent",
-            data:{
-               'datas':[
-                  {'insuranceNumber':'aaa', 'startDate':"bb","endDate":"zz","pickupPlace":"수령장소", "paidAmount":"차*날짜 가격", "paymentOption":"ee"}
-               ]
-            },
-            dataType: "json",
-            success:function(data){
-               alert('성공');
-            }
-         });
-      }); --%>
-   });
-</script>
 </head>
 <body>
 
@@ -76,20 +56,20 @@
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>이름</label>
-                                                <input type="text" value="호진" name="user_name" class="form-control" style="text-transform:  none;" required readonly>
+                                                <input type="text" value="${userName}" name="user_name" class="form-control" style="text-transform:  none;" required readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>핸드폰</label>
-                                                <input type="Number" name="user_cellphone" class="form-control"  required readonly>
+                                                <input type="Number" value="${userCellphone}" name="user_cellphone" class="form-control"  required readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0">
                                              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                                 <div class="form-group">
                                                    <label>이메일 </label>
-                                                   <input type="email" name="user_email" class="form-control" style="text-transform:  none;" required readonly>
+                                                   <input type="email" value="${userEmail}"  name="user_email" class="form-control" style="text-transform:  none;" required readonly>
                                                 </div>
                                              </div>
                                              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -97,43 +77,46 @@
                                                 </div>
                                              </div>
                                           </div>
+                                          <c:forEach var="item" items="${resultMap}" varStatus="status">
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>시작날짜</label>
-                                                <input type="text" name="startDate" class="form-control" value="2018-11-16" readonly>
+                                                <input type="text" name="startDate" class="form-control" value="${item.startDate}" readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>종료날짜 </label>
-                                                <input type="text" name="endDate" class="form-control" value="2018-11-19" readonly>
+                                                <input type="text" name="endDate" class="form-control" value="${item.endDate}" readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>차량금액 </label>
-                                                <input type="number" name="paidAmount" class="form-control" value="300000" readonly="readonly">
+                                                <input type="number" name="paidAmount" class="form-control" value="${item.amountMoney}" readonly="readonly">
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>수령장소 </label>
-                                                <input type="text" name="pickupPlace" class="form-control" readonly="readonly" value="서울지점">
+                                                <input type="text" name="pickupPlace" class="form-control" value="${item.pickupPlace}" readonly="readonly" value="서울지점">
                                              </div>
                                           </div>
+                                          </c:forEach>
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                              <div class="form-group">
                                                 <label>보험<sup>*</sup></label>
                                                 <span>
                                                    <select name="insuranceNumber" class="ins_num" required>
                                                       <option value="">보험종류 선택</option>
-                                                      <option value="0">완전자차--</option>
-                                                      <option value="1">일반자차--</option>
+                                                      <option value="1">일반면책</option>
+                                                      <option value="2">완전면책</option>
+                                                      <option value="3">슈퍼먼책</option>
+                                                      <option value="4">미가입</option>
                                                    </select>
                                                 </span>
                                              </div>
                                           </div>
-                                          
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                              <div class="form-group">
                                                 <label>결제정보 <sup>*</sup></label>

@@ -14,7 +14,7 @@
                            <fieldset>
                               <div class="form-group">
                                  <label>아이디 <sup>*</sup></label>
-                                 <input type="text" name="firstname" class="form-control" placeholder="" maxlength="10">
+                                 <input type="text" name="firstname" class="form-control" placeholder="" maxlength="10" style="text-transform:  none;">
                               </div>
                               <div class="form-group">
                                  <label>비밀번호 <sup>*</sup></label>

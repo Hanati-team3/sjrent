@@ -32,10 +32,6 @@
                            </ul>
                         </div>
                      </nav>
-                     <ul class="tg-socialicons">
-                        <li><a href="javascript:void(0);"><i
-                              class="icon-facebook-logo-outline"></i></a></li>
-                     </ul>
                   </div>
                </div>
             </div>
