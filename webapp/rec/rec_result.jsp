@@ -6,39 +6,6 @@
 <head>
 <jsp:include page="../common/commoncss.jsp" />
 <jsp:include page="../common/commonjs.jsp" />
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>SJ 렌트카</title>
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/bootstrap.min.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/normalize.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/font-awesome.min.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/icomoon.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/owl.carousel.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/bootstrap-select.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/scrollbar.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/jquery.mmenu.all.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/prettyPhoto.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/transitions.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/main.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/color.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/responsive.css">
-<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
 <style type="text/css">
 
@@ -156,6 +123,45 @@ background-color: #ff8080;
 			//alert(resultCar.src);
 			//console.log('어떤 값이 들어가지? ' + imagePath);
 			//var resultImg = document.getElementsByClassName('resultImg'); 
+   			
+			/* Modal 작동 */
+			$('#ModelDisplayRow').show();
+   			
+   			/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
+   			$('#detail_show').on('show.bs.modal', function(e) {
+   				var modelName = $(e.relatedTarget).data('model-name');
+   				window.e = $(e.currentTarget);
+   				$.ajax({	
+   					url:"<%=application.getContextPath()%>/model/detail.rent",
+   					dataType:"json",
+   					type:'POST', 
+   					data : {
+   			             'modelName' : modelName,
+   			             'weekday' : weekday,
+   			             'weekend' : weekend,
+   			             'startDate' : rent_start_date,
+   			             'endDate' : rent_end_date
+   			        },
+   					success:function(result){
+   						//$(e.currentTarget).html(result);
+   						setDetailModal(result);
+   					},
+   			        error : function(result) {
+   			        	console.log('error in openning detail show' + result);
+   			        }
+   				});
+   			  	/** 리뷰 탭 클릭시 getReviewList 시작 */
+   			  	/** 
+   			  	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+   			  		//e.target // newly activated tab
+   			  		//e.relatedTarget // previous active tab
+   			  		console.log(e.target.getAttribute('aria-controls'));
+   			  		if(e.target.getAttribute('aria-controls') == 'review') {
+   			  			getReviewList(modelName, 1, 10)
+   			  		}
+   			  	});
+   			  	*/
+   			});
 		}) 
 		
 		
@@ -191,6 +197,13 @@ background-color: #ff8080;
 *************************************-->
     <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout">
     <div class="container">
+   	 <!--************************************
+             Detail Model Modal Start
+        *************************************-->
+         <jsp:include page="/rent/search_detail.jsp" />
+        <!--************************************
+             Detail Model Modal End
+        *************************************-->
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
           style="padding: 0px 300px">
@@ -223,25 +236,5 @@ background-color: #ff8080;
 *************************************-->
   </div>
 
-  <script
-    src="<%=application.getContextPath()%>/js/vendor/jquery-library.js"></script>
-  <script
-    src="<%=application.getContextPath()%>/js/vendor/bootstrap.min.js"></script>
-  <script
-    src="https://maps.google.com/maps/api/js?key=AIzaSyCR-KEWAVCn52mSdeVeTqZjtqbmVJyfSus&language=en"></script>
-  <script
-    src="<%=application.getContextPath()%>/js/bootstrap-select.min.js"></script>
-  <script
-    src="<%=application.getContextPath()%>/js/jquery-scrolltofixed.js"></script>
-  <script src="<%=application.getContextPath()%>/js/owl.carousel.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/jquery.mmenu.all.js"></script>
-  <script src="<%=application.getContextPath()%>/js/packery.pkgd.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/jquery.vide.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/scrollbar.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/prettyPhoto.js"></script>
-  <script src="<%=application.getContextPath()%>/js/countdown.js"></script>
-  <script src="<%=application.getContextPath()%>/js/parallax.js"></script>
-  <script src="<%=application.getContextPath()%>/js/gmap3.js"></script>
-  <script src="<%=application.getContextPath()%>/js/main.js"></script>
 </body>
 </html>
