@@ -90,7 +90,7 @@
 								<form class="tg-formtheme tg-formlogin">
 									<div style="margin: 50px 0px; text-align: center;">
 										<div style="display: inline-block; vertical-align: middle; padding: 0px 20px">
-											<button type="button" onclick="location.href='/sjrent/user/login2.jsp' " class="tg-btn tg-btn-lg" style="padding: 0px 30px;">
+											<button type="button" onclick="location.href='/sjrent/user/login.jsp' " class="tg-btn tg-btn-lg" style="padding: 0px 30px;">
 												<span style="font-size: 14pt; width: 30%">로그인</span>
 											</button>
 										</div>

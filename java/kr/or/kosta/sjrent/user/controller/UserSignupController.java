@@ -57,7 +57,8 @@ public class UserSignupController implements Controller {
 			String email1 = request.getParameter("email1");
 			String email2 = request.getParameter("email2");
 			String email = email1 + "@" + email2; 
-			String password = request.getParameter("password");
+			String password = request.getParameter("password1");
+			
 			String birthday = request.getParameter("birthday");
 			int point = 10000;
 			int gender = Integer.parseInt(request.getParameter("gender"));
@@ -79,13 +80,13 @@ public class UserSignupController implements Controller {
 			user.setPoint(point);
 			
 			
-			System.out.println("회원가입요청: "+user);
+			System.out.println("회원가입요청: " + user);
 			
 			try {
 				isCreate = userService.create(user);
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				
 			}
 
 			// 회원가입 실패시 응답으로 fail 보냄
@@ -109,7 +110,7 @@ public class UserSignupController implements Controller {
 				mav.addObject("cellphone", cellphone);
 				mav.addObject("name", name);
 
-				mav.setView("/user/regist_result.jsp");
+				mav.setView("/user/regist_result.jsp");	
 				
 			}
 			
