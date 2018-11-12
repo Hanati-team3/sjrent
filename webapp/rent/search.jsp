@@ -36,6 +36,10 @@ var rent_end_date;
 var date;
 var weekday = 0;
 var weekend = 0;
+
+/**
+ * search.jsp가 로드될 때 실행되는 함수
+ */
 $(document).ready(function(){
 	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
 	// 검색된 모델과 랭킹을 시작할 때는 표시 안하게
@@ -108,15 +112,13 @@ $(document).ready(function(){
       });
       
       /** 랭킹 목록을 불러오는 poularController로 요청 전달. html로 받아서 표시*/
-    	$.ajax({	
-    		url:"<%=application.getContextPath()%>/model/popular.rent",
-    		dataType:"html",
-    		type:'GET', 
-    		success:function(result){
-    			$("#rank-list").html(result);
-    		}
-    	});
-      
+      $.ajax({
+    	  url:"<%=application.getContextPath()%>/model/popular.rent",
+    	  type:'GET', 
+    	  success:function(result){
+    		  $("#rank-list").html(result);
+    		  }
+  	  });
    });
    
 });
@@ -153,7 +155,7 @@ function setModelList(list) {
 	
 	for ( var i in list) {
 		output += "" + 
-		"                           <div class=\"col-xs-6 col-sm-6 col-md-4 col-lg-4\" data-toggle=\"modal\" data-target=\"#detail_show\" id='eachModelCol' data-model-name='"+list[i].name+"'>\r\n" + 
+		"                           <div class=\"col-xs-6 col-sm-6 col-md-4 col-lg-4\" data-toggle=\"modal\" data-target=\"#detail_show\" data-model-name='"+list[i].name+"'>\r\n" + 
 		"                              <div class=\"tg-populartour\"   >\r\n" + 
 		"                                 <figure>\r\n" + 
 		"                                    <a><img\r\n" + 
@@ -188,7 +190,7 @@ function setModelList(list) {
 	
 	$('#ModelDisplayRow').show();
 	
-	/** 모델 클릭 시 모델 이름을 모달에 전달 */
+	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
 		var modelName = $(e.relatedTarget).data('model-name');
 		window.e = $(e.currentTarget);
@@ -211,6 +213,15 @@ function setModelList(list) {
 	        	console.log('error in openning detail show' + result);
 	        }
 		});
+	  	/** 리뷰 탭 클릭시 getReviewList 시작 */
+	  	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+	  		//e.target // newly activated tab
+	  		//e.relatedTarget // previous active tab
+	  		console.log(e.target.getAttribute('aria-controls'));
+	  		if(e.target.getAttribute('aria-controls') == 'review') {
+	  			getReviewList(modelName, 1, 10)
+	  		}
+	  	});
 	});
 }
 
@@ -239,9 +250,13 @@ function setDetailModal(model) {
 			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
 		})
 	}
+	$('#go-reserve-anchor').on('click', function(e) {
+		e.stopPropagation();
+		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, '방문수령');
+	})
 }
 /** 
- * <위시리스트에 저장> 버튼이 눌렸을 때 Controller로 데이터를 보낸다.
+ * <위시리스트에 저장> 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
  *	Controller로부터 받은 데이터를 검사한다.
  */
 function addToWishList(modelName, startDate, endDate, amountMoney, picture, type, fuelType) {
@@ -279,6 +294,82 @@ function wishResultHide() {
 	$("#wish_result_modal").modal('hide');
 }
 
+/**
+ * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
+ */
+ function goToReserve(startDate, endDate, amountMoney, pickupPlace) {
+	// 로그인 중
+	if( '<%=request.getAttribute("loginId")%>' != 'null'){
+		// post로 데이터 전달
+	    var form = document.createElement("form");
+	    form.setAttribute("method", "post");
+	    form.setAttribute("action", '<%=application.getContextPath()%>/rent/page.rent');
+	 
+	    var params = {
+		  		startDate : startDate,
+		  		endDate : endDate,
+		  		amountMoney : amountMoney,
+		  		pickupPlace : pickupPlace
+	    }
+	    
+	    //히든으로 값을 주입시킨다.
+	    for(var key in params) {
+	        var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", key);
+	        hiddenField.setAttribute("value", params[key]);
+	        form.appendChild(hiddenField);
+	    }
+	    document.body.appendChild(form);
+	    form.submit();
+	}
+	else {
+		alert('로그인필요');
+	}
+}
+	
+/** 
+ * 리뷰 리스트를 컨트롤러에 요청하여 가져오는 함수.
+ * 
+ */
+function getReviewList(modelName, page, listSize) {
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/review/list.rent",
+		dataType:"json",
+		type:'POST', 
+		data : {
+	  		modelName : modelName,
+	  		page : page,
+	  		listSzie : listSize
+        },
+		success:function(result){
+			console.log("ok review list \n" + result);
+			setReviewList(result);
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
+}
+
+/**
+ * 리뷰 리스트를 화면에 출력하는 함수 
+ */
+function setReviewList(list) {
+	$("#each_review_ul").html("");
+	for ( var i in list) {
+		var params = {
+			imgPath : '/sjrent/images/review/image1.jpg',
+			userId : list[i].userId,
+			evalScore : list[i].evalScore,
+			date : list[i].date,
+			content : list[i].content
+		};
+		var review = $('<li></li>').load("<%=application.getContextPath()%>/rent/search_include/review_each.jsp", params);
+		$("#each_review_ul").append(review);
+		console.log(i + " : " + list[i].date);
+	}
+}
 </script>
 </head>
 <body>
@@ -303,6 +394,7 @@ function wishResultHide() {
       <!--************************************
                Inner Banner Start
          *************************************-->
+         
       <div class="tg-homebannerslider"
          class="tg-homebannerslider tg-haslayout">
          <div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
