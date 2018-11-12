@@ -72,27 +72,40 @@ String loginId = (String)request.getAttribute("loginId");
                      <li style="list-style: none;"><h2>로그인</h2></li>
                   </ul>
                   <div class="tg-tabcontent tab-content">
-                     <div role="tabpanel" class="tab-pane active fade in" id="home">
-                        <form class="tg-formtheme tg-formlogin">
-                           <fieldset>
-                              <div class="form-group">
-                                 <label>아이디 <sup>*</sup></label>
-                                 <input type="text" name="firstname" class="form-control" placeholder="" maxlength="10">
-                              </div>
-                              <div class="form-group">
-                                 <label>비밀번호 <sup>*</sup></label>
-                                 <input type="password" name="password" class="form-control" placeholder="" maxlength="10">
-                              </div>
-                              <div class="form-group">
-                                 <div class="tg-checkbox">
-                                    <input type="checkbox" name="remember" id="rememberpass">
-                                    <label for="rememberpass">아이디 저장</label>
-                                 </div>
-                              </div>
-                              <button class="tg-btn tg-btn-lg"><span>로그인</span></button>
-                           </fieldset>
-                        </form>
-                     </div>
+                     
+                     
+                     
+                           
+                           
+								<!--************************************
+										회원 로그인 시작 
+								*************************************-->
+								<div role="tabpanel" class="tab-pane active fade in" id="user" >
+                
+									<form class="tg-formtheme tg-formlogin" action="/sjrent/user/login.rent" method="post">
+										<fieldset>
+											<div class="form-group">
+												<label>아이디 <sup>*</sup></label>
+												<input type="text" name="id" class="form-control" placeholder="" maxlength="10" style="text-transform:  none;" required value="${id }" >
+											</div>
+											<div class="form-group">
+												<label>비밀번호 <sup>*</sup></label>
+ 								                <input type="password" name="pw" class="form-control" placeholder="" maxlength="10"  style="text-transform:  none;" required>
+											</div>
+											<div class="form-group">
+													<input type="checkbox" name="remember" id="rememberpass" style="display: inline-block; "><label for="rememberpass" style="display: inline-block; ">아이디 저장</label>
+											</div>
+											<button type="submit" class="tg-btn tg-btn-lg"><span>로그인</span></button>
+                                            <input type="hidden" name="login" value="login"/>
+                                       </fieldset>
+									</form>
+								</div>
+								<!--************************************
+										회원 로그인 종료 
+								*************************************--> 
+                     
+                     
+                     
                      
                   </div>
                </div>

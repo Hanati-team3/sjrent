@@ -1,4 +1,4 @@
-package kr.or.kosta.sjrent.mypage.controller;
+package kr.or.kosta.sjrent.user.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import sun.nio.cs.HistoricallyNamedCharset;
  *
  */
 
-public class UpdateController implements Controller {
+public class UserUpdateController implements Controller {
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -38,37 +38,26 @@ public class UpdateController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
 		
-		System.out.println("야넘어오냐???");
+		//System.out.println("야넘어오냐???");
 		
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 
-		
 		User user = new User();
 		boolean isUpdate = false;
 
 		
-		String id = request.getParameter("id");
-		System.out.println("id이다"+id);
-		
-		
 		// 회원수정시에 들어오는 param
 		if(request.getParameter("id") != null) {
-			
-			
 					
-			//String id = request.getParameter("id");
+			String id = (String) request.getAttribute("loginId");
 			String password = request.getParameter("password");
 			String name = request.getParameter("name");
 			String email = request.getParameter("email");
 			String cellphone = request.getParameter("cellphone");			
 			
-			
-			System.out.println("id이다"+id);
-			System.out.println("name이다"+name);
-
 			
 			user.setId(id);
 			user.setName(name);
@@ -77,7 +66,7 @@ public class UpdateController implements Controller {
 			user.setCellphone(cellphone);
 			
 			
-			System.out.println("회원수정요청: "+user);
+			//System.out.println("회원수정요청: "+user);
 			
 			try {
 				isUpdate = userService.update(user);
@@ -88,26 +77,42 @@ public class UpdateController implements Controller {
 
 			// 회원수정 실패시 응답으로 fail 보냄
 			if (isUpdate == false) {
+
+				mav.setView("/sjrent/mypage/update.jsp");
+				
+				/*
 				obj.put("result", "fail");
 				try {
 					response.sendRedirect("/sjrent/mypage/update.jsp");
-					//response.getWriter().print(obj);
+					response.getWriter().print(obj);
 					return null;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				*/
 
 			}
 			// 회원수정 성공시 응답으로 success 보냄
 			else {
+				
+				/*
 				obj.put("result", "success");
+				try {
+					response.getWriter().print("success_userUpdate");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				*/
+				
 				mav.addObject("id", id);
+				mav.addObject("name", name);
 				mav.addObject("password", password);
 				mav.addObject("email", email);
 				mav.addObject("cellphone", cellphone);
 
-				mav.setView("/user/regist_result.jsp");
+				mav.setView("/mypage/updateUser_result.jsp");
 				
 			}
 			
