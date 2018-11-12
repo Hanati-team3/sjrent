@@ -62,7 +62,7 @@
                                           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                              <div class="form-group">
                                                 <label>핸드폰</label>
-                                                <input type="Number" value="${userCellphone}" name="user_cellphone" class="form-control"  required readonly>
+                                                <input type="text" value="${userCellphone}" name="user_cellphone" class="form-control"  required readonly>
                                              </div>
                                           </div>
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0">
@@ -111,7 +111,7 @@
                                                       <option value="">보험종류 선택</option>
                                                       <option value="1">일반면책</option>
                                                       <option value="2">완전면책</option>
-                                                      <option value="3">슈퍼먼책</option>
+                                                      <option value="3">슈퍼면책</option>
                                                       <option value="4">미가입</option>
                                                    </select>
                                                 </span>
