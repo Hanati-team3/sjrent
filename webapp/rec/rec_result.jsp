@@ -41,59 +41,126 @@
 <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
 <style type="text/css">
-.btn {
-	border: none;
-	color: white;
-	padding: 14px 28px;
-	font-size: 20px;
-	cursor: pointer;
-	position: absolute;
+
+.resultImg {
+   	position: absolute;
+   	top: 55%;
+	left: 50%;
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
+	background-color: #d64161;
+	color: white;
+	font: bold; 
+	font-size: 32px;
+	padding: 10px;
 	border: none;
+	cursor: pointer;
+	/* box-shadow: 0 9px #999; */ 
+	/* border-radius: 50%; */
 	text-align: center;
-	border-radius: 2px;
+	height: 30%;
 }
 
-.left {
-	background-color: #005580;
-	top: 68%;
-	left: 37%;
+.resultImg:active {
+	  background-color: #c94c4c;
+	  box-shadow: 0 5px #666;
+	  /* transform: translateY(4px); */
+	}
+	
+.resultImg:hover {
+background-color: #ff8080;
 }
 
-.left:hover {
-	background-color: lightgray;
-}
-
-.right {
-	background-color: #005580;
-	top: 68%;
-	left: 61%;
-}
-
-.right:hover {
-	background-color: lightgray;
-}
 </style>
+
 <script>
-   $(document).ready(function(){
+
+   <%-- $(document).ready(function(){
+	   var result = '초기값';
+	   
 		console.log('id : ' + '<%=request.getAttribute("loginId")%>');
+		console.log('<%=request.getParameter("hidden")+","+request.getParameter("click")%>');
 	      /** 모델 목록을 불러오는 search controller로 요청 전달 */
 	      $.ajax({
 	         type : "POST",
 	          url : "<%=application.getContextPath()%>/model/recommend.rent",
+	          async: false, 
 	          data : {
 	             'result' : '<%=request.getParameter("hidden")+","+request.getParameter("click")%>',
 	          },
 	          dataType: "json",
 	          success: function(data){
-				console.log(data.modelName);
-				console.log(data.picture);
+				//console.log(data.modelName);
+				//console.log(data.picture);
+				//console.log(data.type);
+				
+				var type = data.type; 
+				var picture = data.picture; 
+
+				//console.log(typeof modelName);//string
+				//console.log(typeof type);//string
+				
+				result = ("..images/" + type + "/" + picture).trim();
+				console.log('ajax안에서  : ' + result);
+				
+				
 	          }
 	       });
-	      
-	   });
-</script>
+		   return result;
+	   }) --%>
+	   
+	   /** 이미지 경로 받아오기 */
+	   function getImagePath() {
+	   var result; 
+	   	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
+		console.log('<%=request.getParameter("hidden")+","+request.getParameter("click")%>');
+	   $.ajax({
+	         type : "POST",
+	          url : "<%=application.getContextPath()%>/model/recommend.rent",
+	          async: false, 
+	          data : {
+	             'result' : '<%=request.getParameter("hidden")+","+request.getParameter("click")%>',
+	          },
+	          dataType: "json",
+	          success: function(data){
+				//console.log(data.modelName);
+				//console.log(data.picture);
+				//console.log(data.type);
+				
+				var type = data.type; 
+				var picture = data.picture; 
+
+				//console.log(typeof modelName);//string
+				//console.log(typeof type);//string
+				
+				result = ("../images/cars/" + type + "/" + picture).trim();
+				console.log('ajax안에서  : ' + result);
+				
+				
+	          }
+	       });
+	   	   console.log("최종적으로 넘어가는 리절트: " + result);
+	   	   return result; 
+		}
+   
+	   
+   		/** 시작하자마자 */
+   		$(document).ready(function(){ 
+			var imagePath = getImagePath(); 
+   			//console.log('이미지경로 : '+ imagePath);
+   			
+			var resultCar = document.getElementById('resultCar');
+   			resultCar.src = imagePath;
+			//resultCar.src = "../images/K5.jpg";
+   			console.log('11111111 : '+resultCar.src);
+			//alert(resultCar.src);
+			//console.log('어떤 값이 들어가지? ' + imagePath);
+			//var resultImg = document.getElementsByClassName('resultImg'); 
+		}) 
+		
+		
+   
+</script> 
 </head>
 <body class="tg-home tg-homevone">
 
@@ -132,12 +199,11 @@
             <!--************************************
 									Content 시작
 							*************************************-->
-            <!-- 
-							<img alt="여행선택지" src="../images/rec/rec_travel2.JPG">
-							<button class="btn left" onclick="location='<%=application.getContextPath()%>/rec/rec_hobby.jsp'">선택</button>
-							<button class="btn right"  onclick="location='<%=application.getContextPath()%>/rec/rec_hobby.jsp'">선택</button>
-					 -->
-
+            
+							<img alt="여행선택지" src="../images/rec/rec_result.JPG">
+							<img alt="추천자동차" src="" id="resultCar" class="resultImg">	
+							<span></span>
+			<!-- ../images/cars/ASegment/2017K3.jpg  -->	
             <!--************************************
 									Content 종료
 							*************************************-->

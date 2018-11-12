@@ -70,6 +70,42 @@ String loginId = (String)request.getAttribute("loginId");
                      <li style="list-style: none;"><h2>로그인</h2></li>
                   </ul>
                   <div class="tg-tabcontent tab-content">
+<<<<<<< HEAD
+                     
+                     
+                     
+                           
+                           
+								<!--************************************
+										회원 로그인 시작 
+								*************************************-->
+								<div role="tabpanel" class="tab-pane active fade in" id="user" >
+                
+									<form class="tg-formtheme tg-formlogin" action="/sjrent/user/login.rent" method="post">
+										<fieldset>
+											<div class="form-group">
+												<label>아이디 <sup>*</sup></label>
+												<input type="text" name="id" class="form-control" placeholder="" maxlength="10" style="text-transform:  none;" required value="${id }" >
+											</div>
+											<div class="form-group">
+												<label>비밀번호 <sup>*</sup></label>
+ 								                <input type="password" name="pw" class="form-control" placeholder="" maxlength="10"  style="text-transform:  none;" required>
+											</div>
+											<div class="form-group">
+													<input type="checkbox" name="remember" id="rememberpass" style="display: inline-block; "><label for="rememberpass" style="display: inline-block; ">아이디 저장</label>
+											</div>
+											<button type="submit" class="tg-btn tg-btn-lg"><span>로그인</span></button>
+                                            <input type="hidden" name="login" value="login"/>
+                                       </fieldset>
+									</form>
+								</div>
+								<!--************************************
+										회원 로그인 종료 
+								*************************************--> 
+                     
+                     
+                     
+=======
                      <div role="tabpanel" class="tab-pane active fade in" id="home">
                         <form class="tg-formtheme tg-formlogin" action="/sjrent/user/login.rent" method="post">
                            <fieldset>
@@ -91,6 +127,7 @@ String loginId = (String)request.getAttribute("loginId");
                            </fieldset>
                         </form>
                      </div>
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
                      
                   </div>
                </div>
