@@ -4,4 +4,15 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.qna">
+	<resultMap type="QnA" id="qnaResultMap">
+		<result column="review_seq" 			property="number" />
+		<result column="model_name"  			property="modelName" />
+		<result column="user_seq" 				property="userNumber" />
+		<result column="user_id" 				property="userId" />
+		<result column="review_title" 			property="title" />
+		<result column="review_content" 		property="content" />
+		<result column="review_picture" 		property="picture" />
+		<result column="review_date" 			property="date" />
+		<result column="review_evalscore" 		property="evalScore" />
+	</resultMap>
 </mapper>
