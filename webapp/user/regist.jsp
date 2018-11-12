@@ -6,7 +6,6 @@
 <head>
 <jsp:include page="../common/commoncss.jsp" />
 <style>
-
 .title{
 	display: inline-block; 
 	border:none; 
@@ -15,7 +14,6 @@
 	background-color:#fafafa; 
 	margin-left:20%;
 }
-
 .button {
     border: none;
     color: white;
@@ -29,13 +27,11 @@
     border-radius:8px;
     background-color: #555555;
 }
-
 .button4 {
     background-color: white;
     color: black;
     border: 2px solid #e7e7e7;
 }
-
 .button4:hover {
 	background-color: #e7e7e7;
     color: white;
@@ -43,7 +39,6 @@
 </style>
 
 <script type="text/javascript">
-
 	/** 아이디 중복확인 */
 	function idCheck() {
 		var id = $('#id').val();
@@ -87,7 +82,6 @@
     		});
 		}
 	}
-
 	/** 이메일 선택하기 */
 	function emailSelect() {
 		var emailSelectBox = document.getElementById("emailSelectBox");
@@ -100,7 +94,6 @@
 		var email1 = $('#email1').val();
 		email2 = $('#email2').val();
 		var email = email1 + "@" + email2; 
-
 		$.ajax({
 			url : '/sjrent/user/checkEmail.rent',
 			type : 'post',
@@ -162,7 +155,6 @@
 	    else
 	        event.target.value = event.target.value.replace(/[^0-9]/g, "");
 	}
-
 	/** 숫자만 입력 가능(생년월일뒤:1234) */ 
 	function removeChar2(event) {
 	    event = event || window.event;
