@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-\
+
 <jsp:include page="../common/commoncss.jsp" />
 
 
@@ -42,11 +42,15 @@
 
 
 
-	function checkId() {
+	function idCheck() {
 
 		var id = $('#id').val();
+<<<<<<< HEAD
+		//var id = document.getElementById("id").value;
+=======
 		//console.log("넣은아이디" + id);
 		alert(id); 
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
 
 		$.ajax({
 			url : '/sjrent/user/checkId.rent',
@@ -71,13 +75,15 @@
 				
 			},
 			error : function() {
-				alert("에러입니다");
+				alert("관리자에게 문의해주세요.");
 			}
 		});
 		
 		
 
 	}
+<<<<<<< HEAD
+=======
 	
 	
 	/* function checkEmail() {
@@ -150,6 +156,7 @@
 		});
 		
 	}
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
 
 	function emailSelect() {
 		//alert('dddd');
@@ -161,12 +168,10 @@
 	}
 	
 	function emailCheck() {
-		//alert('g');
+
 		var email1 = $('#email1').val();
 		var email2 = $('#email2').val();
-		var email = email1 + "@" + email2; 
-		//alert(email);
-		
+		var email = email1 + "@" + email2;
 
 		$.ajax({
 			url : '/sjrent/user/checkEmail.rent',
@@ -184,19 +189,17 @@
 				}
 			},
 			error : function() {
-				alert("에러입니다");
+				alert("관리자에게 문의해주세요.");
 			}
 		});
 		
-		
-		
-		
-		
-		
-		
 	}
 	
+<<<<<<< HEAD
+
+=======
 	
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
 </script>
 
 
@@ -266,6 +269,14 @@
                               
                               <!-- <span style="border: none; " id="checkMsg" class="idCheckResult"></span> -->
                               
+<<<<<<< HEAD
+                              <div class="form-group">
+                                 <h4>아이디<sup>*</sup></h4>
+                                 <input type="text" name="id" id="id" class="form-control" maxlength="10" style="text-transform: none;" required placeholder="최대 10자 입력 가능">
+                                 <div style="float:left; border: none; display: inline-block; margin-top: 10px; margin-bottom: 0" id="checkMsg"></div>
+                              </div>
+=======
+>>>>>>> b4ba2e73d1e5c074ac3394d6c36cea3dba45dbb6
                               
                               
                               <div class="form-group">
@@ -307,8 +318,10 @@
                                 
                                
                                <div style="vertical-align: middle;">
-                                  <input type="text" name="email1" id="email1" maxlength="10" size="12" style="text-transform: none;" required> @ 
-                                  <input type="text" name="email2" id="email2" maxlength="10" size="12" style="text-transform: none;" required  oninput="checkEmail()">  
+                                  <input type="text" name="email1" id="email1" maxlength="15" size="12" style="text-transform: none;" required> @ 
+                                  <input type="text" name="email2" id="email2" maxlength="15" size="12" style="text-transform: none;" required>
+                                  
+                                  <!-- oninput="checkEmail()" -->  
                                  
                                  <select name="emailSelectBox" style="text-transform: lowercase;" class="box" id="emailSelectBox" onchange="emailSelect()" >
                                     <option value="" selected >선택하세요</option>
