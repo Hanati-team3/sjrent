@@ -131,33 +131,26 @@ tr:hover {
 			   <div class="dottedOutline">
 			        
 			        <%
-			        QnA qna = (QnA)request.getAttribute("QnA");
-			        //System.out.println(qna);
-			        
-			        String title = qna.getTitle();
-			        String content = qna.getContent();
-			        int qna_seq = qna.getNumber(); 
-			        //System.out.println("타이틀: " + title);
-			        
-			        %>   
-			        
+			        String qna_seq = request.getParameter("qna_seq");
+			        String title = request.getParameter("title");
+			        String content = request.getParameter("content");
+			        %>
 			        
 			        <div style="vertical-align: middle;">
 			             <label class="createPostButton" style="background-color: #446600;" >글제목</label> 
-			             <input type="text" class="grayBox" required id="title" name="title" maxlength="15" style="width: 1040px; text-align: left; " readonly value="<%=title %>" >
+			             <input type="text" class="grayBox" required id="title" name="title" maxlength="15" style="width: 1040px; text-align: left; " value="<%=title %>" >
 			             <!-- <label class="createPostButton" style="background-color: #446600; margin-left: 570px">작성자</label> 
 			             <input type="text" class="grayBox" readonly value='' id="writer" name="writer"> -->
 			        	 <%-- <input type="hidden" name="qna_seq" value="<%=qna_seq %>" > --%>
 			        </div>
 			        
 			        <%--<input type="text" class="createPostBox" placeholder="게시글을 작성해주세요 (1000자 이내)" required id="content" name="content" maxlength="1000"> --%>    
-			        <textarea class="createPostBox" name="content" id="content" maxlength="1000" readonly ><%=content %></textarea>
+			        <textarea class="createPostBox" name="content" id="content" maxlength="1000" ><%=content %></textarea>
 			    </div> 
 			    
 			    <div style="text-align:right">
 		              <input type="button" class="newButton" value='목록' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qnaIndex.rent'">      
-		              <input type="button" class="newButton" value='수정' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qna_update.jsp?qna_seq=<%=qna_seq %>&title=<%=title %>&content=<%=content%>'">      
-		              <input type="button" class="newButton" value='삭제' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qnaDelete.rent?qna_seq=<%=qna_seq %>'">      
+		              <input type="button" class="newButton" value='확인' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qnaUpdate.rent?qna_seq=<%=qna_seq%>&title=<%=title%>&content=<%=content%>'">      
 		        </div>
 			    
 			</form>		    

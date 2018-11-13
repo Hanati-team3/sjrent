@@ -219,7 +219,8 @@ tr:hover {
 		</div>
 		
 		<!-- FAQ -->
-		<div id="FAQ" class="tabcontent">
+		
+		<%-- <div id="FAQ" class="tabcontent">
 			<h3>FAQ</h3>
 			<!-- FAQ 내용 시작 -->
 			<div style="padding-left: 15px; margin-bottom: 180px">
@@ -232,8 +233,47 @@ tr:hover {
 				%>
 			</div>
 			<!-- FAQ 내용 종료 -->
-			
+		</div> --%>
+		
+		<div id="FAQ" class="tabcontent" >
+		    <table class="table table-responsive">
+                          <colgroup>
+                             <col width="5%"/>
+                             <col width="40%"/>
+                          </colgroup>
+                          <tr>
+                             <th scope="col">번호</th>
+                             <th scope="col">제목</th>
+                          </tr>
+                          <tbody>
+                          <!--************************************
+                                FAQ 리스트 시작 
+                             *************************************-->
+                             <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
+                             
+	                              <tr>
+	                              	 <!--***********
+	                              	 		번호 
+	                              	 	 ***********-->	
+	                                 <td>
+	                                 <span>1</span>
+	                                 </td>
+	                                 <!--***********
+	                              	 		제목 
+	                              	 	 ***********-->	
+	                                 <td>
+                                 		<span>공지사항1</span>
+	                                 </td>
+	                              </tr>
+                             <!--************************************
+                                FAQ 리스트 종료
+                             *************************************-->
+                          </tbody>
+                       </table>
+	        
 		</div>
+		
+		
 		
 		<!-- Notice -->
 		<div id="공지사항" class="tabcontent">
