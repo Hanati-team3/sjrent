@@ -63,7 +63,7 @@
 .checkbox-label{
   position: relative;
   cursor: pointer;
-  color: #303030;
+  color: #ffffff;
   font-size: 15px;
 }
 
@@ -89,7 +89,7 @@ input[type="checkbox"] + .label-text:before{
 
 input[type="checkbox"]:checked + .label-text:before{
   content: "\f14a";
-  color: #303030;
+  color: #ff7550;
   animation: effect 250ms ease-in;
 }
 
@@ -100,6 +100,17 @@ input[type="checkbox"]:disabled + .label-text{
 input[type="checkbox"]:disabled + .label-text:before{
   content: "\f0c8";
   color: #ccc;
+}
+
+#option-icon .fas {
+    margin: 0 10px;
+    font-size: 25px;
+    color: #303030;
+}
+
+#icon-desc {
+  font-size: 7px;
+  font-weight: bold;
 }
 
 </style>
@@ -299,9 +310,35 @@ function setModelList(list) {
 	}
 	
 	for ( var i in list) {
-		var desc = '<p>'+list[i].fuelType +' 타입 연료를 사용하는 차량으로 최대 '+list[i].seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
+		var desc="<table id='option-icon' border='none'> <tr>";
+		if(list[i].navigation == 1) {
+			desc += '<td style="border:none;"><i class="fas fa-map-marked-alt"></i></td>';
+		}
+		if(list[i].cameraRear == 1) {
+			desc += '<td style="border:none;"><i class="fas fa-camera"></i></td>';
+		}
+		if(list[i].highpass == 1) {
+			desc += '<td style="border:none;"><i class="fas fa-shipping-fast"></i></td>';
+		}
+		if(list[i].blackBox == 1) {
+			desc += '<td style="border:none;"><i class="fas fa-video"></i></td>';
+		}
+		desc += "</tr><tr id='icon-desc'>";
+		if(list[i].navigation == 1) {
+			desc += '<td style="border:none;">Navigation</td>';
+		}
+		if(list[i].cameraRear == 1) {
+			desc += '<td style="border:none;">Camera Rear</td>';
+		}
+		if(list[i].highpass == 1) {
+			desc += '<td style="border:none;">Highpass</td>';
+		}
+		if(list[i].blackBox == 1) {
+			desc += '<td style="border:none;">BlackBox</td>';
+		}
+		desc += "</tr></table>"
+		desc += '<p>'+list[i].fuelType +' 타입 연료를 사용하는 차량으로 최대 '+list[i].seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
 		'<p>'+'주중 가격은 '+list[i].weekdayPrice+'원, 주말 가격은 '+list[i].weekendPrice+'원 입니다.</p>';
-		
 		var params = {
 			imgPath : '/sjrent/images/cars/'+list[i].type+'/'+list[i].picture,
 			modelName : list[i].name,
@@ -485,6 +522,7 @@ function wishResultHide() {
  * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
  */
  function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
+	alert('2');
 	// 로그인 중
 	if(isLogin == true){
 		// post로 데이터 전달
@@ -547,6 +585,10 @@ function getReviewList(modelName, page, listSize) {
  */
 function setReviewList(list) {
 	$("#each_review_ul").html("");
+	if(list.length == 0 ) {
+		console.log('review length == 0');
+		$("#each_review_ul").append("<li>리뷰가 없습니다</li>");
+	}
 	for ( var i in list) {
 		var params = {
 			imgPath : '/sjrent/images/review/image1.jpg',
@@ -603,9 +645,41 @@ function loginAction(e) {
 
 function nonUserLoginAction(e) {
 	e.preventDefault();
+	var name = e.currentTarget.name_non.value;
+	var email = e.currentTarget.email_non.value;
+	var cellphone = e.currentTarget.cellphone_non.value;
+	var where = 'rent';
 	
-	window.nonUserE = e;
-	console.log('not a user');
+	var params = {
+		name_non : name,
+		email_non : email,
+		cellphone_non : cellphone,
+		where : where
+	};
+	
+	console.log('non login : ' + name + "," + email + "," + cellphone);
+	window.nonloginE = e;
+	
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/user/signup.rent",
+		type:'POST', 
+		data : params,
+		dataType:"json",
+		success:function(result){
+			console.log(result);
+			if(result['result'] == 'success') {
+				isLogin = true;
+				console.log('nonuser Success');
+				goToReserve(rent_start_date, rent_end_date, detailModel.amountMoney, pickupPlace, detailModel.type, detailModel.picture);
+			}
+			else {
+				alert(result['reason']);
+			}
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
 }
 
 
@@ -641,7 +715,8 @@ function nonUserLoginAction(e) {
     <div class="tg-homebannerslider"
       class="tg-homebannerslider tg-haslayout">
       <div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
-        <figure class="item" data-vide-bg="mp4: ../video/backgroud_car" data-vide-options="none, position: 50% 50%">
+        <figure class="item" >
+        <%--<figure class="item" data-vide-bg="mp4: <%=application.getContextPath()%>/video/backgroud_car" data-vide-options="none, position: 50% 50%"> --%>
           <figcaption>
             <div class="container">
               <div class="row">
@@ -695,6 +770,7 @@ function nonUserLoginAction(e) {
                     <fieldset class='row'
                       style='padding-right: 0px; margin-top: 20px;'>
                       <form>
+                      <div class='col-md-6'>
                         <div class="checkbox-inline">
                           <label class="checkbox-label"> <input
                             type="checkbox" name="navigation"> <span
@@ -719,6 +795,8 @@ function nonUserLoginAction(e) {
                             class="label-text">블랙박스</span>
                           </label>
                         </div>
+                        </div>
+                        <div class="col-md-6">
                         <select data-width='130px' title="연료"
                           class="selectpicker">
                           <option data-tokens="all">전체</option>
@@ -740,6 +818,7 @@ function nonUserLoginAction(e) {
                           <option data-tokens="9">9</option>
                           <option data-tokens="11">11</option>
                         </select>
+                        </div>
                       </form>
                     </fieldset>
                   </form>
