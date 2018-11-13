@@ -10,18 +10,16 @@
 	.tg-btn{
 		margin-left: 30px;
 	}
-/* 	.tg-homeslidervtwo .item figcaption{
-		padding: 312px;
-		width : 100%;
-	} */
 	</style>
 </head>
 <body class="tg-home tg-homevone">
 
+
+<!-- ****************** index.jsp 경로 형철수정 ***********************-->
+
+
 <%
     String loginId = (String)request.getAttribute("loginId"); 
-    //System.out.println("request에 넣은 아이디 값 : "+loginId);
-
 %>
 
 	
@@ -41,8 +39,6 @@
 							<div class="row">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									
-                  
-<!-- null 님 때문에 수정한 최종 수정한 코드 -->                  
 
 <%
 if(request.getAttribute("loginId") != null){ //로그인 된 경우 
@@ -69,8 +65,8 @@ if(request.getAttribute("loginId") != null){ //로그인 된 경우
 		<a class="tg-btn" href="<%=application.getContextPath()%>/rent/search.jsp"><span>실시간 예약</span></a>
 		<a class="tg-btn" href="<%=application.getContextPath()%>/rec/rec_index.jsp"><span>추천 예약</span></a>
 		<a class="tg-btn" href="<%=application.getContextPath()%>/qna/qnaIndex.rent"><span>커뮤니티</span></a>
-		<a class="tg-btn" href="<%=application.getContextPath()%>/wishitem/list.rent"><span>위시리스트</span></a>
-		<a class="tg-btn" href="<%=application.getContextPath()%>/rent/list.rent"><span>예약확인</span></a>
+		<a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>위시리스트</span></a>
+		<a class="tg-btn" href="<%=application.getContextPath()%>/user/login2.jsp"><span>예약확인</span></a>
 		<a class="tg-btn" href="<%=application.getContextPath()%>/user/login.jsp"><span>로그인</span></a>
 	</div>
     </div>
@@ -78,9 +74,6 @@ if(request.getAttribute("loginId") != null){ //로그인 된 경우
 }
 %>   
          
-                                
-                  
-                                    
 								</div>
 							</div>
 						</div>

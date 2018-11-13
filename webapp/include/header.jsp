@@ -7,29 +7,112 @@ String loginId = (String)request.getAttribute("loginId");
 <%@ page contentType="text/html; charset=utf-8"%>
       <header id="tg-header" class="tg-header tg-haslayout">
          <div class="container-fluid">
-            <div class="row">
-               <div class="tg-navigationarea tg-headerfixed">
-                  <strong class="tg-logo"><a href="<%=application.getContextPath()%>/index.jsp"><img src="<%=application.getContextPath()%>/images/SJRentLogoSmall.png" alt="company logo here"></a></strong>
-                  <div class="tg-socialsignin">
-                     <div class="tg-userbox">
-                        <!-- 로그인 화면 띄우자 -->
-                        <%
-                        if(loginId != null){//로그인
-                        //System.out.println("loginId : "+loginId);
-                        %>
-                        <a id="tg-btnsignin" class="tg-btn" href="/sjrent/user/logout.rent"><span style="size: 15pt">로그아웃</span></a>
+
+    <div class="row">
+      <div class="tg-navigationarea tg-headerfixed">
+        <strong class="tg-logo"><a
+          href="<%=application.getContextPath()%>/index.jsp"><img
+            src="<%=application.getContextPath()%>/images/logo.png"
+            alt="company logo here"></a></strong>
+        <div class="tg-socialsignin">
+          <div class="tg-userbox">
+
+
+            <!-- 회원인 경우 Header -->
+            <%
+            	if(loginId != null) {
+            %>
+            <a id="tg-btnsignin" class="tg-btn"
+              href="/sjrent/user/logout.rent"><span
+              style="size: 15pt">로그아웃</span></a>
+
+
+
+            <div class="dropdown tg-dropdown"></div>
+          </div>
+        </div>
+        <nav id="tg-nav" class="tg-nav">
+          <div id="tg-navigation"
+            class="collapse navbar-collapse tg-navigation">
+            <ul>
+              <li><a
+                href="<%=application.getContextPath()%>/rent/search.jsp">실시간</a></li>
+              <li><a
+                href="<%=application.getContextPath()%>/rec/rec_index.jsp">추천예약</a></li>
+              <li class="menu-item-has-children"><a
+                href="<%=application.getContextPath()%>/qna/qnaIndex.rent">커뮤니티</a>
+                <ul class="sub-menu">
+                  <li><a
+                    href="<%=application.getContextPath()%>/qna/qnaIndex.rent">Q&A</a></li>
+                  <li><a
+                    href="<%=application.getContextPath()%>/qna/qnaIndex.rent">FAQ</a></li>
+                  <li><a
+                    href="<%=application.getContextPath()%>/qna/qnaIndex.rent">공지사항</a></li>
+                </ul></li>
+
+              <li><a
+                href="<%=application.getContextPath()%>/wishitem/list.rent">위시리스트</a></li>
+              <li><a
+                href="<%=application.getContextPath()%>/rent/list.rent">예약확인</a></li>
+              <li><a
+                href="<%=application.getContextPath()%>/mypage/myPage.jsp">MYPAGE</a></li>
+            </ul>
+          </div>
+        </nav>
+
+
+
+
+
+
+        <!-- 비회원인 경우 Header -->
+        <%
+        	} else {
+        %>
+        <a id="tg-btnsignin" class="tg-btn" href="#tg-loginsingup"><span
+          style="size: 15pt">로그인</span></a>
+
+        <div class="dropdown tg-dropdown"></div>
+      </div>
+    </div>
+    <nav id="tg-nav" class="tg-nav">
+      <div id="tg-navigation"
+        class="collapse navbar-collapse tg-navigation">
+        <ul>
+          <li><a
+            href="<%=application.getContextPath()%>/rent/search.jsp">실시간</a></li>
+          <li><a
+            href="<%=application.getContextPath()%>/rec/rec_index.jsp">추천
+              예약</a></li>
+          <li class="menu-item-has-children"><a href="/qna/qnaIndex.rent">커뮤니티</a>
+            <ul class="sub-menu">
+              <li><a
+                href="<%=application.getContextPath()%>/qna/qnaIndex.rent">Q&A</a></li>
+              <li><a
+                href="<%=application.getContextPath()%>/qna/qnaIndex.rent">FAQ</a></li>
+              <li><a
+                href="<%=application.getContextPath()%>/qna/qnaIndex.rent">공지사항</a></li>
+            </ul></li>
+
+          <li><a
+            href="<%=application.getContextPath()%>/user/login.jsp">위시리스트</a></li>
+          <li><a
+            href="<%=application.getContextPath()%>/user/login2.jsp">예약확인</a></li>
+          <li><a
+            href="<%=application.getContextPath()%>/user/login.jsp">MYPAGE</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <%
+    	}
+    %>
+
+
+    <!-- 원본임!!!!!!!!!!!!! -->
                         
-                        <%	
-                        }else{
-                        %>	
-                            <a id="tg-btnsignin" class="tg-btn" href="#tg-loginsingup"><span style="size: 15pt">로그인</span></a>                        	
-                        <%
-                        }
-                        %>
-                         <!-- 재민 수정 시작(1/2) -->
-                        <!-- 재민 수정 끝(1/2) -->
-                        <div class="dropdown tg-dropdown">
-                         <!-- 로그인 되어 있는 경우 -->
+<%--                         <div class="dropdown tg-dropdown">
                         </div>
                      </div>
                   </div>
@@ -45,15 +128,14 @@ String loginId = (String)request.getAttribute("loginId");
                                  <li><a href="<%=application.getContextPath()%>/community/faq_index.jsp?type=faq">FAQ</a></li>
                                  <li><a href="<%=application.getContextPath()%>/community/notice_index.jsp?type=notice">공지사항</a></li>
                               </ul></li>
+                                                           
                            <li><a href="<%=application.getContextPath()%>/wishitem/list.rent">위시리스트</a></li>
-                           <li><a href="<%=application.getContextPath()%>/rent/list.rent">예약확인</a></li>
+                           <li><a href="<%=application.getContextPath()%>/user/login2.jsp">예약확인</a></li>
                            <li><a href="<%=application.getContextPath()%>/mypage/myPage.jsp">MYPAGE</a></li>
                         </ul>
                      </div>
-                  </nav>
+                  </nav> --%>
                </div>
-            </div>
-         </div>
       </header>
       
       <!-- 재민 수정 시작(2/2) -->
@@ -95,8 +177,13 @@ String loginId = (String)request.getAttribute("loginId");
 											<div class="form-group">
 													<input type="checkbox" name="remember" id="rememberpass" style="display: inline-block; "><label for="rememberpass" style="display: inline-block; ">아이디 저장</label>
 											</div>
-											<button type="submit" class="tg-btn tg-btn-lg"><span>로그인</span></button>
-                                            <input type="hidden" name="login" value="login"/>
+											                        
+                                             <div style="margin-top: 20px;">
+                                              <a href="<%=application.getContextPath()%>/user/regist.jsp" style="color: grey; float: right; ">아직 회원이 아니신가요?</a>
+                                             </div>
+                                   
+                          	                 <button type="submit" class="tg-btn tg-btn-lg" style="display: inline-block;  vertical-align: middle; margin-top: 10px"><span>로그인</span></button>
+                    
                                        </fieldset>
 									</form>
 								</div>
