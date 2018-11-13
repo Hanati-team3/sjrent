@@ -16,7 +16,11 @@ List<Review> reviewList = (List)request.getAttribute("reviewList");
 <html>
 <head>
 <jsp:include page="../common/commoncss.jsp" />
-<jsp:include page="../common/commonjs.jsp" />
+<jsp:include page="../common/commonjs.jsp" /><!-- fontawesome -->
+<link rel="stylesheet"
+  href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+  integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+  crossorigin="anonymous">
 
 <style type="text/css">
 .in {
@@ -61,9 +65,12 @@ $(document).ready(function(){
 			data : {
 	             'modelName' : modelName
 	        },
-			success:function(result){
+			success:function(model){
 				//$(e.currentTarget).html(result);
-				setDetailModal(result);
+				setDetailModal(model);
+				setReviewTab(model.name, model.reviewCount);
+		        $('#location-tab-nav').remove();
+		        $('#location').remove();
 			},
 	        error : function(result) {
 	        	console.log('error in openning detail show' + result);
@@ -93,6 +100,8 @@ function setDetailModal(model, id) {
 	$('#detail-name').html(model.name);
 	$('#detail-star').css('width', model.evalScore * 10 + '%');
 	$('#detail-review-count').html('(' + model.reviewCount + ' Review)');
+	$('#detail-weekday-price').html(' ' + model.weekdayPrice + ' on Weekday');
+	$('#detail-weekend-price').html(' ' + model.weekendPrice + ' on Weekend');
 	$('#detail-wish-count').html(' ' + model.rentalCount + ' Times Added on Wish List');
 	$('#detail-reserve-count').html(' ' + model.rentalCount + ' Times Reserved');
 	$('#about-this-model').html('<p>'+ model.name +' 모델 차량은 '+ model.fuelType +' 타입 연료를 사용하는 차량으로 최대 '+model.seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
@@ -128,27 +137,6 @@ function setDetailModal(model, id) {
 		}
 	}
 	$('#car-detail-others').html(otherOptionsHTML);
-	
-	
-	if('<%=request.getAttribute("loginId")%>' == 'null') {
-		console.log('id null');
-	}
-	else {
-		console.log('<%=request.getAttribute("loginId")%>');
-		$('#wish-list-anchor').on('click', function(e) {
-			e.stopPropagation();
-			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
-		})
-	}
-	$('#go-reserve-anchor').on('click', function(e) {
-		e.stopPropagation();
-		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, model.type, model.picture);
-	})
-	
-	/* $('#addReview').on('click', function(e){
-		e.stopPropagation();
-		e.currentTarget.onclick = addReview();
-	}) */
 }
 /** 
  * 리뷰 리스트를 컨트롤러에 요청하여 가져오는 함수.
@@ -228,7 +216,7 @@ function setReviewList(list) {
       <!--************************************
            Detail Model Modal Start
       *************************************-->
-       <jsp:include page="../rent/search_detail_list2.jsp" />
+       <jsp:include page="../rent/search_detail_list3.jsp" />
       <!--************************************
            Detail Model Modal End
       *************************************-->
