@@ -631,9 +631,7 @@ function nonUserLoginAction(e) {
     <div class="tg-homebannerslider"
       class="tg-homebannerslider tg-haslayout">
       <div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
-        <figure class="item"
-          data-vide-bg="poster: ../images/slider/img-02.jpg"
-          data-vide-options="position: 50% 50%">
+        <figure class="item" data-vide-bg="mp4: ../video/backgroud_car" data-vide-options="none, position: 50% 50%">
           <figcaption>
             <div class="container">
               <div class="row">
