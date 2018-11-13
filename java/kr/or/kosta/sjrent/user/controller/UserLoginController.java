@@ -111,7 +111,8 @@ public class UserLoginController implements Controller {
 					
 					// myPage.jsp 에서 로그인 실패시
 					if (where != null && where.equals("myPage")) {
-						mav.setView("/mypage/myPage.jsp");
+						response.getWriter().print("loginfail");
+						return null;
 					}
 					// ajax 요청한 경우
 					else if(where != null && where.equals("ajax")) {
