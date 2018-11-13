@@ -81,8 +81,6 @@ function setReviewTab(name, reviewCount, page) {
 
 /**
  * 모델 디테일 정보를 표시하는 모달 setDetailModal의 정보를 model객체에서 가져와 설정하는 함수.
- * 위시리스트로 넘길 정보 :  model(name,picture,type,fueltype), startDate, endDate, amountMoney
- * 예약화면으로 넘길 정보 :  model, startDate, endDate, amountMoney, location
  */
 function setDetailModal(model, id) {
 	var imagePath = "../images/cars/"+model.type+"/"+model.picture;
@@ -192,10 +190,6 @@ function setReviewList(list) {
 			$("#each_review_ul").append(review);
 		}
 }
- /* 리뷰 작성  */
-/*function addReview(){
-	$('#addReviewForm').submit();
-} */
 
 </script>
 </head>
