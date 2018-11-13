@@ -51,7 +51,7 @@ public class QnAListController implements Controller {
         //총 QnA 갯수
         int count = 0; 
         
-        System.out.println("리퀘스트에 담은 페이지 정보 : " + (String)request.getParameter("page"));
+        //System.out.println("리퀘스트에 담은 페이지 정보 : " + (String)request.getParameter("page"));
         String pageS = (String)request.getParameter("page");
         if (pageS != null) {
         	page = Integer.parseInt(pageS);

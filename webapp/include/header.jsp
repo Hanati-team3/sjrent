@@ -7,7 +7,6 @@ String loginId = (String)request.getAttribute("loginId");
 <%@ page contentType="text/html; charset=utf-8"%>
       <header id="tg-header" class="tg-header tg-haslayout">
          <div class="container-fluid">
-
     <div class="row">
       <div class="tg-navigationarea tg-headerfixed">
         <strong class="tg-logo"><a
