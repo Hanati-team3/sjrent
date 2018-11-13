@@ -83,7 +83,7 @@ String loginId = (String)request.getAttribute("loginId");
           <li><a
             href="<%=application.getContextPath()%>/rec/rec_index.jsp">추천
               예약</a></li>
-          <li class="menu-item-has-children"><a href="/qna/qnaIndex.rent">커뮤니티</a>
+          <li class="menu-item-has-children"><a href="<%=application.getContextPath()%>/qna/qnaIndex.rent">커뮤니티</a>
             <ul class="sub-menu">
               <li><a
                 href="<%=application.getContextPath()%>/qna/qnaIndex.rent">Q&A</a></li>

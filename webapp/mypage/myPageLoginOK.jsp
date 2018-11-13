@@ -64,7 +64,7 @@ String loginId = (String)request.getAttribute("loginId");
               </div>
 
               <div
-                style="background-color: white; border: thick; width: 25%; font-size: 15pt; margin-left: 38%; margin-bottom: 20%; text-align: center; float: left;">
+                style="background-color: white; border: thick; width: 25%; font-size: 15pt; margin-left: 38%; margin-bottom: 5%; text-align: center; float: left;">
                 첫화면입니다.<br>
                 원하는 메뉴를 선택해주세요.</div>
 
