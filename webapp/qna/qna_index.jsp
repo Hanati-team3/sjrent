@@ -55,7 +55,7 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
 /* Style tab links */
 .tablink {
     background-color: #555;
-    color: white;
+    color: white; 
     float: inherit;
     border: none;
     outline: none;
@@ -77,7 +77,8 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
     height: 100%;
 }
 
-#QnA {background-color: #446600;}
+#QnA { background-color: #446600; 
+/* background-color: orange; */}
 #FAQ {background-color: #800060;}
 #공지사항 {background-color: #006699;}
 
@@ -125,9 +126,9 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
 									</div>
 								<div id="QnA" class="tabcontent">
 									 
-									 <table class="w3-table w3-striped w3-bordered" style="text-align: center;">
+									 <table class="w3-table w3-striped w3-bordered" style="text-align: center; ">
 							          <thead>
-							            <tr class="w3-theme">
+							            <tr class="w3-theme" style="color: white; font-size: 14pt">
 							              <th>번호</th>
 							              <th>제목</th>
 							              <th>작성자</th>
@@ -136,7 +137,7 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
 							          </thead>
 							          <tbody>
 							          
-							              <tr>
+							              <tr style="color: white;">
 							                  <td>dd</td>
 							                  <td>d</td>
 							                  <td>d</td>
