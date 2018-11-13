@@ -395,7 +395,6 @@ function setModelList(list) {
 	});
 	
 	/** 디테일 모달이 닫힐 때 */
-	
 	$('#detail_show').on('hidden.bs.modal', function (e) {
 		pickupPlace = "방문수령"; 
 		detailModel = null;
