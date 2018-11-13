@@ -34,35 +34,38 @@ public class QnAListController implements Controller {
 	private ModelAndView mav;
 	
 	@Override 
-	public ModelAndView handleRequest(HttpServletRequest request,HttpServletResponse response) throws ServletException {
+	public ModelAndView handleRequest(HttpServletRequest request,HttpServletResponse response) 
+			throws ServletException {
         
 		mav = new ModelAndView(); 
 		XMLObjectFactory factory =  (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
 		
         List<QnA> list = null; 
+        //한 페이지에 보여줄 QnA수
         int listSize = 10; 
+        
+        //페이지 번호
         int page = 1;
+        
+        //총 QnA 갯수
         int count = 0; 
         
-        System.out.println("리퀘스트에 담은 페이지 정보 : " + request.getParameter("page"));
-        
-        if ((String)request.getParameter("page")!= null) {
-			try {
-				list = qnaService.listByPage(page, listSize);
-				count = qnaService.count(); 
-				System.out.println("여기까지온다ㅏㅏㅏㅏㅏ");
-			} catch (Exception e) {
-				throw new ServletException("QnAService.list() 예외 발생", e); 
-			} 
-        } else {
-        	mav.setView("/qna/qna_index.jsp");
-        	return mav; 
+        System.out.println("리퀘스트에 담은 페이지 정보 : " + (String)request.getParameter("page"));
+        String pageS = (String)request.getParameter("page");
+        if (pageS != null) {
+        	page = Integer.parseInt(pageS);
         }
+		try {
+			list = qnaService.listByPage(page, listSize);
+			count = qnaService.count(); 
+		} catch (Exception e) {
+			throw new ServletException("QnAService.list() 예외 발생", e); 
+		} 
         
         mav.addObject("count", count); 
         mav.addObject("list", list);
-        mav.setView("/qna/qna_index.jsp"); 
+        mav.setView("/community/qna_index.jsp"); 
         return mav;
   
 	 

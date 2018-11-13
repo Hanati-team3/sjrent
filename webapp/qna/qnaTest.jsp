@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <jsp:include page="common/commoncss.jsp"/> 
-  <jsp:include page="common/commonjs.jsp"/> 
+  <%-- <jsp:include page="common/commoncss.jsp"/> 
+  <jsp:include page="common/commonjs.jsp"/> --%> 
   
 <style type="text/css">
 
