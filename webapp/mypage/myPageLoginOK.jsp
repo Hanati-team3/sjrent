@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 String loginId = (String)request.getAttribute("loginId");
+
 %>
 <c:set var="context" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
@@ -89,7 +90,7 @@ String loginId = (String)request.getAttribute("loginId");
                     아이디<sup>*</sup>
                   </h4>
                   <input type="text" name="id" class="form-control"
-                    placeholder="${user.id }" maxlength="10"
+                    value="${user.id }" maxlength="16"
                     style="text-transform: none;" disabled>
                 </div>
 
@@ -98,28 +99,28 @@ String loginId = (String)request.getAttribute("loginId");
                     이름<sup>*</sup>
                   </h4>
                   <input type="text" name="name" class="form-control"
-                    placeholder="${user.name }" maxlength="10"
+                    value="${user.name }" maxlength="15"
                     style="text-transform: none;" disabled>
                 </div>
 
                 <div class="form-group">
                   <label>이메일 <sup>*</sup></label> <input type="text"
                     name="email" id="email" class="form-control"
-                    placeholder="${user.email }" maxlength="30"
+                    value="${user.email }" maxlength="30"
                     style="text-transform: lowercase;" disabled>
                 </div>
 
                 <div class="form-group">
                   <label>포인트 <sup>*</sup></label> <input type="text"
                     name="point" id="point" class="form-control"
-                    placeholder="${user.point }" maxlength="5"
+                    value="${user.point }" maxlength="5"
                     style="text-transform: lowercase;" disabled>
                 </div>
 
                 <div class="form-group">
                   <label>핸드폰번호 <sup>*</sup></label> <input type="text"
                     name="cellphone" class="form-control"
-                    placeholder="${user.cellphone }" maxlength="13"
+                    value="${user.cellphone }" maxlength="13"
                     style="text-transform: lowercase;" disabled>
                 </div>
               </div>

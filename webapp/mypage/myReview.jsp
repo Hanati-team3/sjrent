@@ -16,7 +16,18 @@ List<Review> reviewList = (List)request.getAttribute("reviewList");
 <html>
 <head>
 <jsp:include page="../common/commoncss.jsp" />
+<jsp:include page="../common/commonjs.jsp" />
 
+<style type="text/css">
+.in {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-backdrop {
+  position: static;
+}
+
+</style>
 <script type="text/javascript">
 
 /**
@@ -33,6 +44,10 @@ function oneCheckbox(a){
             obj[i].checked = false;
         }
     }
+}
+
+$(document).ready(function(){
+	
 }
 
 
@@ -122,7 +137,7 @@ function oneCheckbox(a){
                   <%
                   	for (int i = 0; i < reviewList.size(); i++) {
                   %>
-                  <tr>
+                  <tr data-toggle='modal' data-target='#detail_show' data-model-name='<%=reviewList.get(i).getModelName() %>'>
                     <!-- checkbox에 해당된 리뷰 삭제  -->
                     <td><input type="checkbox" name="reviewSeq" onclick="oneCheckbox(this)" value="<%=reviewList.get(i).getNumber()%>"></td>
                     <td><%=reviewList.get(i).getNumber()%></td>
@@ -168,6 +183,5 @@ function oneCheckbox(a){
          Wrapper 종료
 *************************************-->
    </div> 
-    <jsp:include page="../common/commonjs.jsp" />
 </body>
 </html>
