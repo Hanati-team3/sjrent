@@ -69,6 +69,7 @@ public class ReviewListController implements Controller {
 		}
       }
       for(Review review : reviewList) {
+    	  System.out.println(review.getDate());
     	  jsonArray.add(otj.ObjectToJsonObject(review));
       }
       response.setCharacterEncoding("utf-8");
