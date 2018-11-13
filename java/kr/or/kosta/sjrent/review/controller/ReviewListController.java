@@ -40,11 +40,17 @@ public class ReviewListController implements Controller {
       reviewService = (ReviewService)factory.getBean(ReviewServiceImpl.class);
       jsonArray = new JSONArray();
       otj = new ObjectToJson();
+      
+      String userId = (String) request.getAttribute("loginId");
       String modelName = request.getParameter("modelName");
-      String userId = request.getParameter("userId");
       String pageS = request.getParameter("page");
       String listSizeS = request.getParameter("listSzie");
       List<Review> reviewList = new ArrayList<Review>();
+      List<Review> reviewListById = new ArrayList<Review>();
+
+      System.out.println("review 컨트롤러 넘어옴");
+      
+      
       int page = 1;
       int listSize = 10000;
       if(pageS!=null&&!pageS.equals("")) {
@@ -62,6 +68,10 @@ public class ReviewListController implements Controller {
       }else if(userId !=null) {
     	  try {
 			reviewList = reviewService.listByUserByPage(page, listSize, userId);
+			
+			reviewListById = reviewService.listById(userId);
+			System.out.println("여기까지오면 대박!!!" + reviewListById);
+			
 		} catch (Exception e) {
 
 		}
