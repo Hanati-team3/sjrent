@@ -109,7 +109,7 @@ input[type="checkbox"]:disabled + .label-text:before{
 }
 
 #icon-desc {
-  font-size: 7px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -310,7 +310,7 @@ function setModelList(list) {
 	}
 	
 	for ( var i in list) {
-		var desc="<table id='option-icon' border='none'> <tr>";
+		var desc="<table id='option-icon' style='border-width: 0;'> <tr>";
 		if(list[i].navigation == 1) {
 			desc += '<td style="border:none;"><i class="fas fa-map-marked-alt"></i></td>';
 		}
@@ -522,7 +522,9 @@ function wishResultHide() {
  * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
  */
  function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
-	alert('2');
+	if(pickupPlace == '방문수령') {
+		alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
+	}
 	// 로그인 중
 	if(isLogin == true){
 		// post로 데이터 전달
