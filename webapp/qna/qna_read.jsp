@@ -21,7 +21,7 @@
 
 
 //넘버링하기
-int count = (int)request.getAttribute("count"); 
+/* int count = (int)request.getAttribute("count"); 
 //int listSize = 10;
 int pageNum = 1;
 String pageS = request.getParameter("page");
@@ -29,7 +29,7 @@ if(pageS!=null){
 	pageNum = Integer.parseInt(pageS);
 }
 int listSize = 10;
-int startNum = count -(listSize*(pageNum-1));
+int startNum = count -(listSize*(pageNum-1)); */
 %>
 <!DOCTYPE html>
 <html>
@@ -126,7 +126,7 @@ tr:hover {
 										
 			 <!-- table에 원래 있던 class="w3-table w3-striped w3-bordered" -->
 		    <table class="table table-responsive">
-                          <colgroup>
+                         <%--   <colgroup>
                              <col width="5%"/>
                              <col width="40%"/>
                              <col width="20%"/>
@@ -137,12 +137,29 @@ tr:hover {
                              <th scope="col">제목</th>
                              <th scope="col">작성자</th>
                              <th scope="col">작성일</th>
-                          </tr>
+                          </tr> --%>
                           <tbody>
                           <!--************************************
                                 QnA 리스트 시작 
                              *************************************-->
-                             <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
+                             
+                             <tr>
+                             	<td>
+	                             	<div style="background-color: green">
+										<div style="background-color: red; float: left;"></div>
+										<div style="background-color: black; float: right;"></div>
+	                             	</div>
+                             	</td>
+                             
+                             
+                             </tr>
+                             <tr>
+                             	<td>
+                             	
+                             	</td>
+                             </tr>
+                             
+                             <%-- <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
                              <% if (request.getAttribute("list") != null ){ %> 
                               <c:forEach var="qna" items="${list}" varStatus="status">
 	                              <tr>
@@ -200,17 +217,17 @@ tr:hover {
                               <tr>
                               	<td colspan="4" style="height: 100px; vertical-align: middle;">QnA가 존재하지 않습니다.</td>
                               </tr>
-                              <%}%>
+                              <%}%> --%>
                              <!--************************************
                                 QnA 리스트 종료
                              *************************************-->
-                          </tbody>
+                          </tbody> 
                        </table>
                        
                        <!-- 글쓰기 버튼 -->
-                       <div style="display:inline-block; float: right; margin-top: 30px">
+                       <%-- <div style="display:inline-block; float: right; margin-top: 30px">
 							<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right;" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'"><span style="font-size: 14pt; width:30%">글쓰기</span></button>
-					   </div>
+					   </div> --%>
 	        
 		</div>
 		
