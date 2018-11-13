@@ -130,6 +130,7 @@ function getImagePath() {
   	
  /** 시작하자마자 */
 $(document).ready(function(){ 
+	if('<%=request.getAttribute("loginId")%>' != 'null') isLogin = true;
 	var imagePath = getImagePath(); 
  			//console.log('이미지경로 : '+ imagePath);
  			
@@ -140,7 +141,15 @@ $(document).ready(function(){
 	//alert(resultCar.src);
 	//console.log('어떤 값이 들어가지? ' + imagePath);
 	//var resultImg = document.getElementsByClassName('resultImg'); 
- 			
+	
+	$('#search-user-login-form').submit(function(e) {
+		loginAction(e);
+	});
+	
+	$('#search-nonuser-login-form').submit(function(e) {
+		nonUserLoginAction(e);
+	});
+	
 	/* DatePicker */
    function setDisabledate(id, disabledDates, count){
 	   /* var disabledDates = ['2018.11.18', '2018.11.14', '2018.11.20', '2018.11.24'] */
@@ -247,6 +256,7 @@ $(document).ready(function(){
 	        },
 			success:function(result){
 				var model = result.model;
+				detailModel = model;
 				car_num = result.period;
 				console.log(car_num);
 				/* console.log(Object.keys(car_num).length); */
@@ -470,51 +480,134 @@ $(document).ready(function(){
 		$("#wish_result_modal").modal('hide');
 	}
 
-	/**
-	 * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
-	 */
-	 function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
-			if(amountMoney == undefined) {
-				alert('날짜를 선택해주세요');
-				return;
-			}
-			if(pickupPlace == '방문수령') {
-				alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
-			}
-		// 로그인 중
-		if( '<%=request.getAttribute("loginId")%>' != 'null'){
-			// post로 데이터 전달
-		    var form = document.createElement("form");
-		    form.setAttribute("method", "post");
-		    form.setAttribute("action", '<%=application.getContextPath()%>/rent/page.rent');
-		 
-		    var params = {
-			  		startDate : startDate,
-			  		endDate : endDate,
-			  		amountMoney : amountMoney,
-			  		pickupPlace : pickupPlace,
-			  		type : type,
-			  		picture : picture
-		    }
-		    
-		    //히든으로 값을 주입시킨다.
-		    for(var key in params) {
-		        var hiddenField = document.createElement("input");
-		        hiddenField.setAttribute("type", "hidden");
-		        hiddenField.setAttribute("name", key);
-		        hiddenField.setAttribute("value", params[key]);
-		        form.appendChild(hiddenField);
-		    }
-		    document.body.appendChild(form);
-		    form.submit();
-		}
-		else {
-			//alert('로그인필요');
-			$("#login_modal").modal('show');
-		}
-	}
+
 	 
 }) 
+
+
+function loginAction(e) {
+	e.preventDefault();
+	var id = e.currentTarget.id.value;
+	var pw = e.currentTarget.pw.value;
+	var remember = e.currentTarget.remember.checked;			// true or false
+	var where = 'ajax';
+	
+	var params = {
+  		id : id,
+  		pw : pw,
+  		login : where
+	};
+	// 아이디 저장 체크 되어있을 때만 remember를 파라미터로 보냄
+	if(remember == true) {
+		params.remember = remember;
+	}
+	
+	console.log('login : ' + id + "," + pw + "," + remember);
+	window.loginE = e;
+	
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/user/login.rent",
+		type:'POST', 
+		data : params,
+		success:function(result){
+			if(result == 'success') {
+				isLogin = true;
+				console.log('login Success');
+				goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, detailModel.type, detailModel.picture);
+			}
+			else {
+				alert('아이디와 비밀번호를 확인해주세요');
+			}
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
+}
+/**
+ * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
+ */
+ function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
+		if(amountMoney == undefined) {
+			alert('날짜를 선택해주세요');
+			return;
+		}
+		if(pickupPlace == '방문수령') {
+			alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
+		}
+		console.log('ab');
+		
+	// 로그인 중
+	if(isLogin == true){
+		console.log('11');
+		// post로 데이터 전달
+	    var form = document.createElement("form");
+	    form.setAttribute("method", "post");
+	    form.setAttribute("action", '<%=application.getContextPath()%>/rent/page.rent');
+	 
+	    var params = {
+		  		startDate : startDate,
+		  		endDate : endDate,
+		  		amountMoney : amountMoney,
+		  		pickupPlace : pickupPlace,
+		  		type : type,
+		  		picture : picture
+	    }
+	    
+	    //히든으로 값을 주입시킨다.
+	    for(var key in params) {
+	        var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", key);
+	        hiddenField.setAttribute("value", params[key]);
+	        form.appendChild(hiddenField);
+	    }
+	    document.body.appendChild(form);
+	    form.submit();
+	}
+	else {
+		//alert('로그인필요');
+		$("#login_modal").modal('show');
+	}
+}
+function nonUserLoginAction(e) {
+	e.preventDefault();
+	var name = e.currentTarget.name_non.value;
+	var email = e.currentTarget.email_non.value;
+	var cellphone = e.currentTarget.cellphone_non.value;
+	var where = 'rent';
+	
+	var params = {
+		name_non : name,
+		email_non : email,
+		cellphone_non : cellphone,
+		where : where
+	};
+	
+	console.log('non login : ' + name + "," + email + "," + cellphone);
+	window.nonloginE = e;
+	
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/user/signup.rent",
+		type:'POST', 
+		data : params,
+		dataType:"json",
+		success:function(result){
+			console.log(result);
+			if(result['result'] == 'success') {
+				isLogin = true;
+				console.log('nonuser Success');
+				goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, detailModel.type, detailModel.picture);
+			}
+			else {
+				alert(result['reason']);
+			}
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
+}
 </script> 
 </head>
 <body class="tg-home tg-homevone" onload="initMap();">
@@ -560,6 +653,15 @@ $(document).ready(function(){
       <jsp:include page="/rent/search_include/wish_result_modal.jsp" />
       <!--************************************
               Wish Result Modal End
+         *************************************-->
+         
+         
+      <!--************************************
+              Search Login Modal Start
+         *************************************-->
+      <jsp:include page="/rent/search_include/search_login_modal.jsp" />
+      <!--************************************
+              Search Login Modal End
          *************************************-->
          
       <div class="row">
