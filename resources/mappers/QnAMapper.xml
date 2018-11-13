@@ -46,7 +46,7 @@
 	    WHERE qna_seq = #{number}
 	</update>
 	
-	<!-- 특정 QnA 읽기 -->
+	<!-- 특정 QnA 읽기 resultMap="qnaResultMap"-->
 	<select id="read" resultType="QnA" parameterType="Integer" resultMap="qnaResultMap">
 		SELECT qna_seq, 
 		       user_seq, 
@@ -90,7 +90,7 @@
 		                       qna_date, 
 		                       qna_answer 
 		                FROM   qna 
-		                ORDER  BY qna_seq) A 
+		                ORDER  BY qna_seq desc ) A 
 		        WHERE  ROWNUM <![CDATA[<=]]> #{endNum}) X 
 		WHERE  X.rnum <![CDATA[>=]]> #{startNum} 
 	</select>

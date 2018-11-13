@@ -1,168 +1,233 @@
-<%@ page contentType="text/html; charset=utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="kr.or.kosta.sjrent.qna.controller.QnAListController"%>
+<%@page import="kr.or.kosta.sjrent.common.controller.Controller"%>
+<%@page import="kr.or.kosta.sjrent.common.params.Params"%>
+<%@page import="kr.or.kosta.sjrent.common.params.PageBuilder"%>
+<%@page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link rel="stylesheet" type="text/css" href="<%=application.getContextPath()%>/css/basic.css">
 <c:set var="context" value="${pageContext.request.contextPath}" />
+<%
+//페이지당 보여지는 페이지수 설정
+
+
+// 페이징 정렬 
+//List<Article> list = dao.listByPage(params);
+
+// 페이징 처리에 필요한 검색 개수 DB조회
+//int rowCount = dao.countBySearch(params);
+
+// PageBuilder를 이용하여 페이징 계산
+//PageBuilder pageBuilder = new PageBuilder(params, rowCount);
+//pageBuilder.build();
+
+
+//넘버링하기
+/* int count = (int)request.getAttribute("count"); 
+//int listSize = 10;
+int pageNum = 1;
+String pageS = request.getParameter("page");
+if(pageS!=null){
+	pageNum = Integer.parseInt(pageS);
+}
+int listSize = 10;
+int startNum = count -(listSize*(pageNum-1)); */
+%>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="<%=application.getContextPath()%>/css/basic.css">
-<jsp:include page="../common/commoncss.jsp" />
+<!-- 스타일 시작 -->
+   <jsp:include page="../common/commoncss.jsp" />
+   <jsp:include page="../common/commonjs.jsp" />
+<style type="text/css">
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
 
-<%
-	String id = null;
-	Cookie[] cookies = request.getCookies();
-	if (cookies != null) {
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("loginId")) {
-				id = cookie.getValue();
-			}
-		}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+	background-color:#f5f5f5;
+	color: black;
 	}
-	// 초기화면 아이디 null시
-	if (id == null) {
-		id = "";
-	}
-%>
 
-<script type="text/javascript">
+/* Style tab links */
+.tablink {
+    background-color: #555;
+    color: white; 
+    float: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 18px;
+    width: 33%;
+}
 
+.tablink:hover {
+    background-color: #777;
+}
 
-// 로그인시 아이디 존재하지 않으면 글씨띄우기 다른 3곳도 동일
+.tabcontent {
+    color: black;
+    display: none;
+    /* padding: 100px 20px; */
+    height: 100%;
+}
 
+#QnA { background-color: #fafafa; 
+/* background-color: orange; */}
+#FAQ {background-color: #fafafa;}
+#공지사항 {background-color: #fafafa;}
 
-
-
-</script>
-
-
+</style>
+<!-- 스타일 종료 -->
 </head>
-<body class="tg-home tg-homevone">
 
 <!--************************************
-      Nav 시작
-*************************************-->
-   <jsp:include page="../include/nav.jsp"/>
-<!--************************************
-      Nav 종료
-*************************************-->
-
-<!--************************************
-      Wrapper 시작
-*************************************-->
-   <div id="tg-wrapper" class="tg-wrapper tg-haslayout">
-
-<!--************************************
-      Header 시작
-*************************************-->
-   <jsp:include page="../include/header.jsp"/>
-<!--************************************
-      Header 종료
-*************************************-->
-   
-<!--************************************
-		Main 시작
+			Nav 시작
 	*************************************-->
-<main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
-	<div class="container">
-		<div class="row">
-			<div class="tg-homebannerslider tg-homebannerslider tg-haslayout">
-				<div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
-					<div class="container">
-						<div class="tg-tabcontent tab-content" style="padding: 0px">
-							<div role="tabpanel" class="tab-pane active fade in" id="home">
-								<div style="text-align: center; margin: 0px 0px; padding: 0px" >
-									<h2>QnA</h2>
-									
-									<!-- 글작성 시작 -->
-									<div class="outline">
-								<form action="/sjrent/qna/qnaCreate.rent" method="post">
-								   <%
-								    if(id != null){//로그인 
-								   %>
-								   <div class="dottedOutline">
-								   
-								           
-								        <div style="float: left;">
-								             <label class="createPostButton" style="background-color: orange; font-size:14pt">글제목</label> 
-								             <input type="text" class="grayBox" required id="title" name="title" maxlength="15" style="text-transform:none; text-align: left">
-								        </div>
-								          
-								        <div>
-								             <label class="createPostButton" style="background-color: orange; font-size:14pt">작성자</label> 
-								             <input type="text" class="grayBox" readonly value='<%=id %>' id="writer" name="writer" style="text-transform:none">
-								        </div>
-								        
-								        <%--<input type="text" class="createPostBox" placeholder="게시글을 작성해주세요 (1000자 이내)" required id="content" name="content" maxlength="1000"> --%>    
-								        <textarea class="createPostBox" name="content" id="content" placeholder="게시글을 작성해주세요 (1000자 이내)"  maxlength="1000" style="height: 100px; text-transform:none" required></textarea>
-								    </div> 
-								    
-								        <div style="text-align:right">
-								              <input type="submit" class="newButton" value='등록하기' style="margin-top:20px; display:inline-block; background-color: #d64161; font-size:14pt ">      
-								        </div>
-								    
-								</form>
-								    <%  
-								    }else{//로그인x
-								    %>
-								    
-								    <div class="dottedOutline">
-								        <div class="caution">
-								             <label>※ 비밀번호는 글 수정, 삭제시 필요합니다.</label>
-								        </div>
-								           
-								        <div>
-								             <label class="createPostButton">글제목</label> 
-								             <input type="text" class="grayBox" readonly>
-								        </div>
-								          
-								        <div>
-								             <label class="createPostButton">작성자</label> 
-								             <input type="text" class="grayBox" disabled>
-								             <div class="right"><label class="createPostButton">비밀번호</label> 
-								             <input type="password" class="grayBox" disabled></div>
-								        </div>
-								        
-								        <input type="text" class="createPostBox" placeholder="로그인 후 이용 가능합니다" disabled> 
-								    </div>
-								   
-								    <div style="text-align:right">
-								      <input type="submit" class="createPostButton"  value='등록하기' style="margin-top:20px; display:inline-block; background-color: orange; " disabled>      
-								    </div>
-								    <%
-								    }
-								    %>
-								   
-								     
-								   
-								   
-								  </div> 
-									
-									
-									
-									
-										
-									<!-- 글작성 종료 -->	
-		
-								</div>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</div>
+<jsp:include page="../include/nav.jsp" />
+<!--************************************
+			Nav 종료
+	*************************************-->
+
+<!--************************************
+			Wrapper 시작
+	*************************************-->
+<div id="tg-wrapper" class="tg-wrapper tg-haslayout">
+
+<!--************************************
+		Header 시작
+	*************************************-->
+<jsp:include page="../include/header.jsp" />
+<!--************************************
+		Header 종료
+	*************************************-->
+
+<!--************************************
+      Main 시작
+   *************************************-->
+<main id="tg-main" class="tg-main tg-haslayout tg-bglight">
+   <div class="container">
+      <div class="row">
+         <div style="text-align: center; margin: 100px 0px "><h2>커뮤니티</h2></div>
+         <div style="text-align: center;  margin: 10px 0px 20px">
+			<button class="tablink" onclick="openPage('QnA', this, '#446600')" id="defaultOpen">QnA</button>   
+			<button class="tablink" onclick="openPage('FAQ', this, '#800060')"  >FAQ</button>
+			<button class="tablink" onclick="openPage('공지사항', this, '#006699')"  >공지사항</button>
 		</div>
-	</div>
+		
+		<!-- QnA -->
+		<div id="QnA" class="tabcontent" >
+		<%
+		String loginId = (String)request.getAttribute("loginId");
+		%>
+										
+		<form action="/sjrent/qna/qnaCreate.rent" method="post">
+			   <div class="dottedOutline">
+			           
+			        <div style="vertical-align: middle;">
+			             <label class="createPostButton" style="background-color: #446600">글제목</label> 
+			             <input type="text" class="grayBox" required id="title" name="title" maxlength="30" style="text-align: left; text-transform: none; width: 1040px">
+			        </div>
+			        
+			        <input type="hidden" id="id" value="loginId">
+			        
+			        <%--<input type="text" class="createPostBox" placeholder="게시글을 작성해주세요 (1000자 이내)" required id="content" name="content" maxlength="1000"> --%>    
+			        <textarea class="createPostBox" name="content" placeholder="게시글을 작성해주세요 (1000자 이내)" id="content" maxlength="1000" required style="text-transform: none;" cols="200"></textarea>
+			    </div> 
+			    
+			        <div style="text-align:right">
+			              <input type="button" class="newButton" value='목록' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='/sjrent/qna/qnaIndex.rent">      
+			              <input type="submit" class="newButton" value='등록' style="margin-top:20px; display:inline-block; background-color: #006699 ">      
+			        </div>
+			    
+			</form>		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+	        
+		</div>
+		
+		<!-- FAQ -->
+		<div id="FAQ" class="tabcontent">
+			<h3>FAQ</h3>
+			<!-- FAQ 내용 시작 -->
+			<div style="padding-left: 15px; margin-bottom: 180px">
+				<%
+				for(int i=1; i<6; i++){
+				%>
+				<h5># 내용 <%=i %></h5>
+				<%
+				}
+				%>
+			</div>
+			<!-- FAQ 내용 종료 -->
+			
+		</div>
+		
+		<!-- Notice -->
+		<div id="공지사항" class="tabcontent">
+			<h3>공지사항</h3>
+			<!-- Notice 내용 시작 -->
+			<div style="padding-left: 15px; margin-bottom: 180px">
+				<%
+				for(int i=1; i<6; i++){
+				%>
+				<h5># 내용 <%=i %></h5>
+				<%
+				}
+				%>
+			</div>
+			<!-- Notice 내용 종료 -->
+		</div>
+		
+		
+		
+      </div>
+   </div>
 </main>
 <!--************************************
-		Main 종료
-*************************************-->
+      Main 종료
+   *************************************-->
 
 <!--************************************
-         Wrapper 종료
+			Wrapper 종료
 *************************************-->
-   </div> 
-    <jsp:include page="../common/commonjs.jsp" />
+</div>
+
+<body class="tg-home tg-homevone">
+	<script>
+		function openPage(pageName, elmnt, color) {
+			var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablink");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].style.backgroundColor = "";
+			}
+			document.getElementById(pageName).style.display = "block";
+			elmnt.style.backgroundColor = color;
+
+		}
+		// Get the element with id="defaultOpen" and click on it
+		document.getElementById("defaultOpen").click();
+	</script>
+	
+
+   <jsp:include page="../common/commonjs.jsp" />
 </body>
 </html>

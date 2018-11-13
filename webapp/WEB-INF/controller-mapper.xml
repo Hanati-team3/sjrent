@@ -41,10 +41,17 @@
 	<bean type="controller" name="/qna/qnaIndex"
 		class="kr.or.kosta.sjrent.qna.controller.QnAListController" />
 
+	
 	<!-- QnA create 컨트롤러 -->
 	<bean type="controller" name="/qna/qnaCreate"
 		class="kr.or.kosta.sjrent.qna.controller.QnACreateController" />
 
+
+	<!-- QnA read 컨트롤러 -->
+	<bean type="controller" name="/qna/qnaRead"
+		class="kr.or.kosta.sjrent.qna.controller.QnAReadController" />
+	
+	
 	<!-- QnA delete 컨트롤러 -->
 	<bean type="controller" name="/qna/qnaDelete"
 		class="kr.or.kosta.sjrent.qna.controller.QnADeleteController" />
