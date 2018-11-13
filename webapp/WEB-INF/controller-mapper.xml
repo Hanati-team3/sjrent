@@ -82,6 +82,8 @@
 	<bean type="controller" name="/model/recommend" class="kr.or.kosta.sjrent.model.controller.ModelRecommendController" />
 	<!-- 모델명으로 안 되는 날짜 받기-->
 	<bean type="controller" name="/model/detailperiod" class="kr.or.kosta.sjrent.model.controller.ModelPeriodController" />
+	<!-- 모델명으로 위시리스트에 추가된 개수 받기-->
+	<bean type="controller" name="/model/wishcount" class="kr.or.kosta.sjrent.model.controller.ModelWishCountController" />
 
 	
 
