@@ -86,7 +86,7 @@ function loginCheck() {
 <!--************************************
       Header 시작
 *************************************-->
-   <jsp:include page="../include/header.jsp"/>
+<jsp:include page="../include/header.jsp"/>
 <!--************************************
       Header 종료
 *************************************-->
