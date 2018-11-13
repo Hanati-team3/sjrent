@@ -6,94 +6,233 @@
 <head>
 <jsp:include page="../common/commoncss.jsp" />
 <jsp:include page="../common/commonjs.jsp" />
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>SJ 렌트카</title>
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/bootstrap.min.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/normalize.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/font-awesome.min.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/icomoon.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/owl.carousel.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/bootstrap-select.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/scrollbar.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/jquery.mmenu.all.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/prettyPhoto.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/transitions.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/main.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/color.css">
-<link rel="stylesheet"
-  href="<%=application.getContextPath()%>/css/responsive.css">
-<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
 <style type="text/css">
-.btn {
-	border: none;
-	color: white;
-	padding: 14px 28px;
-	font-size: 20px;
-	cursor: pointer;
-	position: absolute;
+
+.resultImg {
+   	position: absolute;
+   	top: 55%;
+	left: 50%;
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
+	background-color: #d64161;
+	color: white;
+	font: bold; 
+	font-size: 32px;
+	padding: 10px;
 	border: none;
+	cursor: pointer;
+	/* box-shadow: 0 9px #999; */ 
+	/* border-radius: 50%; */
 	text-align: center;
-	border-radius: 2px;
+	height: 30%;
 }
 
-.left {
-	background-color: #005580;
-	top: 68%;
-	left: 37%;
+.resultImg:active {
+	  background-color: #c94c4c;
+	  box-shadow: 0 5px #666;
+	  /* transform: translateY(4px); */
+	}
+	
+.resultImg:hover {
+background-color: #ff8080;
 }
-
-.left:hover {
-	background-color: lightgray;
+.in {
+   background: rgba(0, 0, 0, 0.8);
 }
-
-.right {
-	background-color: #005580;
-	top: 68%;
-	left: 61%;
-}
-
-.right:hover {
-	background-color: lightgray;
+.modal-backdrop{
+   position: static;
 }
 </style>
+
 <script>
-   $(document).ready(function(){
+
+   <%-- $(document).ready(function(){
+	   var result = '초기값';
+	   
 		console.log('id : ' + '<%=request.getAttribute("loginId")%>');
+		console.log('<%=request.getParameter("hidden")+","+request.getParameter("click")%>');
 	      /** 모델 목록을 불러오는 search controller로 요청 전달 */
 	      $.ajax({
 	         type : "POST",
 	          url : "<%=application.getContextPath()%>/model/recommend.rent",
+	          async: false, 
 	          data : {
 	             'result' : '<%=request.getParameter("hidden")+","+request.getParameter("click")%>',
 	          },
 	          dataType: "json",
 	          success: function(data){
-				console.log(data.modelName);
-				console.log(data.picture);
+				//console.log(data.modelName);
+				//console.log(data.picture);
+				//console.log(data.type);
+				
+				var type = data.type; 
+				var picture = data.picture; 
+
+				//console.log(typeof modelName);//string
+				//console.log(typeof type);//string
+				
+				result = ("..images/" + type + "/" + picture).trim();
+				console.log('ajax안에서  : ' + result);
+				
+				
 	          }
 	       });
-	      
-	   });
-</script>
+		   return result;
+	   }) --%>
+
+   		/* 차 모델 이름 저장 */
+   		var car_model;
+   		
+	   /** 이미지 경로 받아오기 */
+	   function getImagePath() {
+	   var result; 
+	   	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
+		console.log('<%=request.getParameter("hidden")+","+request.getParameter("click")%>');
+	   $.ajax({
+	         type : "POST",
+	          url : "<%=application.getContextPath()%>/model/recommend.rent",
+	          async: false, 
+	          data : {
+	             'result' : '<%=request.getParameter("hidden")+","+request.getParameter("click")%>',
+	          },
+	          dataType: "json",
+	          success: function(data){
+				//console.log(data.modelName);
+				//console.log(data.picture);
+				//console.log(data.type);
+				
+				var type = data.type; 
+				var picture = data.picture; 
+				car_model = data.modelName;
+				//console.log(typeof modelName);//string
+				//console.log(typeof type);//string
+				
+				result = ("../images/cars/" + type + "/" + picture).trim();
+				console.log('ajax안에서  : ' + result);
+				
+				
+	          }
+	       });
+	   	   console.log("최종적으로 넘어가는 리절트: " + result);
+	   	   return result; 
+		}
+   
+	   
+   		/** 시작하자마자 */
+   		$(document).ready(function(){ 
+			var imagePath = getImagePath(); 
+   			//console.log('이미지경로 : '+ imagePath);
+   			
+			var resultCar = document.getElementById('resultCar');
+   			resultCar.src = imagePath;
+			//resultCar.src = "../images/K5.jpg";
+   			console.log('11111111 : '+resultCar.src);
+			//alert(resultCar.src);
+			//console.log('어떤 값이 들어가지? ' + imagePath);
+			//var resultImg = document.getElementsByClassName('resultImg'); 
+   			
+			/* Modal 작동 */
+			$('#ModelDisplayRow').show();
+   			
+   			/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
+   			$('#detail_show').on('show.bs.modal', function(e) {
+   				console.log(car_model);
+   				window.e = $(e.currentTarget);
+   				$.ajax({	
+   					url:"<%=application.getContextPath()%>/model/detail.rent",
+   					dataType:"json",
+   					type:'POST', 
+   					data : {
+   			             'modelName' : car_model
+   			        },
+   					success:function(result){
+   						//$(e.currentTarget).html(result);
+   						setDetailModal(result);
+   					},
+   			        error : function(result) {
+   			        	console.log('error in openning detail show' + result);
+   			        }
+   				});
+   			});
+   			/**
+   			 * 모델 디테일 정보를 표시하는 모달 setDetailModal의 정보를 model객체에서 가져와 설정하는 함수.
+   			 * 위시리스트로 넘길 정보 :  model(name,picture,type,fueltype), startDate, endDate, amountMoney
+   			 * 예약화면으로 넘길 정보 :  model, startDate, endDate, amountMoney, location
+   			 */
+   			function setDetailModal(model) {
+   				var imagePath = "../images/cars/"+model.type+"/"+model.picture;
+   				$('#detail-img').attr('src',imagePath);
+   				$('#detail-name').html(model.name);
+   				$('#detail-star').css('width', model.evalScore * 10 + '%');
+   				$('#detail-review-count').html('(' + model.reviewCount + ' Review)');
+   				if('<%=request.getAttribute("loginId")%>' == 'null') {
+   					console.log('id null');
+   				}
+   				else {
+   					console.log('<%=request.getAttribute("loginId")%>');
+   					$('#wish-list-anchor').on('click', function(e) {
+   						e.stopPropagation();
+   						e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
+   					})
+   				}
+   				$('#go-reserve-anchor').on('click', function(e) {
+   					e.stopPropagation();
+   					e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, '방문수령', model.type, model.picture);
+   				})
+   				
+   				// 리뷰 목록 가져와서 설정
+   				getReviewList(model.name, 1, 10);
+   				// 리뷰탭 리뷰 개수, 별 css 설정
+   				$('#review-list-count').html('(' + model.reviewCount + ' Review)');
+   			}
+   			
+   			/** 
+   			 * 리뷰 리스트를 컨트롤러에 요청하여 가져오는 함수.
+   			 * 
+   			 */
+   			function getReviewList(modelName, page, listSize) {
+   				$.ajax({	
+   					url:"<%=application.getContextPath()%>/review/list.rent",
+   					dataType:"json",
+   					type:'POST', 
+   					data : {
+   				  		modelName : modelName,
+   				  		page : page,
+   				  		listSzie : listSize
+   			        },
+   					success:function(result){
+   						console.log("ok review list \n" + result);
+   						setReviewList(result);
+   					},
+   					error : function(result) {
+   						console.log("error.... result : " + result);
+   					}
+   				});
+   			}
+
+   			/**
+   			 * 리뷰 리스트를 화면에 출력하는 함수 
+   			 */
+   			function setReviewList(list) {
+   				$("#each_review_ul").html("");
+   				for ( var i in list) {
+   					var params = {
+   						imgPath : '/sjrent/images/review/image1.jpg',
+   						userId : list[i].userId,
+   						evalScore : list[i].evalScore,
+   						date : list[i].date,
+   						content : list[i].content
+   					};
+   					var review = $('<li></li>').load("<%=application.getContextPath()%>/rent/search_include/review_each.jsp", params);
+   					$("#each_review_ul").append(review);
+   				}
+   			}
+		}) 
+		
+		
+   
+</script> 
 </head>
 <body class="tg-home tg-homevone">
 
@@ -124,6 +263,13 @@
 *************************************-->
     <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout">
     <div class="container">
+   	 <!--************************************
+             Detail Model Modal Start
+        *************************************-->
+         <jsp:include page="search_detail.jsp" />
+        <!--************************************
+             Detail Model Modal End
+        *************************************-->
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
           style="padding: 0px 300px">
@@ -132,12 +278,10 @@
             <!--************************************
 									Content 시작
 							*************************************-->
-            <!-- 
-							<img alt="여행선택지" src="../images/rec/rec_travel2.JPG">
-							<button class="btn left" onclick="location='<%=application.getContextPath()%>/rec/rec_hobby.jsp'">선택</button>
-							<button class="btn right"  onclick="location='<%=application.getContextPath()%>/rec/rec_hobby.jsp'">선택</button>
-					 -->
-
+							<img alt="여행선택지" src="../images/rec/rec_result.JPG">
+							<img alt="추천자동차" src="" id="resultCar" class="resultImg" data-toggle='modal' data-target='#detail_show' data-model-name='<%=request.getParameter("modelName") %>' >	
+							<span></span>
+			<!-- ../images/cars/ASegment/2017K3.jpg  -->	
             <!--************************************
 									Content 종료
 							*************************************-->
@@ -157,25 +301,5 @@
 *************************************-->
   </div>
 
-  <script
-    src="<%=application.getContextPath()%>/js/vendor/jquery-library.js"></script>
-  <script
-    src="<%=application.getContextPath()%>/js/vendor/bootstrap.min.js"></script>
-  <script
-    src="https://maps.google.com/maps/api/js?key=AIzaSyCR-KEWAVCn52mSdeVeTqZjtqbmVJyfSus&language=en"></script>
-  <script
-    src="<%=application.getContextPath()%>/js/bootstrap-select.min.js"></script>
-  <script
-    src="<%=application.getContextPath()%>/js/jquery-scrolltofixed.js"></script>
-  <script src="<%=application.getContextPath()%>/js/owl.carousel.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/jquery.mmenu.all.js"></script>
-  <script src="<%=application.getContextPath()%>/js/packery.pkgd.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/jquery.vide.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/scrollbar.min.js"></script>
-  <script src="<%=application.getContextPath()%>/js/prettyPhoto.js"></script>
-  <script src="<%=application.getContextPath()%>/js/countdown.js"></script>
-  <script src="<%=application.getContextPath()%>/js/parallax.js"></script>
-  <script src="<%=application.getContextPath()%>/js/gmap3.js"></script>
-  <script src="<%=application.getContextPath()%>/js/main.js"></script>
 </body>
 </html>

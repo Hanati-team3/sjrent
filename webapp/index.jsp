@@ -70,9 +70,8 @@ if(request.getAttribute("loginId") != null){ //로그인 된 경우
 		<a class="tg-btn" href="<%=application.getContextPath()%>/rec/rec_index.jsp"><span>추천 예약</span></a>
 		<a class="tg-btn" href="<%=application.getContextPath()%>/community/community.jsp"><span>커뮤니티</span></a>
 		<a class="tg-btn" href="<%=application.getContextPath()%>/wishitem/list.rent"><span>위시리스트</span></a>
-		<a class="tg-btn" href="<%=application.getContextPath()%>/wish/wish_list.jsp"><span>예약확인</span></a>
+		<a class="tg-btn" href="<%=application.getContextPath()%>/rent/list.rent"><span>예약확인</span></a>
 		<a class="tg-btn" href="<%=application.getContextPath()%>/user/login.jsp"><span>로그인</span></a>
-
 	</div>
     </div>
 <%
