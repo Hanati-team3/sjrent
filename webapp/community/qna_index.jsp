@@ -22,10 +22,10 @@
 
 
 //넘버링하기
-int count = (int)request.getAttribute("count"); 
-int listSize = 10;
-
-
+//int count = (int)request.getAttribute("count"); 
+//int listSize = 10;
+//System.out.println("카운트값 : "+count);
+int count = (int)request.getAttribute("count");
 %>
 <!DOCTYPE html>
 <html>
@@ -140,34 +140,41 @@ tr:hover {
                              *************************************-->
                              <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
                              <% if (request.getAttribute("list") != null ){ %> 
-                              <c:forEach var="qna" items="${list}" varStatus="status">
+                              <c:forEach var="qna" items="${list}" varStatus="status" begin="count" step="-1">
 	                              <tr>
 	                              	 <!--***********
 	                              	 		번호 
 	                              	 	 ***********-->	
 	                                 <td>
-	                                 <span>
 									 <%
-									 for(int i=count; i<1; i--){
-										 
+									 
+									 //System.out.println("처음 카운트 값1 : " + count);
+									 
+									 for(int i=count; i<=1; i--){
+									 System.out.println("줄어드는 값 : " + i);
+									 %>
+	                                 <span>넘버:<%= i %></span>
+									 <%
 									 }
 									 %>
-									 </span>
 	                                 </td>
 	                                 <!--***********
 	                              	 		제목 
 	                              	 	 ***********-->	
-	                                 <td class="startDate" style="vertical-align: middle;"><span>${qna.title}</span>
+	                                 <td class="startDate" style="vertical-align: middle;">
+	                                 	<span>${qna.title}</span>
 	                                 </td>
 	                                 <!--***********
 	                              	 		작성자 
 	                              	 	 ***********-->	
-	                                 <td class="startDate" style="vertical-align: middle;"><span>${qna.userId}</span>
+	                                 <td class="startDate" style="vertical-align: middle;">
+	                                 	<span>${qna.userId}</span>
 	                                 </td>
 	                                 <!--***********
 	                              	 		작성일 
 	                              	 	 ***********-->	
-	                                 <td class="endDate"   style="vertical-align: middle;"><span>${qna.date}</span>
+	                                 <td class="endDate"   style="vertical-align: middle;">
+	                                 	<span>${qna.date}</span>
 	                                 </td>
 	                              </tr>
                               </c:forEach>
