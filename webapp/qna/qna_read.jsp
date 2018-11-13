@@ -1,9 +1,11 @@
+<%@page import="kr.or.kosta.sjrent.qna.domain.QnA"%>
 <%@page import="kr.or.kosta.sjrent.qna.controller.QnAListController"%>
 <%@page import="kr.or.kosta.sjrent.common.controller.Controller"%>
 <%@page import="kr.or.kosta.sjrent.common.params.Params"%>
 <%@page import="kr.or.kosta.sjrent.common.params.PageBuilder"%>
 <%@page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link rel="stylesheet" type="text/css" href="<%=application.getContextPath()%>/css/basic.css">
 <c:set var="context" value="${pageContext.request.contextPath}" />
 <%
 //페이지당 보여지는 페이지수 설정
@@ -114,7 +116,7 @@ tr:hover {
 <main id="tg-main" class="tg-main tg-haslayout tg-bglight">
    <div class="container">
       <div class="row">
-         <div style="text-align: center; margin: 100px 0px "><h2>커뮤니티</h2></div>
+         <div style="text-align: center; margin: 100px 0px 30px"><h2>커뮤니티</h2></div>
          <div style="text-align: center;  margin: 10px 0px 20px">
 			<button class="tablink" onclick="openPage('QnA', this, '#446600')" id="defaultOpen">QnA</button>   
 			<button class="tablink" onclick="openPage('FAQ', this, '#800060')"  >FAQ</button>
@@ -123,111 +125,47 @@ tr:hover {
 		
 		<!-- QnA -->
 		<div id="QnA" class="tabcontent" >
+		
 										
-			 <!-- table에 원래 있던 class="w3-table w3-striped w3-bordered" -->
-		    <table class="table table-responsive">
-                         <%--   <colgroup>
-                             <col width="5%"/>
-                             <col width="40%"/>
-                             <col width="20%"/>
-                             <col width="15%"/>
-                          </colgroup>
-                          <tr>
-                             <th scope="col">번호</th>
-                             <th scope="col">제목</th>
-                             <th scope="col">작성자</th>
-                             <th scope="col">작성일</th>
-                          </tr> --%>
-                          <tbody>
-                          <!--************************************
-                                QnA 리스트 시작 
-                             *************************************-->
-                             
-                             <tr>
-                             	<td>
-	                             	<div style="background-color: green">
-										<div style="background-color: red; float: left;"></div>
-										<div style="background-color: black; float: right;"></div>
-	                             	</div>
-                             	</td>
-                             
-                             
-                             </tr>
-                             <tr>
-                             	<td>
-                             	
-                             	</td>
-                             </tr>
-                             
-                             <%-- <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
-                             <% if (request.getAttribute("list") != null ){ %> 
-                              <c:forEach var="qna" items="${list}" varStatus="status">
-	                              <tr>
-	                              	 <!--***********
-	                              	 		번호 
-	                              	 	 ***********-->	
-	                                 <td>
-	                                 <span><%= startNum-- %></span>
-	                                 </td>
-	                                 <!--***********
-	                              	 		제목 
-	                              	 	 ***********-->	
-	                                 <td class="startDate" style="text-align: left; padding-left: 20px">
-	                                 	<%
-	                                 	String id = null;
-	                                	Cookie[] cookies = request.getCookies();
-	                                	if (cookies != null) {
-	                                		for (Cookie cookie : cookies) {
-	                                			if (cookie.getName().equals("loginId")) {
-	                                				id = cookie.getValue();
-	                                			}
-	                                		}
-	                                	}
-	                                 	//System.out.println("로그인 아이디1: "+id);//jm
-	                                 	
-	                                 	//System.out.println("로그인 아이디2: "+${qna.userId});
-	                                 	
-	                                 	//if(id.equals(anObject)){//작성자이면
-	                                 	
-	                                 	%>
-	                                 		<span><a href="<%=application.getContextPath() %>/qna/qna_read.jsp">${qna.title}</a></span>
-	                                 	<%	
-	                                 	//}else{
-	                                 	%>	
-	                                 		 <!-- <span>비밀글입니다.</span> --> 
-	                                 	<%
-	                                 	//}
-	                                 	%>
-	                                 </td>
-	                                 <!--***********
-	                              	 		작성자 
-	                              	 	 ***********-->	
-	                                 <td class="startDate" style="vertical-align: middle;">
-	                                 	<span>${qna.userId}</span>
-	                                 </td>
-	                                 <!--***********
-	                              	 		작성일 
-	                              	 	 ***********-->	
-	                                 <td class="endDate"   style="vertical-align: middle;">
-	                                 	<span>${qna.date}</span>
-	                                 </td>
-	                              </tr>
-                              </c:forEach>
-                              <%}else{ %>
-                              <tr>
-                              	<td colspan="4" style="height: 100px; vertical-align: middle;">QnA가 존재하지 않습니다.</td>
-                              </tr>
-                              <%}%> --%>
-                             <!--************************************
-                                QnA 리스트 종료
-                             *************************************-->
-                          </tbody> 
-                       </table>
-                       
-                       <!-- 글쓰기 버튼 -->
-                       <%-- <div style="display:inline-block; float: right; margin-top: 30px">
-							<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right;" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'"><span style="font-size: 14pt; width:30%">글쓰기</span></button>
-					   </div> --%>
+		<form action="<%=application.getContextPath() %>/article/regist_action.jsp">
+			   <div class="dottedOutline">
+			        
+			        <%
+			        QnA qna = (QnA)request.getAttribute("QnA");
+			        //System.out.println(qna);
+			        
+			        String title = qna.getTitle();
+			        String content = qna.getContent();
+			        //System.out.println("타이틀: " + title);
+			        
+			        %>   
+			        
+			        
+			        <div style="vertical-align: middle;">
+			             <label class="createPostButton" style="background-color: #446600;" >글제목</label> 
+			             <input type="text" class="grayBox" required id="title" name="title" maxlength="15" style="width: 1040px; text-align: left; " readonly value="<%=title %>" >
+			             <!-- <label class="createPostButton" style="background-color: #446600; margin-left: 570px">작성자</label> 
+			             <input type="text" class="grayBox" readonly value='' id="writer" name="writer"> -->
+			        </div>
+			        
+			        <%--<input type="text" class="createPostBox" placeholder="게시글을 작성해주세요 (1000자 이내)" required id="content" name="content" maxlength="1000"> --%>    
+			        <textarea class="createPostBox" name="content" id="content" maxlength="1000" readonly ><%=content %></textarea>
+			    </div> 
+			    
+			    <div style="text-align:right">
+		              <input type="button" class="newButton" value='목록' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qnaIndex.rent'">      
+		        </div>
+			    
+			</form>		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
 	        
 		</div>
 		
