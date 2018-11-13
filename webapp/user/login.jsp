@@ -71,7 +71,7 @@
                         <!--************************************
                                     Title 시작
                            *************************************-->
-                        <div style="text-align: center; margin: 50px 0px"><h2>로그인</h2></div>
+                        <div style="text-align: center; margin: 50px 0px"><h2>회원로그인</h2></div>
                         <!--************************************
                                     Title 종료
                            *************************************-->   
@@ -96,8 +96,14 @@
 											<div class="form-group">
 													<input type="checkbox" name="remember" id="rememberpass" style="display: inline-block; "><label for="rememberpass" style="display: inline-block; ">아이디 저장</label>
 											</div>
-											<button type="submit" class="tg-btn tg-btn-lg" ><span>로그인</span></button>
-										</fieldset>
+                      
+                                             <div style="margin-top: 20px;">
+                                              <a href="<%=application.getContextPath()%>/user/regist.jsp" style="color: grey; float: right; ">아직 회원이 아니신가요?</a>
+                                             </div>
+                                   
+                          	                 <button type="submit" class="tg-btn tg-btn-lg" style="display: inline-block;  vertical-align: middle; margin-top: 10px"><span>로그인</span></button>
+                    
+                                          </fieldset>
                                         <input type="hidden" name="login" value="login"/>
 									</form>
 								</div>
