@@ -117,6 +117,12 @@ input[type="checkbox"]:disabled + .label-text:before{
     padding: 30px 0;
 }
 
+.no-result {
+    margin-left: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 </style>
 <script type="text/javascript">
 var rent_start_date = null;
@@ -304,7 +310,10 @@ function setModelList(list) {
 	var startDay = new Date(rent_start_date).getDay();
 	var end = new Date(rent_end_date).getDay();
 	$("#carListRow").html("");
-	
+	if(list.length == 0) {
+		$("#carListRow").html("<p class='no-result'>검색 결과가 없습니다.</p>");
+		return null;
+	}
 	// 주말, 주중 계산
 	for(var i = 0; i < date; i++) {
 		if(startDay == 0 || startDay == 6) {
