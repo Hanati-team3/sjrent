@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.scripting.xmltags.IfSqlNode;
 import org.json.simple.JSONArray;
 
 import kr.or.kosta.sjrent.common.controller.Controller;
@@ -26,64 +27,81 @@ import kr.or.kosta.sjrent.review.domain.Review;
  *
  */
 public class QnAListController implements Controller {
-	private XMLObjectFactory factory;
+	//private XMLObjectFactory factory;
+	//private JSONArray jsonArray;
+	//private ObjectToJson otj;
 	private QnAService qnaService;
-	private JSONArray jsonArray;
-	private ObjectToJson otj;
-
-	@Override
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
+	private ModelAndView mav;
+	
+	@Override 
+	public ModelAndView handleRequest(HttpServletRequest request,HttpServletResponse response) 
 			throws ServletException {
-		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
-		qnaService = (QnAServiceImpl) factory.getBean(QnAServiceImpl.class);
-		jsonArray = new JSONArray();
-		otj = new ObjectToJson();
-		List<QnA> qnaList = new ArrayList<QnA>();
-		int page = (request.getParameter("page") == null) ? 1 : Integer.parseInt(request.getParameter("page"));
-		int listSize = (request.getParameter("listSize") == null) ? 5
-				: Integer.parseInt(request.getParameter("listSize"));
-
+        
+		mav = new ModelAndView(); 
+		XMLObjectFactory factory =  (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
+		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
+		
+        List<QnA> list = null; 
+        //한 페이지에 보여줄 QnA수
+        int listSize = 10; 
+        
+        //페이지 번호
+        int page = 1;
+        
+        //총 QnA 갯수
+        int count = 0; 
+        
+        System.out.println("리퀘스트에 담은 페이지 정보 : " + (String)request.getParameter("page"));
+        String pageS = (String)request.getParameter("page");
+        if (pageS != null) {
+        	page = Integer.parseInt(pageS);
+        }
 		try {
-			qnaList = qnaService.listByPage(page, listSize);
+			list = qnaService.listByPage(page, listSize);
+			count = qnaService.count(); 
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		for (QnA qna : qnaList) {
-			jsonArray.add(otj.ObjectToJsonObject(qna));
-		}
-		response.setCharacterEncoding("utf-8");
-		try {
-			response.getWriter().print(jsonArray);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+			throw new ServletException("QnAService.list() 예외 발생", e); 
+		} 
+        
+        mav.addObject("count", count); 
+        mav.addObject("list", list);
+        mav.setView("/community/qna_index.jsp"); 
+        return mav;
+  
+	 
 	}
+}
+
+
+
+
 	/**
-	 * 원래있던코드 private QnAService qnaService; private JSONObject obj; private
-	 * ModelAndView mav;
-	 * 
+	 * 예겸이가 작성한 코드
 	 * @Override public ModelAndView handleRequest(HttpServletRequest request,
-	 *           HttpServletResponse response) throws ServletException {
-	 *           System.out.println("들어오나?????????????"); obj = new JSONObject();
-	 *           mav = new ModelAndView(); XMLObjectFactory factory =
-	 *           (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
-	 *           qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
-	 *           List<QnA> list = null; int listSize = 10; int page = 1;
+	 *           HttpServletResponse response) throws ServletException { factory =
+	 *           (XMLObjectFactory)
+	 *           request.getServletContext().getAttribute("objectFactory");
+	 *           qnaService = (QnAServiceImpl)
+	 *           factory.getBean(QnAServiceImpl.class); jsonArray = new JSONArray();
+	 *           otj = new ObjectToJson(); List<QnA> qnaList = new ArrayList<QnA>();
+	 *           int page = (request.getParameter("page") == null) ? 1 :
+	 *           Integer.parseInt(request.getParameter("page")); int listSize =
+	 *           (request.getParameter("listSize") == null) ? 10 :
+	 *           Integer.parseInt(request.getParameter("listSize"));
 	 * 
-	 *           System.out.println("리퀘스트에 담은 페이지 정보 :
-	 *           "+request.getParameter("page"));
-	 *           if(request.getParameter("page")!=null) { page =
-	 *           Integer.parseInt(request.getParameter("page")); } try { list =
-	 *           qnaService.listByPage(page, listSize); } catch (Exception e) {
-	 *           throw new ServletException("QnAService.list() 예외 발생", e); } int
-	 *           count = 0; try { count = qnaService.count(); } catch (Exception e)
-	 *           { // TODO Auto-generated catch block e.printStackTrace(); }
-	 *           mav.addObject("count", count); mav.addObject("list", list);
-	 *           mav.setView("/qna/qna_index.jsp"); return mav;
-	 * 
+	 *           try { qnaList = qnaService.listByPage(page, listSize); } catch
+	 *           (Exception e) { e.printStackTrace(); } for (QnA qna : qnaList) {
+	 *           jsonArray.add(otj.ObjectToJsonObject(qna)); }
+	 *           response.setCharacterEncoding("utf-8"); try {
+	 *           response.getWriter().print(jsonArray);
+	 *           response.getWriter().print(listSize); } catch (IOException e) { //
+	 *           TODO Auto-generated catch block e.printStackTrace(); } return null;
 	 *           }
 	 */
-
-}
+	
+	
+	
+	
+	 
+	  
+	 

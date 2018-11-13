@@ -60,9 +60,9 @@
 	</select>
 	
 	<!-- 전체 QnA Count -->
-	<select id="count" resultType="Integer" resultMap="qnaResultMap">
+	<select id="count" resultType="Integer">
 		SELECT Count(qna_seq) 
-		FROM   QnA 
+		FROM   QnA
 	</select>
 	
 	<!-- QnA 리스트 page 선택 -->

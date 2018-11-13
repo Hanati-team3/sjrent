@@ -41,9 +41,9 @@ String loginId = (String)request.getAttribute("loginId");
                            <li class="menu-item-has-children"><a
                               href="javascript:void(0);">커뮤니티</a>
                               <ul class="sub-menu">
-                                 <li><a href="<%=application.getContextPath()%>/community/community.jsp">Q&A</a></li>
-                                 <li><a href="<%=application.getContextPath()%>/community/community.jsp">FAQ</a></li>
-                                 <li><a href="<%=application.getContextPath()%>/community/community.jsp">공지사항</a></li>
+                                 <li><a href="<%=application.getContextPath()%>/community/qna_index.jsp?type=qna">Q&A</a></li>
+                                 <li><a href="<%=application.getContextPath()%>/community/faq_index.jsp?type=faq">FAQ</a></li>
+                                 <li><a href="<%=application.getContextPath()%>/community/notice_index.jsp?type=notice">공지사항</a></li>
                               </ul></li>
                            <li><a href="<%=application.getContextPath()%>/wishitem/list.rent">위시리스트</a></li>
                            <li><a href="<%=application.getContextPath()%>/rent/list.rent">예약확인</a></li>
@@ -86,7 +86,7 @@ String loginId = (String)request.getAttribute("loginId");
 										<fieldset>
 											<div class="form-group">
 												<label>아이디 <sup>*</sup></label>
-												<input type="text" name="id" class="form-control" placeholder="" maxlength="10" style="text-transform:  none;" required value="${id }" >
+												<input type="text" name="id" class="form-control" placeholder="" maxlength="16" style="text-transform:  none;" required value="${id }" >
 											</div>
 											<div class="form-group">
 												<label>비밀번호 <sup>*</sup></label>
