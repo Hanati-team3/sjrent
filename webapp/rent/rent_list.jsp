@@ -22,16 +22,20 @@
 <script type="text/javascript">
 
 var modelNamesList=[];
+var modelTypesList=[];
 <%
 String modelNames = request.getAttribute("modelNames").toString();
+String modelTypes = request.getAttribute("modelTypes").toString();
 String[] modelNameList = modelNames.substring(1,modelNames.length()-1).split(",");
+String[] modelTypeList = modelTypes.substring(1,modelTypes.length()-1).split(",");
 for(int i = 0; i < modelNameList.length; i++){
   modelNameList[i].trim();
 }
 for(int i = 0; i < modelNameList.length; i++){
-  %>
-  modelNamesList.push('<%=modelNameList[i].trim()%>')
-<%  
+	%>
+	modelNamesList.push('<%=modelNameList[i].trim()%>')
+	modelTypesList.push('<%=modelTypeList[i].trim()%>')
+<%	
 }
 %>
 /* console.log(modelNamesList); */
@@ -40,6 +44,7 @@ $(document).ready(function(){
   for (var i = 1; i <= modelNamesList.length; i++) {
     document.getElementById('modelName'+i).innerHTML = '<h3>'+modelNamesList[i-1]+'</h3>';
     document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);
+    document.getElementById('carImg'+i).setAttribute('src', '../images/cars/'+modelTypesList[i-1]+"/"+modelNamesList[i-1]+".jpg");
     /* console.log(modelNamesList[i-1]); */
   }
   
@@ -191,92 +196,93 @@ function setReviewList(list) {
 </head>
 <body>
 
-  <!--************************************
-      Mobile Menu Start
-  *************************************-->
-  <jsp:include page="../include/nav.jsp" />
-  <!--************************************
-      Mobile Menu End
-  *************************************-->
-  <!--************************************
-      Wrapper Start
-  *************************************-->
-  <div id="tg-wrapper" class="tg-wrapper tg-haslayout">
-    <!--************************************
-          Header Start
-      *************************************-->
-    <jsp:include page="../include/header.jsp"></jsp:include>
-    <!--************************************
-          Header End
-    *************************************-->
-    <!--************************************
-        Main Start
-    *************************************-->
-    <main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
-      <div class="container">
-        <!--************************************
-                 Detail Model Modal Start
-            *************************************-->
-             <jsp:include page="search_detail_list.jsp" />
-            <!--************************************
-                 Detail Model Modal End
-            *************************************-->
-        <div class="row">
-          <div id="tg-twocolumns" class="tg-twocolumns">
-            
-            <!-- 예약된 차 목록 보여주기 -->
-            <form class="tg-formtheme tg-formtourpayment">
-              <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-left">
-                <div id="tg-content" class="tg-content">
-                  <!-- 여태 렌트했던 목록들 띄우기 -->
-                  <c:forEach var="item" items="${list}" varStatus="status">
-                    <div class="tg-tourpaymentdetail" id="rentList${status.count}" class="listRent" data-toggle='modal' data-target='#detail_show' data-model-name="" data-model-num="${status.count-1}">
-                      <div class="tg-tourname" style="padding:20px;">
-                        <a class="tg-btnedit" href="#" style="padding:20px;">결제취소</a>
-                        <figure>
-                          <a><img src="../images/G70.jpg" style="width: 100px" height="auto" alt="image destinations"></a>
-                        </figure>
-                        <div class="tg-populartourcontent">
-                          <div class="tg-populartourtitle" id="modelName${status.count}">
-                          </div>
-                          <div class="tg-populartourfoot form-control" style="background: inherit;" >
-                            <div class="tg-durationrating">
-                            <span class="tg-tourduration tg-availabilty" style="position: absolute;"><span>${fn:split(item.startDate,' ')[0]}</span> ~ <span>${fn:split(item.endDate,' ')[0]}</span></span></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </c:forEach>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 pull-right">
-                <aside id="tg-sidebar" class="tg-sidebar">
-                  <div class="tg-widget tg-widgettourinfo">
-                    <div class="tg-widgetcontent">
-                      <ul>
-                        <li><span>Travel Date</span><em>May 12, 2017</em></li>
-                        <li><span>Period</span><em>12 Days</em></li>
-                        <li><span>Persons</span><em>5</em></li>
-                        <li><span>Rooms</span><em>1</em></li>
-                        <li class="tg-couponapply">
-                          <div class="form-group">
-                            <div class="row" style="height:40px;"></div>
-                              <button id = "info_detail" class="tg-btn">상세보기</button>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </aside>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </main>
-    <!--************************************
-        Main End
-    *************************************-->
-  </div>
+	<!--************************************
+			Mobile Menu Start
+	*************************************-->
+	<jsp:include page="../include/nav.jsp" />
+	<!--************************************
+			Mobile Menu End
+	*************************************-->
+	<!--************************************
+			Wrapper Start
+	*************************************-->
+	<div id="tg-wrapper" class="tg-wrapper tg-haslayout">
+		<!--************************************
+					Header Start
+			*************************************-->
+		<jsp:include page="../include/header.jsp"></jsp:include>
+		<!--************************************
+					Header End
+		*************************************-->
+		<!--************************************
+				Main Start
+		*************************************-->
+		<main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
+			<div class="container">
+				<!--************************************
+		             Detail Model Modal Start
+		        *************************************-->
+		         <jsp:include page="search_detail_list.jsp" />
+		        <!--************************************
+		             Detail Model Modal End
+		        *************************************-->
+				<div class="row">
+					<div id="tg-twocolumns" class="tg-twocolumns">
+						
+						<!-- 예약된 차 목록 보여주기 -->
+						<form class="tg-formtheme tg-formtourpayment">
+							<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-left">
+								<div id="tg-content" class="tg-content">
+									<!-- 여태 렌트했던 목록들 띄우기 -->
+									<c:forEach var="item" items="${list}" varStatus="status">
+										<div class="tg-tourpaymentdetail" id="rentList${status.count}" class="listRent" data-toggle='modal' data-target='#detail_show' data-model-name="" data-model-num="${status.count-1}">
+											<div class="tg-tourname" style="padding:20px;">
+												<!--  결제 완료된 것만 -->
+												<a class="tg-btnedit" href="<%=application.getContextPath() %>/rent/cancel.rent?rentSeq=${item.seq}" style="padding:20px;">예약취소</a>
+												<figure>
+													<a><img id="carImg${status.count}" src="../images/cars" style="width: 100px" height="auto" alt="image destinations"></a>
+												</figure>
+												<div class="tg-populartourcontent">
+													<div class="tg-populartourtitle" id="modelName${status.count}">
+													</div>
+													<div class="tg-populartourfoot form-control" style="background: inherit;" >
+														<div class="tg-durationrating">
+														<span class="tg-tourduration tg-availabilty" style="position: absolute;"><span>${fn:split(item.startDate,' ')[0]}</span> ~ <span>${fn:split(item.endDate,' ')[0]}</span></span></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</c:forEach>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 pull-right">
+								<aside id="tg-sidebar" class="tg-sidebar">
+									<div class="tg-widget tg-widgettourinfo">
+										<div class="tg-widgetcontent">
+											<ul>
+												<li><span>Travel Date</span><em>May 12, 2017</em></li>
+												<li><span>Period</span><em>12 Days</em></li>
+												<li><span>Persons</span><em>5</em></li>
+												<li><span>Rooms</span><em>1</em></li>
+												<!-- <li class="tg-couponapply">
+													<div class="form-group">
+														<div class="row" style="height:40px;"></div>
+															<button id = "info_detail" class="tg-btn">상세보기</button>
+													</div>
+												</li> -->
+											</ul>
+										</div>
+									</div>
+								</aside>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+		<!--************************************
+				Main End
+		*************************************-->
+	</div>
 </body>
 </html>
