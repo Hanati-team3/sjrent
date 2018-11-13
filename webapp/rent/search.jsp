@@ -109,12 +109,15 @@ var rent_end_date = null;
 var date;
 var weekday = 0;
 var weekend = 0;
-var pickupPlace = "방문수령";
+var pickupPlace = "방문수령"; 
+var detailModel = null;
+var isLogin = false;
 /**
  * search.jsp가 로드될 때 실행되는 함수
  */
 $(document).ready(function(){
 	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
+	if('<%=request.getAttribute("loginId")%>' != 'null') isLogin = true;
 	// 검색된 모델과 랭킹을 시작할 때는 표시 안하게
 	$('#ModelDisplayRow').hide();
 	
@@ -338,9 +341,10 @@ function setModelList(list) {
 	             'endDate' : rent_end_date
 	        },
 			success:function(model){
+				detailModel = model;
 				//$(e.currentTarget).html(result);
-				setDetailModal(model);
-				// detail패널의 car_detail의 review 탭 설정
+				setDetailModal(detailModel);
+				// detail모달의 car_detail의 review 탭 설정
 				setReviewTab(model.name, model.reviewCount);
 			},
 	        error : function(result) {
@@ -348,6 +352,13 @@ function setModelList(list) {
 	        }
 		});
 	});
+	
+	/** 디테일 모달이 닫힐 때 */
+	
+	$('#detail_show').on('hidden.bs.modal', function (e) {
+		pickupPlace = "방문수령"; 
+		detailModel = null;
+	})
 }
 
 function setReviewTab(name, reviewCount, page) {
@@ -370,14 +381,13 @@ function setReviewTab(name, reviewCount, page) {
  * 예약화면으로 넘길 정보 :  model, startDate, endDate, amountMoney, location
  */
 function setDetailModal(model) {
-	var amountMoney = model.weekdayPrice * weekday + 
-					  model.weekendPrice * weekend;
+	model.amountMoney = model.weekdayPrice * weekday + model.weekendPrice * weekend;
 	var imagePath = "../images/cars/"+model.type+"/"+model.picture;
 	$('#detail-img').attr('src',imagePath);
 	$('#detail-name').html(model.name);
 	$('#detail-star').css('width', model.evalScore * 10 + '%');
 	$('#detail-review-count').html('(' + model.reviewCount + ' Review)');
-	$('#detail-amount-money').html('&#8361 '+ amountMoney);
+	$('#detail-amount-money').html('&#8361 '+ model.amountMoney);
 	$('#detail-weekday-price').html(' ' + model.weekdayPrice + ' on Weekday');
 	$('#detail-weekend-price').html(' ' + model.weekendPrice + ' on Weekend');
 	$('#detail-wish-count').html(' ' + model.rentalCount + ' Times Added on Wish List');
@@ -424,12 +434,12 @@ function setDetailModal(model) {
 		console.log('<%=request.getAttribute("loginId")%>');
 		$('#wish-list-anchor').on('click', function(e) {
 			e.stopPropagation();
-			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
+			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, model.amountMoney, model.picture, model.type, model.fuelType);
 		})
 	}
 	$('#go-reserve-anchor').on('click', function(e) {
 		e.stopPropagation();
-		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, model.type, model.picture);
+		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, model.amountMoney, pickupPlace, model.type, model.picture);
 	})
 }
 /** 
@@ -476,7 +486,7 @@ function wishResultHide() {
  */
  function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
 	// 로그인 중
-	if( '<%=request.getAttribute("loginId")%>' != 'null'){
+	if(isLogin == true){
 		// post로 데이터 전달
 	    var form = document.createElement("form");
 	    form.setAttribute("method", "post");
@@ -577,9 +587,9 @@ function loginAction(e) {
 		data : params,
 		success:function(result){
 			if(result == 'success') {
-				
-				//goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture);
-				//goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, model.type, model.picture);
+				isLogin = true;
+				console.log('login Success');
+				goToReserve(rent_start_date, rent_end_date, detailModel.amountMoney, pickupPlace, detailModel.type, detailModel.picture);
 			}
 			else {
 				alert('아이디와 비밀번호를 확인해주세요');
@@ -631,9 +641,7 @@ function nonUserLoginAction(e) {
     <div class="tg-homebannerslider"
       class="tg-homebannerslider tg-haslayout">
       <div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
-        <figure class="item"
-          data-vide-bg="poster: ../images/slider/img-02.jpg"
-          data-vide-options="position: 50% 50%">
+        <figure class="item" data-vide-bg="mp4: ../video/backgroud_car" data-vide-options="none, position: 50% 50%">
           <figcaption>
             <div class="container">
               <div class="row">

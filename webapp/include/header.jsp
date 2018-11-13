@@ -9,7 +9,7 @@ String loginId = (String)request.getAttribute("loginId");
          <div class="container-fluid">
             <div class="row">
                <div class="tg-navigationarea tg-headerfixed">
-                  <strong class="tg-logo"><a href="<%=application.getContextPath()%>/index.jsp"><img src="<%=application.getContextPath()%>/images/logo.png" alt="company logo here"></a></strong>
+                  <strong class="tg-logo"><a href="<%=application.getContextPath()%>/index.jsp"><img src="<%=application.getContextPath()%>/images/SJRentLogoSmall.png" alt="company logo here"></a></strong>
                   <div class="tg-socialsignin">
                      <div class="tg-userbox">
                         <!-- 로그인 화면 띄우자 -->
