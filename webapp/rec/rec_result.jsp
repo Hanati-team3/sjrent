@@ -158,6 +158,7 @@ $(document).ready(function(){
 		    	    }
 		    	},
 			   onSelect: function(selectedDate){
+				   var date = 1;
 			          if(selectedDate.includes('~')){
 			             start_date = new Date(selectedDate.split('~')[0]);
 			             end_date = new Date(selectedDate.split('~')[1]);
@@ -171,8 +172,13 @@ $(document).ready(function(){
 						}
 			             rent_start_date = formatDate(start_date);
 			             rent_end_date = formatDate(end_date);
+			             date = ((end_date - start_date) / (1000*60*60*24))+1; 
+			          }else{
+						start_date = new Date(selectedDate);
+						rent_start_date = formatDate(start_date);
+						rent_end_date = rent_start_date;
+			          }
 			             var startDay = start_date.getDate();
-			             var date = ((end_date - start_date) / (1000*60*60*24))+1; 
 			             var weekend = 0;
 			             var weekday = 0;
 			             /* 주말 주중 계산 */
@@ -194,7 +200,7 @@ $(document).ready(function(){
 			            		 $("#datepicker"+i).val('');
 			            	 }
 						}
-		             }
+			          
 			  }
 	   			
 		   })
@@ -422,7 +428,11 @@ $(document).ready(function(){
 	 *	Controller로부터 받은 데이터를 검사한다.
 	 */
 	function addToWishList(modelName, startDate, endDate, amountMoney, picture, type, fuelType) {
-		$.ajax({	
+		if(amountMoney == undefined) {
+			alert('날짜를 선택해주세요');
+			return;
+		}
+		 $.ajax({	
 			url:"<%=application.getContextPath()%>/wishitem/add.rent",
 			dataType:"text",
 			type:'POST', 
@@ -460,6 +470,14 @@ $(document).ready(function(){
 	 * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
 	 */
 	 function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
+			if(amountMoney == undefined) {
+				alert('날짜를 선택해주세요');
+				return;
+			}
+			if(pickupPlace == '방문수령') {
+				alert('위치를 선택하지 않으면 방문수령으로 설정됩니다.');
+				return;
+			}
 		// 로그인 중
 		if( '<%=request.getAttribute("loginId")%>' != 'null'){
 			// post로 데이터 전달
@@ -532,6 +550,15 @@ $(document).ready(function(){
         <!--************************************
              Detail Model Modal End
         *************************************-->
+        
+              <!--************************************
+              Wish Result Modal Start
+         *************************************-->
+      <jsp:include page="/rent/search_include/wish_result_modal.jsp" />
+      <!--************************************
+              Wish Result Modal End
+         *************************************-->
+         
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
           style="padding: 0px 300px">
