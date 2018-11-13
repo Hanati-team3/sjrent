@@ -56,7 +56,7 @@ public class RentPageDataController implements Controller{
       String[] picture = request.getParameterValues("picture");
 
       for(int i = 0; i < startDate.length; i++) {
-    	  if(checked[i] == null)continue;
+    	  if(checked!=null&&checked[i] == null)continue;
     	  Map<String, String> temp = new HashMap<String,String>();
     	  temp.put("startDate", startDate[i]);
     	  temp.put("endDate", endDate[i]);
@@ -78,6 +78,7 @@ public class RentPageDataController implements Controller{
       mav.addObject("resultMap", dataMapList);
       mav.addObject("userName", user.getName());
       mav.addObject("userCellphone", user.getCellphone());
+      mav.addObject("userPoint", user.getPoint());
       mav.addObject("userEmail", user.getEmail());
       mav.setView("/rent/rent.jsp");
       return mav;
