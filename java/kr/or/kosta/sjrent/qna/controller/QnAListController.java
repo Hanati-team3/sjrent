@@ -65,6 +65,7 @@ public class QnAListController implements Controller {
         
         mav.addObject("count", count); 
         mav.addObject("list", list);
+        
         mav.setView("/community/qna_index.jsp"); 
         return mav;
   
