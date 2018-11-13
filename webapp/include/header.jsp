@@ -41,9 +41,9 @@ String loginId = (String)request.getAttribute("loginId");
                            <li class="menu-item-has-children"><a
                               href="javascript:void(0);">커뮤니티</a>
                               <ul class="sub-menu">
-                                 <li><a href="<%=application.getContextPath()%>/community/community.jsp">Q&A</a></li>
-                                 <li><a href="<%=application.getContextPath()%>/community/community.jsp">FAQ</a></li>
-                                 <li><a href="<%=application.getContextPath()%>/community/community.jsp">공지사항</a></li>
+                                 <li><a href="<%=application.getContextPath()%>/qna/qna_index.jsp">Q&A</a></li>
+                                 <li><a href="<%=application.getContextPath()%>/faq/faq_index.jsp">FAQ</a></li>
+                                 <li><a href="<%=application.getContextPath()%>/notice/notice_index.jsp">공지사항</a></li>
                               </ul></li>
                            <li><a href="<%=application.getContextPath()%>/wishitem/list.rent">위시리스트</a></li>
                            <li><a href="<%=application.getContextPath()%>/rent/list.rent">예약확인</a></li>
