@@ -1,39 +1,16 @@
+<%@page import="kr.or.kosta.sjrent.qna.controller.QnAListController"%>
+<%@page import="kr.or.kosta.sjrent.common.controller.Controller"%>
 <%@page import="kr.or.kosta.sjrent.common.params.Params"%>
 <%@page import="kr.or.kosta.sjrent.common.params.PageBuilder"%>
-<%@ page contentType="text/html; charset=utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-request.setCharacterEncoding("utf-8");
-//DaoFactory factory= (DaoFactory)application.getAttribute("factory");
-//ArticleDao dao = factory.getArticle();
-
-//페이지당 보여지는 목록수 설정
-int listSize = 5;
 //페이지당 보여지는 페이지수 설정
 int pageSize = 5;
 
-
-// 선택페이지 수신
-String requestPage = request.getParameter("page");
-if(requestPage == null || requestPage.equals("")){
-  requestPage = "1";
-}
-
-//검색 요청일 경우 파라메터 수신
-String searchType = request.getParameter("searchType");
-String searchValue = request.getParameter("searchValue");
-
-//System.out.println(searchType );
-//System.out.println(searchValue);
-if(searchType == null || searchType.equals("")){
-searchType = null;
-searchValue = null;
-}
-
-//요청파라메터 포장
-Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, searchType, searchValue);
-
 // 페이징 정렬 
+Controller qnaController = new QnAListController();
+request.getAttribute("page");
 //List<Article> list = dao.listByPage(params);
 
 // 페이징 처리에 필요한 검색 개수 DB조회
@@ -44,7 +21,6 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
 //pageBuilder.build();
 
 %>
-
 
 <c:set var="context" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
@@ -69,7 +45,6 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
     background-color: #777;
 }
 
-/* Style the tab content (and add height:100% for full page content) */
 .tabcontent {
     color: white;
     display: none;
@@ -83,6 +58,28 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
 #공지사항 {background-color: #006699;}
 
 </style>
+<script type="text/javascript">
+/**
+ * qna_index.jsp가 로드될 때 실행되는 함수
+ */
+$(document).ready(function(){
+	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
+
+	
+	/** QnA List를 불러오는 QnAListController로 요청 전달 */
+      $.ajax({
+         type : "POST",
+         url : "<%=application.getContextPath()%>/qna/qnaIndex.rent",
+         dataType: "json",
+         success: function(data){
+           	setModelList(data);
+         }
+      });
+      
+   });
+   
+
+</script>
 </head>
 
 <!--************************************
@@ -164,7 +161,7 @@ Params params = new Params(Integer.parseInt(requestPage), listSize, pageSize, se
 								    </div> --%>
 									
 									<div style="display:inline-block; float: right; margin-top: 30px">
-										<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right;" onclick="location.href='<%=application.getContextPath()%>/qna/qnaCreate.jsp'"><span style="font-size: 14pt; width:30%">글쓰기</span></button>
+										<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right;" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'"><span style="font-size: 14pt; width:30%">글쓰기</span></button>
 									</div>
 							</div>
 							

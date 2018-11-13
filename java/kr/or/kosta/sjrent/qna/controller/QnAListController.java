@@ -31,6 +31,7 @@ public class QnAListController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		System.out.println("들어오나?????????????");
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
@@ -38,6 +39,8 @@ public class QnAListController implements Controller {
 		List<QnA> list = null;
 		int listSize = 10;
 		int page = 1;
+		
+		System.out.println("리퀘스트에 담은 페이지 정보 : "+request.getParameter("page"));
 		if(request.getParameter("page")!=null) {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
@@ -55,7 +58,7 @@ public class QnAListController implements Controller {
 		}
 		mav.addObject("count", count);
 		mav.addObject("list", list);
-		mav.setView("/qna/qnaList.jsp");
+		mav.setView("/qna/qna_index.jsp");
 		return mav;
 
 	}
