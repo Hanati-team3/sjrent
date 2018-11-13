@@ -86,7 +86,7 @@ String loginId = (String)request.getAttribute("loginId");
 										<fieldset>
 											<div class="form-group">
 												<label>아이디 <sup>*</sup></label>
-												<input type="text" name="id" class="form-control" placeholder="" maxlength="10" style="text-transform:  none;" required value="${id }" >
+												<input type="text" name="id" class="form-control" placeholder="" maxlength="16" style="text-transform:  none;" required value="${id }" >
 											</div>
 											<div class="form-group">
 												<label>비밀번호 <sup>*</sup></label>

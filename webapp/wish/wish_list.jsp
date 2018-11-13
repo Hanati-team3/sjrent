@@ -29,7 +29,6 @@
 	   $("#disableall").click(function(){
 		  $('input[type="checkbox"]').prop('checked', false); 
 	   });
-	   
 	   /* 렌트하기 */
 	   $('#rentCarButton').on('click', function(e){
 		  $.post('/sjrent/rent/page.rent', $('.tg-formtheme').serialize(), function(data){

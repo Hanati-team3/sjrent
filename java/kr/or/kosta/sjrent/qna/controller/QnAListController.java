@@ -40,8 +40,7 @@ public class QnAListController implements Controller {
 		otj = new ObjectToJson();
 		List<QnA> qnaList = new ArrayList<QnA>();
 		int page = (request.getParameter("page") == null) ? 1 : Integer.parseInt(request.getParameter("page"));
-		int listSize = (request.getParameter("listSize") == null) ? 5
-				: Integer.parseInt(request.getParameter("listSize"));
+		int listSize = (request.getParameter("listSize") == null) ? 10 : Integer.parseInt(request.getParameter("listSize"));
 
 		try {
 			qnaList = qnaService.listByPage(page, listSize);
@@ -54,12 +53,16 @@ public class QnAListController implements Controller {
 		response.setCharacterEncoding("utf-8");
 		try {
 			response.getWriter().print(jsonArray);
+			response.getWriter().print(listSize);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
+	
+	
 	/**
 	 * 원래있던코드 private QnAService qnaService; private JSONObject obj; private
 	 * ModelAndView mav;
