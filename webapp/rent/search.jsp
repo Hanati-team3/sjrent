@@ -109,7 +109,7 @@ input[type="checkbox"]:disabled + .label-text:before{
 }
 
 #icon-desc {
-  font-size: 7px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -310,7 +310,7 @@ function setModelList(list) {
 	}
 	
 	for ( var i in list) {
-		var desc="<table id='option-icon' border='none'> <tr>";
+		var desc="<table id='option-icon' style='border-width: 0;'> <tr>";
 		if(list[i].navigation == 1) {
 			desc += '<td style="border:none;"><i class="fas fa-map-marked-alt"></i></td>';
 		}
