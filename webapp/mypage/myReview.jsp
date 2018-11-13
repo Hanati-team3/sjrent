@@ -262,7 +262,6 @@ function setReviewList(list) {
 
                   <tr>
                     <th></th>
-                    <th>번호</th>
                     <th>모델명</th>
                     <th>제목</th>
                   </tr>
@@ -273,7 +272,6 @@ function setReviewList(list) {
                   <tr>
                     <!-- checkbox에 해당된 리뷰 삭제  -->
                     <td><input type="checkbox" name="reviewSeq" onclick="oneCheckbox(this)" value="<%=reviewList.get(i).getNumber()%>"></td>
-                    <td><%=reviewList.get(i).getNumber()%></td>
                     <td><%=reviewList.get(i).getModelName()%></td>
                     <td data-toggle='modal' data-target='#detail_show' data-model-name='<%=reviewList.get(i).getModelName() %>'><%=reviewList.get(i).getTitle()%></td>
                   </tr>

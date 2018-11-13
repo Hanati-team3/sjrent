@@ -62,8 +62,6 @@ public class UserDeleteController implements Controller {
 					}
 				}
 				
-				
-				
 				mav.setView("/index.jsp");
 			} else {
 				mav.setView("/sjrent/mypage/myPageLoginOK.jsp");
