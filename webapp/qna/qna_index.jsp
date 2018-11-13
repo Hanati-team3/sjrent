@@ -4,12 +4,12 @@
 <%@page import="kr.or.kosta.sjrent.common.params.PageBuilder"%>
 <%@page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="context" value="${pageContext.request.contextPath}" />
 <%
 //페이지당 보여지는 페이지수 설정
 int pageSize = 5;
 
 // 페이징 정렬 
-Controller qnaController = new QnAListController();
 request.getAttribute("page");
 //List<Article> list = dao.listByPage(params);
 
@@ -21,7 +21,6 @@ request.getAttribute("page");
 //pageBuilder.build();
 
 %>
-<c:set var="context" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,7 +81,7 @@ tr:hover {
  * qna_index.jsp가 로드될 때 실행되는 함수
  */
 
-$(document).ready(function(){
+<%-- $(document).ready(function(){
  $.ajax({
      type: "POST",
      url: "<%=application.getContextPath()%>/qna/qnaIndex.rent",
@@ -93,7 +92,7 @@ $(document).ready(function(){
       }
   });
 });
-      
+ --%>      
 
 function setQnAList(list) {
 	
@@ -104,10 +103,6 @@ function setQnAList(list) {
 		var content = list[i].content;
 		
 		//document.getElementById("td").innerHTML = title; 
-		
-		
-		
-		
 		
 		  /* <td id="tdNumber"></td>
           <td id="tdTitle"></td>
@@ -121,6 +116,7 @@ function setQnAList(list) {
 	
 
 }
+
 
 </script>
 <!-- 스크립트 종료 -->
@@ -148,77 +144,78 @@ function setQnAList(list) {
 	*************************************-->
 
 <!--************************************
-		Main 시작
-	*************************************-->
-<main id="tg-main" class="tg-main tg-sectionspace tg-haslayout tg-bglight">
-	<div class="container">
-		<div class="row">
-			<div class="tg-homebannerslider tg-homebannerslider tg-haslayout">
-				<div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
-					<div class="container">
-						<div class="tg-tabcontent tab-content" style="padding: 0px">
-							<div role="tabpanel" class="tab-pane active fade in" id="home">
-								<div style="text-align: center; margin: 0px 0px; padding: 0px" >
-									<h2>커뮤니티</h2>
-									<div style="text-align: center; margin: 30px 0px 15px ">
-										<button class="tablink" onclick="openPage('QnA', this, '#446600')" id="defaultOpen">QnA</button>
-										<button class="tablink" onclick="openPage('FAQ', this, '#800060')"  >FAQ</button>
-										<button class="tablink" onclick="openPage('공지사항', this, '#006699')"  >공지사항</button>
-									</div>
-								<div id="QnA" class="tabcontent">
-										
-									 <!-- table에 원래 있던 class="w3-table w3-striped w3-bordered" -->
-									 <table style="text-align: center; ">
-							          <thead class="thisTh">
-							            <tr class="w3-theme" style="color: white; font-size: 14pt">
-							              <th>번호</th>
-							              <th>제목</th>
-							              <th>작성자</th>
-							              <th>작성일</th>
-							            </tr>
-							          </thead>
-							          <tbody>
-							              <tr style="color: white;">
-							                  <td id="tdNumber" ></td>
-							                  <td id="tdTitle" ></td>
-							                  <td id="tdUserId" ></td>
-							                  <td id="tdDate" ></td>
-							            </tr>
-							          </tbody>
-							        </table>
-							        
-								</div>
-		
-								<div id="FAQ" class="tabcontent">
-									<h3>FAQ</h3>
-									<p>FAQ 내용 보여주기</p>
-								</div>
-		
-								<div id="공지사항" class="tabcontent">
-									<h3>공지사항</h3>
-									<p>공지사항 내용 보여주기</p>
-								</div>
-							</div>
-									<%-- <div style="float: right;  	">
-								        <input class="tg-btn tg-btn-lg" style=" float: right; font-size: 14pt; width:50%;" type="button" value="홈으로" onclick="location.href='<%=application.getContextPath()%>/index.jsp'">
-								        <input class="tg-btn tg-btn-lg"  style="  text-align:center ; font-size: 12pt; width:50%" type="button" value="글쓰기" onclick="location.href='<%=application.getContextPath()%>/qna/create_qna.jsp'">
-								    </div> --%>
-									
-									<div style="display:inline-block; float: right; margin-top: 30px">
-										<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right;" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'"><span style="font-size: 14pt; width:30%">글쓰기</span></button>
-									</div>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+      Main 시작
+   *************************************-->
+<main id="tg-main" class="tg-main tg-haslayout tg-bglight">
+   <div class="container">
+      <div class="row">
+         <div style="text-align: center; margin: 100px 0px"><h2>QnA</h2></div>
+            <div id="tg-twocolumns" class="tg-twocolumns">
+                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="" >
+                       <table class="table table-responsive">
+                          <colgroup>
+                             <col width="5%"/>
+                             <col width="40%"/>
+                             <col width="20%"/>
+                             <col width="15%"/>
+                          </colgroup>
+                          <tr>
+                             <th scope="col">번호</th>
+                             <th scope="col">제목</th>
+                             <th scope="col">작성자</th>
+                             <th scope="col">작성일</th>
+                          </tr>
+                          <tbody>
+                          <!--************************************
+                                QnA 리스트 시작 
+                             *************************************-->
+                             <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
+                             <% if (request.getAttribute("list") != null ){ %> 
+                              <c:forEach var="qna" items="${list}" varStatus="status">
+	                              <tr>
+	                              	 <!--***********
+	                              	 		번호 
+	                              	 	 ***********-->	
+	                                 <td>
+	                                 <span>1</span>
+	                                 </td>
+	                                 <!--***********
+	                              	 		제목 
+	                              	 	 ***********-->	
+	                                 <td class="startDate" style="vertical-align: middle;"><span>${qna.title}</span>
+	                                 </td>
+	                                 <!--***********
+	                              	 		작성자 
+	                              	 	 ***********-->	
+	                                 <td class="startDate" style="vertical-align: middle;"><span>${qna.userId}</span>
+	                                 </td>
+	                                 <!--***********
+	                              	 		작성일 
+	                              	 	 ***********-->	
+	                                 <td class="endDate"   style="vertical-align: middle;"><span>${qna.date}</span>
+	                                 </td>
+	                              </tr>
+                              </c:forEach>
+                              <%}else{ %>
+                              <tr>
+                              	<td colspan="4" style="height: 100px; vertical-align: middle;">QnA가 존재하지 않습니다.</td>
+                              </tr>
+                              <%}%>
+                             <!--************************************
+                                QnA 리스트 종료
+                             *************************************-->
+                          </tbody>
+                       </table>
+                    </div>
+                 </div>
+         </div>
+      </div>
+   </div>
 </main>
 <!--************************************
-		Main 종료
-*************************************-->
+      Main 종료
+   *************************************-->
 
 <!--************************************
 			Wrapper 종료
@@ -227,24 +224,7 @@ function setQnAList(list) {
 
 <body class="tg-home tg-homevone">
 
-	<script>
-		function openPage(pageName, elmnt, color) {
-			var i, tabcontent, tablinks;
-			tabcontent = document.getElementsByClassName("tabcontent");
-			for (i = 0; i < tabcontent.length; i++) {
-				tabcontent[i].style.display = "none";
-			}
-			tablinks = document.getElementsByClassName("tablink");
-			for (i = 0; i < tablinks.length; i++) {
-				tablinks[i].style.backgroundColor = "";
-			}
-			document.getElementById(pageName).style.display = "block";
-			elmnt.style.backgroundColor = color;
-
-		}
-		// Get the element with id="defaultOpen" and click on it
-		document.getElementById("defaultOpen").click();
-	</script>
+	
 
    <jsp:include page="../common/commonjs.jsp" />
 </body>

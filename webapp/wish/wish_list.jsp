@@ -28,12 +28,24 @@
 	   /* 전체해제 버튼 */
 	   $("#disableall").click(function(){
 		  $('input[type="checkbox"]').prop('checked', false); 
+	   });	   
+	   /* sumbit */
+	   $('#rentCarButton').click(function(){
+		   /* 버튼이 한 개도 안 눌려졌을 경우 */
+		   var count = 0;
+		   $('.user_checked').each(function(){
+				if($(this).prop('checked') == true) {
+					count++;
+				}
+		   });
+		   if(count == 0){
+			   alert('원하시는 차를 선택해주세요');
+			   return false;
+		   }else{
+			   $('#form').submit();
+		   }
 	   });
-	   /* 렌트하기 */
-	   $('#rentCarButton').on('click', function(e){
-		  $.post('/sjrent/rent/page.rent', $('.tg-formtheme').serialize(), function(data){
-		  });
-	   });
+
    });
    </script>
 </head>
@@ -71,6 +83,7 @@
                		<button type="button" id= "selectall" class="user_option btn btn-primary">전체 선택</button>
                		<button type="button" id= "disableall" class="user_option btn btn-secondary">전체 해제</button>
                </div>
+               <form id="form" class="tg-formtheme tg-formcart" action="<%=application.getContextPath() %>/rent/page.rent" method="get">
                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="" >
                        <table class="table table-responsive">
@@ -93,39 +106,38 @@
                                 차 리스트 보여주기 (IE 10version not support)
                              *************************************-->
                              <% if (request.getAttribute("list") != null && (!((ArrayList)request.getAttribute("list")).isEmpty())){ %> 
-                              <c:forEach var="item" items="${list}" varStatus="status">
-	                              <tr>
-	                                 <td style="vertical-align: middle;">
-			                             <form id="form${status.count}" class="tg-formtheme tg-formcart" action="/rent/page.rent" method="get"></form>
-	                                    <input type="checkbox" class="user_checked" name = "">
-	                                 </td>
-	                                 <td>
-	                                    <div class="tg-tourname" style="border-bottom: none;" > 
-	                                       <figure >
-	                                       		<!-- 사진 필요 -->
-	                                       		 <a><img src="<%=application.getContextPath() %>/images/cars/${item.type}/${item.picture}" style="width: 100px; height: 100px; margin-right: 15px" alt="${item.modelName}"></a>
-	                                       </figure>
-	                                       <input form="form${status.count}" type="hidden" name="type" value="${item.type}">
-	                                       <input form="form${status.count}" type="hidden" name="picture" value="${item.picture}">
-	                                       <div class="tg-populartourcontent">
-	                                          <div class="tg-populartourtitle">
-	                                             <h3 style="vertical-align: middle; text-align: left; margin-bottom: 10px"><a class="modelName" href="javascript:void(0);">${item.modelName}</a></h3>
-	                                          		 <span style="text-align: left; ">연료 : ${item.fuelType }</span>
-	                                          </div>
-	                                       </div>
-	                                    </div>
-	                                 </td>
-	                                 <td class="startDate" style="vertical-align: middle;"><span>${item.startDate}</span>
-		                                 <input form="form${status.count}" type="hidden" name="startDate" value="${item.startDate}">
-	                                 </td>
-	                                 <td class="endDate"   style="vertical-align: middle;"><span>${item.endDate}</span>
-		                                 <input form="form${status.count}" type="hidden" name="endDate" value="${item.endDate}">
-	                                 </td>
-	                                 <td class="amountMoney" style="vertical-align: middle;"><span>${item.amountMoney}</span>
-		                                 <input form="form${status.count}" type="hidden" name="amountMoney" value="${item.amountMoney}">
-	                                 </td>
-	                              </tr>
-                              </c:forEach>
+	                              <c:forEach var="item" items="${list}" varStatus="status">
+		                              <tr>
+		                                 <td style="vertical-align: middle;">
+		                                    <input type="checkbox" class="user_checked" name = "checked" value="${item.modelName}" style="position: static;">
+		                                 </td>
+		                                 <td style="text-align: left">
+		                                    <div class="tg-tourname" style="border-bottom: none;" > 
+		                                       <figure >
+		                                       		<!-- 사진 필요 -->
+		                                       		 <a><img src="<%=application.getContextPath() %>/images/cars/${item.type}/${item.picture}" style="width: 140px; height: 100px; margin-right: 15px" alt="${item.modelName}"></a>
+		                                       </figure>
+		                                       <input type="hidden" name="type" value="${item.type}">
+		                                       <input type="hidden" name="picture" value="${item.picture}">
+		                                       <div class="tg-populartourcontent">
+		                                          <div class="tg-populartourtitle">
+		                                             <h3 style="vertical-align: middle; text-align: left; margin-bottom: 10px"><a class="modelName" href="javascript:void(0);">${item.modelName}</a></h3>
+		                                          	<span>연료 : ${item.fuelType }</span>
+		                                          </div>
+		                                       </div>
+		                                    </div>
+		                                 </td>
+		                                 <td class="startDate" style="vertical-align: middle;"><span>${item.startDate}</span>
+			                                 <input type="hidden" name="startDate" value="${item.startDate}">
+		                                 </td>
+		                                 <td class="endDate"   style="vertical-align: middle;"><span>${item.endDate}</span>
+			                                 <input type="hidden" name="endDate" value="${item.endDate}">
+		                                 </td>
+		                                 <td class="amountMoney" style="vertical-align: middle;"><span>${item.amountMoney}</span>
+			                                 <input type="hidden" name="amountMoney" value="${item.amountMoney}">
+		                                 </td>
+		                              </tr>
+	                              </c:forEach>
                               <%}else{ %>
                               <tr>
                               	<td colspan="5" style="height: 100px; vertical-align: middle;">위시리스트가 존재하지 않습니다.</td>
@@ -138,11 +150,12 @@
                        </table>
                        <% if (request.getAttribute("list") != null && (!((ArrayList)request.getAttribute("list")).isEmpty())){ %> 
                       	 <fieldset style="border: none;">
-                          	<button id="rentCarButton" type="button" style="float: right" class="tg-btn">렌트하기</button>
+                          	<input id="rentCarButton" type="button" style="float: right" class="tg-btn" value="렌트하기">
                         </fieldset>	
                        <%} %> 
                     </div>
                  </div>
+             </form>
          </div>
       </div>
    </div>
@@ -154,5 +167,6 @@
       Wrapper 종료
    *************************************-->
    </div>
+   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlWwxN6bwNheL1s5jwQxzKlZMo_HTTNAQ"></script>
 </body>
 </html>

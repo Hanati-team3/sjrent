@@ -40,6 +40,23 @@
 .tg-listing .tg-populartour, .tg-listing .tg-trendingtrip {
 	padding: 10px 5px 5px;
 }
+/* Set the size of the div element that contains the map */
+#map {
+  height: 400px;  /* The height is 400 pixels */
+  width: 100%;  /* The width is the width of the web page */
+}
+#floating-panel {
+   position: absolute;
+   top: 10px;
+   left: 60%;
+   z-index: 5;
+   background-color: #fff;
+   padding: 5px;
+   text-align: center;
+   font-family: 'Roboto','sans-serif';
+   line-height: 30px;
+   padding-left: 10px;
+ }
 </style>
 <script type="text/javascript">
 var rent_start_date = null;
@@ -47,7 +64,7 @@ var rent_end_date = null;
 var date;
 var weekday = 0;
 var weekend = 0;
-
+var pickupPlace = "방문수령";
 /**
  * search.jsp가 로드될 때 실행되는 함수
  */
@@ -134,6 +151,7 @@ function formatDate(date){
 	            $("#rank-list").html(result);
 	        }
 	    });
+	    
 	});
 }
 
@@ -167,7 +185,7 @@ function getModelTypeOption(modelParams) {
             type_name = 'all';
             break;
     }
-    modelParams.type_name = type_name;
+    modelParams.model_type = type_name;
 }
 
 /**
@@ -225,10 +243,13 @@ function setModelList(list) {
 	}
 	
 	for ( var i in list) {
+		var desc = '<p>'+list[i].fuelType +' 타입 연료를 사용하는 차량으로 최대 '+list[i].seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
+		'<p>'+'주중 가격은 '+list[i].weekdayPrice+'원, 주말 가격은 '+list[i].weekendPrice+'원 입니다.</p>';
+		
 		var params = {
 			imgPath : '/sjrent/images/cars/'+list[i].type+'/'+list[i].picture,
 			modelName : list[i].name,
-			options : list[i].options,
+			desc : desc,
 			weekday : weekday,
 			weekend : weekend,
 			weekdayPrice : list[i].weekdayPrice,
@@ -241,6 +262,14 @@ function setModelList(list) {
 	}	//for 끝
 	
 	$('#ModelDisplayRow').show();
+	//location.href='#tg-main';
+
+    var scrollPosition = $("#tg-main").offset().top;
+    $("html, body").animate({
+    	scrollTop: scrollPosition
+    }, 300, function () {
+		console.log('aa');
+	});
 	
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
@@ -349,7 +378,7 @@ function setDetailModal(model) {
 	}
 	$('#go-reserve-anchor').on('click', function(e) {
 		e.stopPropagation();
-		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, '방문수령', model.type, model.picture);
+		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, model.type, model.picture);
 	})
 }
 /** 
@@ -471,8 +500,10 @@ function setReviewList(list) {
 		}
 }
 </script>
+
+<title>SJ 렌트카 - 실시간예약</title>
 </head>
-<body>
+<body onload="initMap();">
   <!--************************************
          Mobile Menu Start
    *************************************-->
@@ -532,7 +563,7 @@ function setReviewList(list) {
                         <div class="form-group col-md-4">
                           <div class="tg-select">
                             <select class="selectpicker"
-                              data-live-search="true" data-width="100%"
+                               data-width="100%"
                               title="차종">
                               <option data-tokens="all">전체</option>
                               <option data-tokens="ASegment">소형</option>
@@ -686,7 +717,83 @@ function setReviewList(list) {
    *************************************-->
 
   <jsp:include page="/rent/search_include/search_login.jsp" />
+	<script>
+  var map;
+	var markers = [];
+	
+	// Initialize and add the map
+	function initMap() {
+	  // The location of Uluru
+	  var latlng = {lat: 37.478748, lng: 126.881872};
+	  // The map, centered at Uluru
+	  map = new google.maps.Map(
+	      document.getElementById('map'), {zoom: 17, center: latlng});
+	  // The marker, positioned at Uluru
+	  addMarker(latlng);
+	  var geocoder = new google.maps.Geocoder;
+	  google.maps.event.addListener(map, "click", function (event) {
+		  geocodeLatLng(geocoder, map, new google.maps.InfoWindow, event);	
+	  });
+	  document.getElementById('findPlace').addEventListener('click', function() {
+        geocodeAddress(geocoder, map);
+      });
+		        
+	}
+	function geocodeAddress(geocoder, resultsMap) {
+      var address = document.getElementById('yourAddress').value;
+      geocoder.geocode({'address': address}, function(results, status) {
+        if (status === 'OK') {
+          resultsMap.setCenter(results[0].geometry.location);
+          deleteMarkers();
+          addMarker(results[0].geometry.location);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+	function geocodeLatLng(geocoder, map, infowindow, event) {
+		var latitude = event.latLng.lat();
+      var longitude = event.latLng.lng();
+      //console.log( latitude + ', ' + longitude );
+      var latlng = {lat: latitude, lng: longitude};
+      geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+          	deleteMarkers();
+          	addMarker(latlng);
+          	document.getElementById('yourPlace').innerHTML  = '<p>'+results[0].formatted_address+'</p>';
+              /* console.log(results[0].formatted_address) */
+          	pickupPlace = results[0].formatted_address;
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      
+  }
+	 // Adds a marker to the map and push to the array.
+    function addMarker(location) {
+      var marker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+      markers.push(marker);
+    }
 
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+    function deleteMarkers() {
+  	  setMapOnAll(null);
+        markers = [];
+      }
+  
+  </script>
 
 </body>
 </html>
