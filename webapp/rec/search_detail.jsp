@@ -24,9 +24,11 @@
                               </span>
                               <em id='detail-review-count'>model review count filed</em> 
   						</div>
-  						<div class="tg-description">
-  							<p>There’s only 5 spot left. Join 19 others at Travelu’s
-  								experience this Saturday.</p>
+  						<div class="tg-pricearea">
+  							<span>총 금액</span>
+  							<h4 id='detail-amount-money'>
+  								model amountMoney filed
+  							</h4>
   						</div>
                           <div class="tg-description">
                             <ul class="my-tg-likeshare" >

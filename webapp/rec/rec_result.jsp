@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="<%=application.getContextPath()%>/css/datepicker.min.css" type="text/css">
 <script src="<%=application.getContextPath()%>/js/datepicker.min.js"></script>
 <script src="<%=application.getContextPath()%>/js/datepicker.en.js"></script>
+<!-- fontawesome -->
+<link rel="stylesheet"
+  href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+  integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+  crossorigin="anonymous">
 <style type="text/css">
 
 .resultImg {
@@ -73,7 +78,22 @@ var car_model;
 /* 예약 가능한 차 개수 */
 var car_num;
 
-var pickupPlace = "방문수령";
+/* 렌트 페이지로 넘길 데이터 */
+var rent_start_date = null;		/* 차 시작 날짜 */
+var rent_end_date = null;		/* 차 종료 날짜 */
+var date;
+var weekday = 0;
+var weekend = 0;
+var pickupPlace = "방문수령"; 
+var amountMoney;				/* 차 가격 */
+var detailModel = null;
+
+var isLogin = false;
+
+var weekdayPrice;
+var weekendPrice;
+
+
   /** 이미지 경로 받아오기 */
 function getImagePath() {
   	var result; 
@@ -107,17 +127,6 @@ function getImagePath() {
   	   console.log("최종적으로 넘어가는 리절트: " + result);
   	   return result; 
 }
- 
-  	/* 차 시작 날짜 */
-	var rent_start_date;
-  	
-  	/* 차 종료 날짜 */
-  	var rent_end_date;
-  	
-  	/* 차 가격 */
-  	var amountMoney;
-  	var weekdayPrice;
-  	var weekendPrice;
   	
  /** 시작하자마자 */
 $(document).ready(function(){ 
@@ -178,6 +187,7 @@ $(document).ready(function(){
 			         		if(startDay == 7) startDay = 0;
 			         	}
 			             amountMoney = weekdayPrice * weekday + weekendPrice * weekend;
+			     		$('#detail-amount-money').html('&#8361 '+ amountMoney);
 			             /* 다른 것들도 초기화 */
 			             for (var i = 1; i <= count; i++) {
 			            	 if(id != i){
@@ -263,6 +273,44 @@ $(document).ready(function(){
 		$('#detail-name').html(model.name);
 		$('#detail-star').css('width', model.evalScore * 10 + '%');
 		$('#detail-review-count').html('(' + model.reviewCount + ' Review)');
+		$('#detail-amount-money').html('&#8361 0');
+		$('#detail-weekday-price').html(' ' + model.weekdayPrice + ' on Weekday');
+		$('#detail-weekend-price').html(' ' + model.weekendPrice + ' on Weekend');
+		$('#detail-wish-count').html(' ' + model.rentalCount + ' Times Added on Wish List');
+		$('#detail-reserve-count').html(' ' + model.rentalCount + ' Times Reserved');
+		$('#about-this-model').html('<p>'+ model.name +' 모델 차량은 '+ model.fuelType +' 타입 연료를 사용하는 차량으로 최대 '+model.seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
+				'<p>'+ model.name +' 모델의 주중 가격은 '+model.weekdayPrice+' 원입니다. 주말 가격은 '+model.weekendPrice+'원 입니다.</p>');
+		
+		var optionsHTML = '<p>주요 옵션은 아래와 같습니다.</p> <ul class="tg-liststyle">';
+		optionsHTML += '<li><span>연비 : ' + model.fuelEfficiency + '</span></li>';
+		optionsHTML += '<li><span>기어 : ' + model.transmission + '</span></li>';
+		optionsHTML += '<li><span>연식 : ' + model.year + '</span></li>';
+		if(model.navigation == 1) {
+			optionsHTML += '<li><span>네비게이션</span></li>';
+		}
+		if(model.cameraRear == 1) {
+			optionsHTML += '<li><span>후방카메라</span></li>';
+		}
+		if(model.highpass == 1) {
+			optionsHTML += '<li><span>하이패스</span></li>';
+		}
+		if(model.blackBox == 1) {
+			optionsHTML += '<li><span>블랙박스</span></li>';
+		}
+		optionsHTML += '</ul>';
+		$('#important-options').html(optionsHTML);
+		
+		var otherOptionsHTML = "";
+		if(model.options == null || model.options == "" || model.options.length == 0){
+			otherOptionsHTML += '<li><span>기타 옵션이 없습니다.</span></li>';
+		}
+		else {
+			var jbSplit = model.options.split(',');
+			for ( var i in jbSplit ) {
+				otherOptionsHTML += '<li><span>'+jbSplit[i]+'</span></li>'
+			}
+		}
+		$('#car-detail-others').html(otherOptionsHTML);
 		/* 달력 가져오기 */
 		if(Object.keys(model).length >= 1 ){
 			$('#showCalendar').html(
