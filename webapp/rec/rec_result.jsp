@@ -411,6 +411,10 @@ $(document).ready(function(){
 	 */
 	function setReviewList(list) {
 		$("#each_review_ul").html("");
+		if(list.length == 0 ) {
+			console.log('review length == 0');
+			$("#each_review_ul").append("<li>리뷰가 없습니다</li>");
+		}
 		for ( var i in list) {
 			var params = {
 				imgPath : '/sjrent/images/review/image1.jpg',
@@ -475,8 +479,7 @@ $(document).ready(function(){
 				return;
 			}
 			if(pickupPlace == '방문수령') {
-				alert('위치를 선택하지 않으면 방문수령으로 설정됩니다.');
-				return;
+				alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
 			}
 		// 로그인 중
 		if( '<%=request.getAttribute("loginId")%>' != 'null'){

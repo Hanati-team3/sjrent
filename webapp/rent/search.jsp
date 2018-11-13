@@ -522,7 +522,9 @@ function wishResultHide() {
  * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
  */
  function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
-	alert('2');
+	if(pickupPlace == '방문수령') {
+		alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
+	}
 	// 로그인 중
 	if(isLogin == true){
 		// post로 데이터 전달
