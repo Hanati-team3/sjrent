@@ -21,7 +21,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
 /**
  * 대여를 위한 정보와 유저정보를 예약 페이지로 넘기는 컨트롤러
- * @author 유예겸
+ * @author 유예겸. 남수현
  *
  */
 public class RentPageDataController implements Controller{
@@ -47,7 +47,7 @@ public class RentPageDataController implements Controller{
          mav.setView("/rent/search.jsp");
          return mav;
       }
-      
+      String[] checked = request.getParameterValues("checked");
       String[] startDate = request.getParameterValues("startDate");
       String[] endDate = request.getParameterValues("endDate");
       String[] pickupPlace = request.getParameterValues("pickupPlace");
@@ -56,6 +56,7 @@ public class RentPageDataController implements Controller{
       String[] picture = request.getParameterValues("picture");
 
       for(int i = 0; i < startDate.length; i++) {
+    	  if(checked[i] == null)continue;
     	  Map<String, String> temp = new HashMap<String,String>();
     	  temp.put("startDate", startDate[i]);
     	  temp.put("endDate", endDate[i]);
