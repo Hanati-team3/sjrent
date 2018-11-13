@@ -34,6 +34,20 @@ if(pageS!=null){
 }
 int listSize = 10;
 int startNum = count -(listSize*(pageNum-1));
+
+
+//총 페이지 수  
+int totalPages = 0;
+if(count % listSize != 0){//나머지 존재
+	totalPages = (int)count/listSize + 1;
+}else{//나눠 떨어짐
+	totalPages = count/listSize; 	
+}
+
+
+
+
+
 %>
 <!DOCTYPE html>
 <html>
@@ -119,7 +133,9 @@ tr:hover {
    <div class="container">
       <div class="row">
       <div id="tg-content" class="tg-content">
-         <div style="text-align: center; margin: 100px 0px 30px"><h2>커뮤니티</h2></div>
+         <div style="vertical-align: middle;">
+         <div style="text-align: center; margin: 100px 0px 30px"><h2 style="display: inline-block;">커뮤니티</h2></div>
+		 </div>
          <div style="text-align: center;  margin: 10px 0px 20px">
 			<button class="tablink" onclick="openPage('QnA', this, '#446600')" id="defaultOpen">QnA</button>   
 			<button class="tablink" onclick="openPage('FAQ', this, '#800060')"  >FAQ</button>
@@ -211,10 +227,39 @@ tr:hover {
                           </tbody>
                        </table>
                        
-                       <!-- 글쓰기 버튼 -->
-                       <div style="display:inline-block; float: right; margin-top: 30px">
-							<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right; background-color: #006699" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'" ><span style="font-size: 14pt; width:30%">글쓰기</span></button>
-					   </div>
+                       
+                       <!-- 페이지네이션 -->
+                       
+					   <div>
+						   	<div style="width: 50%; margin-left: 500px; display: inline-block;">
+							  <ul class="pagination pagination-lg" style="text-align: center; ">
+							  <%
+							  for(int i=1; i< totalPages+1; i++){
+							  	if(i == pageNum){//i랑 page랑 같으면 class="active"
+							  	%>
+								    <li class="active"><a href="/sjrent/qna/qnaIndex.rent?page=<%=i %>"><%=i %></a></li>							  		
+							  	<%
+							  	}else{
+							  	%>
+								    <li><a href="/sjrent/qna/qnaIndex.rent?page=<%=i %>"><%=i %></a></li>							  									  		
+							  	<%
+							  	}
+							  	%>
+							  <%	  
+							  }
+							  %>
+							  </ul>
+							</div> 
+							<!-- 글쓰기 버튼 -->				            
+				            <!-- <input type="button" value='글쓰기' style="margin-top:20px; display:inline-block; background-color: #006699; text-align: right; " onclick="location.href='/sjrent/qna/qnaIndex.rent"> -->      
+						</div>
+
+                       <!-- 원래 글쓰기 버튼 -->
+					     <button style=" display:inline-block; margin-bottom:20px;float:right;background-color: #006699; width: 10%; color:white; padding: 20px" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'">
+						 글쓰기
+						 </button>	 
+							
+							 
 	        
 		</div>
 		
@@ -232,8 +277,54 @@ tr:hover {
 				%>
 			</div>
 			<!-- FAQ 내용 종료 -->
-			
-		</div>
+		</div> 
+		<%-- <div id="FAQ" class="tabcontent" >
+		    <table class="table table-responsive">
+                          <colgroup>
+                             <col width="5%"/>
+                             <col width="40%"/>
+                          </colgroup>
+                          <tr>
+                             <th scope="col">번호</th>
+                             <th scope="col">제목</th>
+                          </tr>
+                          <tbody>
+                          <!--************************************
+                                FAQ 리스트 시작 
+                             *************************************-->
+                             <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
+                             
+	                              <tr>
+	                              	 <!--***********
+	                              	 		번호 
+	                              	 	 ***********-->	
+	                                 <%for(int i=0; i<6; i++){
+	                                 %>
+	                                 <td>
+	                                 <span><%=i %></span>
+	                                 </td>
+	                                 <%	 
+	                                 }%>
+	                                 <!--***********
+	                              	 		제목 
+	                              	 	 ***********-->	
+	                                 <%for(int i=0; i<6; i++){%>
+	                                 <td>
+                                 		<span>공지사항 내용 <%=i%></span>
+	                                 </td>
+	                                 <%
+	                                 }
+	                                 %>
+	                              </tr>
+                             <!--************************************
+                                FAQ 리스트 종료
+                             *************************************-->
+                          </tbody>
+                       </table>
+		</div> --%>
+		
+		
+		
 		
 		<!-- Notice -->
 		<div id="공지사항" class="tabcontent">
