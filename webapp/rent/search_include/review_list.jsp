@@ -102,6 +102,29 @@
       
        --%>
       <%--
+=======
+<%@ page contentType="text/html; charset=utf-8" %>
+<div role="tabpanel" class="tab-pane tg-reviewtab" id="review" on>
+	<div class="tg-reviewsarea">
+		<form class="tg-formtheme tg-formreviews">
+			<fieldset class="tg-filterby">
+				<div class="tg-durationrating">
+					<em id='review-list-count'></em> 
+				</div>
+				<span class="tg-select"> <select>
+						<option>Filter by</option>
+						<option>Rating</option>
+						<option>New</option>
+						<option>date</option>
+				</select>
+				</span>
+			</fieldset>
+			<fieldset class="tg-reviews">
+				<ul id='each_review_ul'>
+                    
+				</ul>
+			</fieldset>
+>>>>>>> Stashed changes
                   <!-- 리뷰남기기 시작 -->
 			<fieldset class="tg-formleavereview">
 				<div class="tg-leavereviewhead">
@@ -129,6 +152,7 @@
 				</div>
 			</fieldset>
                   <!-- 리뷰남기기 끝 -->
+<<<<<<< Updated upstream
        --%>
     </form>
   </div>

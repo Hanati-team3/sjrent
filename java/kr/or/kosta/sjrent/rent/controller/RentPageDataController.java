@@ -78,6 +78,7 @@ public class RentPageDataController implements Controller{
       mav.addObject("resultMap", dataMapList);
       mav.addObject("userName", user.getName());
       mav.addObject("userCellphone", user.getCellphone());
+      mav.addObject("userPoint", user.getPoint());
       mav.addObject("userEmail", user.getEmail());
       mav.setView("/rent/rent.jsp");
       return mav;
