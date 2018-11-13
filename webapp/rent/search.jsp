@@ -145,6 +145,10 @@ $(document).ready(function(){
 	$('#search-nonuser-login-form').submit(function(e) {
 		nonUserLoginAction(e);
 	});
+	
+	$('#search-only-user-login-form').submit(function(e) {
+		onlyUserLogin(e);
+	});
 });
 
 /** datepicker 이벤트 발생 처리*/
@@ -391,7 +395,6 @@ function setModelList(list) {
 	});
 	
 	/** 디테일 모달이 닫힐 때 */
-	
 	$('#detail_show').on('hidden.bs.modal', function (e) {
 		pickupPlace = "방문수령"; 
 		detailModel = null;
@@ -557,7 +560,48 @@ function wishResultHide() {
 		$("#login_modal").modal('show');
 	}
 }
+function loginModalShow() {
+	$("#user_login_modal").modal('show');
+}
+function onlyUserLogin(e) {
+	e.preventDefault();
+	var id = e.currentTarget.id.value;
+	var pw = e.currentTarget.pw.value;
+	var remember = e.currentTarget.remember.checked;			// true or false
+	var where = 'ajax';
 	
+	var params = {
+  		id : id,
+  		pw : pw,
+  		login : where
+	};
+	// 아이디 저장 체크 되어있을 때만 remember를 파라미터로 보냄
+	if(remember == true) {
+		params.remember = remember;
+	}
+	
+	console.log('login : ' + id + "," + pw + "," + remember);
+	window.loginE = e;
+	
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/user/login.rent",
+		type:'POST', 
+		data : params,
+		success:function(result){
+			if(result == 'success') {
+				isLogin = true;
+				alert('로그인성공');
+				location.href='<%=application.getContextPath()%>/rent/search.jsp';
+			}
+			else {
+				alert('아이디와 비밀번호를 확인해주세요');
+			}
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
+}
 /** 
  * 리뷰 리스트를 컨트롤러에 요청하여 가져오는 함수.
  * 
@@ -863,6 +907,15 @@ function nonUserLoginAction(e) {
       <jsp:include page="/rent/search_include/search_login_modal.jsp" />
       <!--************************************
               Search Login Modal End
+         *************************************-->
+         
+         
+      <!--************************************
+              Search Only User Login Modal Start
+         *************************************-->
+      <jsp:include page="/rent/search_include/search_login_modal_only_user.jsp" />
+      <!--************************************
+              Search Only User Login Modal End
          *************************************-->
 
       <div class="row" id="ModelDisplayRow">
