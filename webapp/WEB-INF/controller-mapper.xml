@@ -37,7 +37,6 @@
 	<bean type="controller" name="/user/checkEmail"
 		class="kr.or.kosta.sjrent.user.controller.UserCheckEmailController" />
 
-
 	<!-- QnA list 컨트롤러 -->
 	<bean type="controller" name="/qna/qnaIndex"
 		class="kr.or.kosta.sjrent.qna.controller.QnAListController" />
