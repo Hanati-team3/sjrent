@@ -59,7 +59,7 @@
 	<div class="container">
 		<div class="row">
 				<div class="tg-homeslider tg-homeslidervtwo tg-haslayout" >
-						<h2 style="text-align: center; margin-bottom: 50px">결제로그인</h2>
+						<h2 style="text-align: center; margin-bottom: 50px">로그인</h2>
 						<div class="tg-themetabs" style="padding: 0px 150px">
 							<ul class="tg-navtbs" role="tablist">
 								<li role="presentation" class="active"><a href="#user" data-toggle="tab">회원</a></li>

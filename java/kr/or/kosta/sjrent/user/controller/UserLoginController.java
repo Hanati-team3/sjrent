@@ -110,6 +110,7 @@ public class UserLoginController implements Controller {
 						response.getWriter().print("fail");
 						return null;
 					}else {
+						//mav.addObject("login", value);
 						mav.setView("/index.jsp");
 					}
 				}
