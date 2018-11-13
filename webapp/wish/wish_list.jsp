@@ -168,5 +168,6 @@
       Wrapper 종료
    *************************************-->
    </div>
+   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlWwxN6bwNheL1s5jwQxzKlZMo_HTTNAQ"></script>
 </body>
 </html>
