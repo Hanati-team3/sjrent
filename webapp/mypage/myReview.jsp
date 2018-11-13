@@ -19,9 +19,6 @@ List<Review> reviewList = (List)request.getAttribute("reviewList");
 <jsp:include page="../common/commonjs.jsp" />
 
 <style type="text/css">
-.in {
-  background: rgba(0, 0, 0, 0.8);
-}
 
 .modal-backdrop {
   position: static;
