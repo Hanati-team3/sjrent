@@ -13,60 +13,57 @@
 .modal-backdrop{
    position: static;
 }
-/* Set the size of the div element that contains the map */
-#map {
-  height: 400px;  /* The height is 400 pixels */
-  width: 100%;  /* The width is the width of the web page */
-}
-#floating-panel {
-   position: absolute;
-   top: 10px;
-   left: 60%;
-   z-index: 5;
-   background-color: #fff;
-   padding: 5px;
-   text-align: center;
-   font-family: 'Roboto','sans-serif';
-   line-height: 30px;
-   padding-left: 10px;
- }
 </style>
 <script type="text/javascript">
 
-var modelNames = <%=request.getAttribute("modelNames")%>;
-console.log(modelNames);
-
+var modelNamesList=[];
+<%
+String modelNames = request.getAttribute("modelNames").toString();
+String[] modelNameList = modelNames.substring(1,modelNames.length()-1).split(",");
+for(int i = 0; i < modelNameList.length; i++){
+	modelNameList[i].trim();
+}
+for(int i = 0; i < modelNameList.length; i++){
+	%>
+	modelNamesList.push('<%=modelNameList[i].trim()%>')
+<%	
+}
+%>
+/* console.log(modelNamesList); */
 $(document).ready(function(){
+	
+	for (var i = 1; i <= modelNamesList.length; i++) {
+		document.getElementById('modelName'+i).innerHTML = '<h3>'+modelNamesList[i-1]+'</h3>';
+		document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);
+		/* console.log(modelNamesList[i-1]); */
+	}
 	
 	/* Modal 작동 */
 	$('#ModelDisplayRow').show();
 		
-		/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
-		$('#detail_show').on('show.bs.modal', function(e) {
-			var modelName = $(e.relatedTarget).data('model-name');
-			window.e = $(e.currentTarget);
-			console.log(car_model);
-			window.e = $(e.currentTarget);
-			$.ajax({	
-				url:"<%=application.getContextPath()%>/model/detail.rent",
-				dataType:"json",
-				type:'POST', 
-				data : {
-		             'modelName' : modelName,
-		             'weekday' : weekday,
-		             'weekend' : weekend,
-		             'startDate' : rent_start_date,
-		             'endDate' : rent_end_date
-		        },
-				success:function(result){
-					//$(e.currentTarget).html(result);
-					setDetailModal(result);
-				},
-		        error : function(result) {
-		        	console.log('error in openning detail show' + result);
-		        }
-			});
+	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
+	$('#detail_show').on('show.bs.modal', function(e) {
+		var modelName = $(e.relatedTarget).data('model-name');
+		window.e = $(e.currentTarget);
+		var id = $(e.relatedTarget).data('model-num');
+		window.e = $(e.currentTarget);
+		console.log(id);
+		$.ajax({	
+			url:"<%=application.getContextPath()%>/model/detail.rent",
+			dataType:"json",
+			type:'POST', 
+			data : {
+	             'modelName' : modelName
+	        },
+			success:function(result){
+				//$(e.currentTarget).html(result);
+				setDetailModal(result, id);
+			},
+	        error : function(result) {
+	        	console.log('error in openning detail show' + result);
+	        }
 		});
+	});
 });
 function setReviewTab(name, reviewCount, page) {
 	$('#new_review_tab').remove();
@@ -87,17 +84,15 @@ function setReviewTab(name, reviewCount, page) {
  * 위시리스트로 넘길 정보 :  model(name,picture,type,fueltype), startDate, endDate, amountMoney
  * 예약화면으로 넘길 정보 :  model, startDate, endDate, amountMoney, location
  */
-function setDetailModal(model) {
-	var amountMoney = model.weekdayPrice * weekday + 
-					  model.weekendPrice * weekend;
+function setDetailModal(model, id) {
 	var imagePath = "../images/cars/"+model.type+"/"+model.picture;
 	$('#detail-img').attr('src',imagePath);
 	$('#detail-name').html(model.name);
 	$('#detail-star').css('width', model.evalScore * 10 + '%');
 	$('#detail-review-count').html('(' + model.reviewCount + ' Review)');
-	$('#detail-amount-money').html('&#8361 '+ amountMoney);
-	$('#detail-weekday-price').html(' ' + model.weekdayPrice + ' on Weekday');
-	$('#detail-weekend-price').html(' ' + model.weekendPrice + ' on Weekend');
+	/* console.log(document.getElementById('rentList'+id).getAttribute('data-model-name')); */
+	$('#getModelName').val(document.getElementById('rentList'+id).getAttribute('data-model-name'));
+	/* $('#detail-amount-money').html('&#8361 '+ amountMoney); */
 	$('#detail-wish-count').html(' ' + model.rentalCount + ' Times Added on Wish List');
 	$('#detail-reserve-count').html(' ' + model.rentalCount + ' Times Reserved');
 	$('#about-this-model').html('<p>'+ model.name +' 모델 차량은 '+ model.fuelType +' 타입 연료를 사용하는 차량으로 최대 '+model.seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
@@ -149,6 +144,11 @@ function setDetailModal(model) {
 		e.stopPropagation();
 		e.currentTarget.onclick = goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, model.type, model.picture);
 	})
+	
+	/* $('#addReview').on('click', function(e){
+		e.stopPropagation();
+		e.currentTarget.onclick = addReview();
+	}) */
 }
 /** 
  * 리뷰 리스트를 컨트롤러에 요청하여 가져오는 함수.
@@ -192,9 +192,14 @@ function setReviewList(list) {
 			$("#each_review_ul").append(review);
 		}
 }
+ /* 리뷰 작성  */
+/*function addReview(){
+	$('#addReviewForm').submit();
+} */
+
 </script>
 </head>
-<body onload="initMap();">
+<body>
 
 	<!--************************************
 			Mobile Menu Start
@@ -235,19 +240,18 @@ function setReviewList(list) {
 								<div id="tg-content" class="tg-content">
 									<!-- 여태 렌트했던 목록들 띄우기 -->
 									<c:forEach var="item" items="${list}" varStatus="status">
-										<div class="tg-tourpaymentdetail" id="rentList" data-toggle='modal'data-target='#detail_show' data-model-name='<%=request.getParameter("modelName") %>'>
-											<div class="tg-tourname">
-												<a class="tg-btnedit" href="#">결제취소</a>
+										<div class="tg-tourpaymentdetail" id="rentList${status.count}" class="listRent" data-toggle='modal' data-target='#detail_show' data-model-name="" data-model-num="${status.count-1}">
+											<div class="tg-tourname" style="padding:20px;">
+												<a class="tg-btnedit" href="#" style="padding:20px;">결제취소</a>
 												<figure>
 													<a><img src="../images/G70.jpg" style="width: 100px" height="auto" alt="image destinations"></a>
 												</figure>
 												<div class="tg-populartourcontent">
-													<div class="tg-populartourtitle">
-														<h3><a>modelNames[0]</a></h3>
+													<div class="tg-populartourtitle" id="modelName${status.count}">
 													</div>
 													<div class="tg-populartourfoot form-control" style="background: inherit;" >
-														<div class="tg-durationrating"></div>
-														<span class="tg-tourduration">${item.startDate} ~ ${item.endDate}</span>
+														<div class="tg-durationrating">
+														<span class="tg-tourduration tg-availabilty" style="position: absolute;"><span>${fn:split(item.startDate,' ')[0]}</span> ~ <span>${fn:split(item.endDate,' ')[0]}</span></span></div>
 													</div>
 												</div>
 											</div>
@@ -284,82 +288,5 @@ function setReviewList(list) {
 				Main End
 		*************************************-->
 	</div>
-		<script>
-  var map;
-	var markers = [];
-	
-	// Initialize and add the map
-	function initMap() {
-	  // The location of Uluru
-	  var latlng = {lat: 37.478748, lng: 126.881872};
-	  // The map, centered at Uluru
-	  map = new google.maps.Map(
-	      document.getElementById('map'), {zoom: 17, center: latlng});
-	  // The marker, positioned at Uluru
-	  addMarker(latlng);
-	  var geocoder = new google.maps.Geocoder;
-	  google.maps.event.addListener(map, "click", function (event) {
-		  geocodeLatLng(geocoder, map, new google.maps.InfoWindow, event);	
-	  });
-	  document.getElementById('findPlace').addEventListener('click', function() {
-        geocodeAddress(geocoder, map);
-      });
-		        
-	}
-	function geocodeAddress(geocoder, resultsMap) {
-      var address = document.getElementById('yourAddress').value;
-      geocoder.geocode({'address': address}, function(results, status) {
-        if (status === 'OK') {
-          resultsMap.setCenter(results[0].geometry.location);
-          deleteMarkers();
-          addMarker(results[0].geometry.location);
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      });
-    }
-	function geocodeLatLng(geocoder, map, infowindow, event) {
-		var latitude = event.latLng.lat();
-      var longitude = event.latLng.lng();
-      //console.log( latitude + ', ' + longitude );
-      var latlng = {lat: latitude, lng: longitude};
-      geocoder.geocode({'location': latlng}, function(results, status) {
-          if (status === 'OK') {
-            if (results[0]) {
-          	deleteMarkers();
-          	addMarker(latlng);
-          	document.getElementById('yourPlace').innerHTML  = '<p>'+results[0].formatted_address+'</p>';
-              /* console.log(results[0].formatted_address) */
-          	pickupPlace = results[0].formatted_address;
-            } else {
-              window.alert('No results found');
-            }
-          } else {
-            window.alert('Geocoder failed due to: ' + status);
-          }
-        });
-      
-  }
-	 // Adds a marker to the map and push to the array.
-    function addMarker(location) {
-      var marker = new google.maps.Marker({
-        position: location,
-        map: map
-      });
-      markers.push(marker);
-    }
-
-    // Sets the map on all markers in the array.
-    function setMapOnAll(map) {
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-      }
-    }
-    function deleteMarkers() {
-  	  setMapOnAll(null);
-        markers = [];
-      }
-  
-  </script>
 </body>
 </html>
