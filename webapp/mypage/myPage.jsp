@@ -56,7 +56,7 @@ function loginCheck() {
         $('#checkMsg').html(
             "<p style='COLOR: red'>기존 회원정보와 불일치합니다.</p>");
       } else{
-        location.href="/sjrent/user/read.rent";        
+        location.href="/sjrent/user/read2.rent";        
       }
     },
     error : function() {
