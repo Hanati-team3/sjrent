@@ -369,6 +369,7 @@ function setModelList(list) {
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
 		var modelName = $(e.relatedTarget).data('model-name');
+		int wishCount = getWishcount(modelName);
 		window.e = $(e.currentTarget);
 		$.ajax({	
 			url:"<%=application.getContextPath()%>/model/detail.rent",
