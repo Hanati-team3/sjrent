@@ -8,7 +8,7 @@ String loginId = (String)request.getAttribute("loginId");
             <div class="row">
                <strong class="tg-logo"><a
                   href="<%=application.getContextPath()%>/index.jsp"><img
-                     src="<%=application.getContextPath()%>/images/logo2.png"
+                     src="<%=application.getContextPath()%>/images/SJRentLogoSmallWhite.png"
                      alt="shoppingmall logo"></a></strong>
                <nav class="tg-infonav">
                   <ul>
