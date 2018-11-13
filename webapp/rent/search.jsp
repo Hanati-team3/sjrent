@@ -113,6 +113,10 @@ input[type="checkbox"]:disabled + .label-text:before{
   font-weight: bold;
 }
 
+.tg-sectionspace {
+    padding: 30px 0;
+}
+
 </style>
 <script type="text/javascript">
 var rent_start_date = null;
