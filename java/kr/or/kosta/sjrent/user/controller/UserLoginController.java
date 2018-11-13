@@ -97,7 +97,6 @@ public class UserLoginController implements Controller {
 						return null;
 					}else {
 						mav.setView("/index.jsp");
-						return null;
 					}
 
 				}
@@ -112,7 +111,6 @@ public class UserLoginController implements Controller {
 						return null;
 					}else {
 						mav.setView("/index.jsp");
-						return null;
 					}
 				}
 			} catch (Exception e) {
