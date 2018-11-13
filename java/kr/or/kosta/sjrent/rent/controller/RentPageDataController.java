@@ -54,19 +54,40 @@ public class RentPageDataController implements Controller{
       String[] amountMoney = request.getParameterValues("amountMoney");
       String[] type = request.getParameterValues("type");
       String[] picture = request.getParameterValues("picture");
-
-      for(int i = 0; i < startDate.length; i++) {
-    	  if(checked!=null&&checked[i] == null)continue;
-    	  Map<String, String> temp = new HashMap<String,String>();
-    	  temp.put("startDate", startDate[i]);
-    	  temp.put("endDate", endDate[i]);
-    	  if(pickupPlace == null) temp.put("pickupPlace", "방문수령");
-    	  else temp.put("pickupPlace", pickupPlace[i]);
-    	  temp.put("amountMoney", amountMoney[i]);
-    	  temp.put("type", type[i]);
-    	  temp.put("picture", picture[i]);
-    	  dataMapList.add(temp);
+      Map<String, String> checkedModelName = new HashMap<String,String>();
+      if(checked!=null) {
+    	  for(int i = 0; i < checked.length; i++) {
+    		  if(checked[i]!=null) {
+    			  checkedModelName.put(checked[i], checked[i]);
+    		  }
+    	  }
+          for(int i = 0; i < startDate.length; i++) {
+        	  System.out.println(picture[i]);
+        	  if(!checkedModelName.containsKey(picture[i].substring(0, picture[i].indexOf("."))))continue;
+        	  Map<String, String> temp = new HashMap<String,String>();
+        	  temp.put("startDate", startDate[i]);
+        	  temp.put("endDate", endDate[i]);
+        	  if(pickupPlace == null) temp.put("pickupPlace", "방문수령");
+        	  else temp.put("pickupPlace", pickupPlace[i]);
+        	  temp.put("amountMoney", amountMoney[i]);
+        	  temp.put("type", type[i]);
+        	  temp.put("picture", picture[i]);
+        	  dataMapList.add(temp);
+          }
+      }else {
+          for(int i = 0; i < startDate.length; i++) {
+        	  Map<String, String> temp = new HashMap<String,String>();
+        	  temp.put("startDate", startDate[i]);
+        	  temp.put("endDate", endDate[i]);
+        	  if(pickupPlace == null) temp.put("pickupPlace", "방문수령");
+        	  else temp.put("pickupPlace", pickupPlace[i]);
+        	  temp.put("amountMoney", amountMoney[i]);
+        	  temp.put("type", type[i]);
+        	  temp.put("picture", picture[i]);
+        	  dataMapList.add(temp);
+          }
       }
+
       List<Insurance> insuranceList = new ArrayList<Insurance>();
       try {
 		insuranceList = insuranceService.listAll();
