@@ -19,7 +19,7 @@ import kr.or.kosta.sjrent.review.service.ReviewService;
 import kr.or.kosta.sjrent.review.service.ReviewServiceImpl;
 import kr.or.kosta.sjrent.user.domain.User;
 import kr.or.kosta.sjrent.user.service.UserService;
-import kr.or.kosta.sjrent.user.service.UserServiceImpl;
+
 
 /**
  * id로 user를 검색하는 컨트롤러
@@ -40,7 +40,7 @@ public class ReviewListController2 implements Controller {
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
-		reviewService = (ReviewService)factory.getBean(UserServiceImpl.class);
+		reviewService = (ReviewService)factory.getBean(ReviewServiceImpl.class);
 	
 		String id = (String)request.getAttribute("loginId");
 		List<Review> reviewList = new ArrayList<Review>();

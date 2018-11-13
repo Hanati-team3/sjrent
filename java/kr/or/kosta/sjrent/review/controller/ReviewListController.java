@@ -46,10 +46,6 @@ public class ReviewListController implements Controller {
       String pageS = request.getParameter("page");
       String listSizeS = request.getParameter("listSzie");
       List<Review> reviewList = new ArrayList<Review>();
-      List<Review> reviewListById = new ArrayList<Review>();
-
-      System.out.println("review 컨트롤러 넘어옴");
-      
       
       int page = 1;
       int listSize = 10000;
@@ -68,10 +64,6 @@ public class ReviewListController implements Controller {
       }else if(userId !=null) {
     	  try {
 			reviewList = reviewService.listByUserByPage(page, listSize, userId);
-			
-			reviewListById = reviewService.listById(userId);
-			System.out.println("여기까지오면 대박!!!" + reviewListById);
-			
 		} catch (Exception e) {
 
 		}
