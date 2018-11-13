@@ -1,3 +1,6 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="kr.or.kosta.sjrent.qna.domain.QnA"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.or.kosta.sjrent.qna.controller.QnAListController"%>
 <%@page import="kr.or.kosta.sjrent.common.controller.Controller"%>
 <%@page import="kr.or.kosta.sjrent.common.params.Params"%>
@@ -21,6 +24,7 @@
 
 
 //넘버링하기
+System.out.println(request.getAttribute("count"));
 int count = (int)request.getAttribute("count"); 
 //int listSize = 10;
 int pageNum = 1;
@@ -86,7 +90,7 @@ tr:hover {
 </style>
 <!-- 스타일 종료 -->
 </head>
-
+<body class="tg-home tg-homevone">
 <!--************************************
 			Nav 시작
 	*************************************-->
@@ -114,7 +118,8 @@ tr:hover {
 <main id="tg-main" class="tg-main tg-haslayout tg-bglight">
    <div class="container">
       <div class="row">
-         <div style="text-align: center; margin: 100px 0px "><h2>커뮤니티</h2></div>
+      <div id="tg-content" class="tg-content">
+         <div style="text-align: center; margin: 100px 0px 30px"><h2>커뮤니티</h2></div>
          <div style="text-align: center;  margin: 10px 0px 20px">
 			<button class="tablink" onclick="openPage('QnA', this, '#446600')" id="defaultOpen">QnA</button>   
 			<button class="tablink" onclick="openPage('FAQ', this, '#800060')"  >FAQ</button>
@@ -143,7 +148,15 @@ tr:hover {
                                 QnA 리스트 시작 
                              *************************************-->
                              <!-- && (!((ArrayList)request.getAttribute("list")).isEmpty()) -->
-                             <% if (request.getAttribute("list") != null ){ %> 
+                             
+                            <% 
+                            String loginId = (String)request.getAttribute("loginId");
+                          	//System.out.println("로그인 아이디1: "+id);//jm
+                          	//System.out.println("로그인 아이디1: "+loginId);
+                          	
+                             List<QnA> QnAList = (ArrayList<QnA>)request.getAttribute("list");
+                             int index = 0;
+                             if (request.getAttribute("list") != null ){ %> 
                               <c:forEach var="qna" items="${list}" varStatus="status">
 	                              <tr>
 	                              	 <!--***********
@@ -157,29 +170,20 @@ tr:hover {
 	                              	 	 ***********-->	
 	                                 <td class="startDate" style="text-align: left; padding-left: 20px">
 	                                 	<%
-	                                 	String id = null;
-	                                	Cookie[] cookies = request.getCookies();
-	                                	if (cookies != null) {
-	                                		for (Cookie cookie : cookies) {
-	                                			if (cookie.getName().equals("loginId")) {
-	                                				id = cookie.getValue();
-	                                			}
-	                                		}
-	                                	}
-	                                 	//System.out.println("로그인 아이디1: "+id);//jm
 	                                 	
-	                                 	//System.out.println("로그인 아이디2: "+${qna.userId});
-	                                 	
-	                                 	//if(id.equals(anObject)){//작성자이면
-	                                 	
+	                                 	if(loginId.equals(QnAList.get(index++).getUserId())){//작성자이면
 	                                 	%>
-	                                 		<span><a href="<%=application.getContextPath() %>/qna/qna_read.jsp">${qna.title}</a></span>
+	                                 		<span><a href="<%=application.getContextPath()%>/qna/qnaRead.rent?qnaSeq=${qna.number}">${qna.title}</a></span>
+	                                 		
 	                                 	<%	
-	                                 	//}else{
+	                                 	}else{
 	                                 	%>	
-	                                 		 <!-- <span>비밀글입니다.</span> --> 
+	                                 		  <span>
+	                                 		  	<img alt="자물쇠" src="<%=application.getContextPath()%>/images/lock.png">
+	                                 		  	비밀글입니다.
+	                                 		  </span> 
 	                                 	<%
-	                                 	//}
+	                                 	}
 	                                 	%>
 	                                 </td>
 	                                 <!--***********
@@ -209,7 +213,7 @@ tr:hover {
                        
                        <!-- 글쓰기 버튼 -->
                        <div style="display:inline-block; float: right; margin-top: 30px">
-							<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right;" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'"><span style="font-size: 14pt; width:30%">글쓰기</span></button>
+							<button class="tg-btn tg-btn-lg" style=" padding: 0px 30px; float: right; background-color: #006699" onclick="location.href='<%=application.getContextPath()%>/qna/qna_create.jsp'" ><span style="font-size: 14pt; width:30%">글쓰기</span></button>
 					   </div>
 	        
 		</div>
@@ -248,7 +252,7 @@ tr:hover {
 		</div>
 		
 		
-		
+		</div>
       </div>
    </div>
 </main>
@@ -261,7 +265,6 @@ tr:hover {
 *************************************-->
 </div>
 
-<body class="tg-home tg-homevone">
 	<script>
 		function openPage(pageName, elmnt, color) {
 			var i, tabcontent, tablinks;
@@ -280,8 +283,6 @@ tr:hover {
 		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
 	</script>
-	
 
-   <jsp:include page="../common/commonjs.jsp" />
 </body>
 </html>
