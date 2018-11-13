@@ -57,6 +57,51 @@
    line-height: 30px;
    padding-left: 10px;
  }
+ 
+ 
+/*Check box*/
+.checkbox-label{
+  position: relative;
+  cursor: pointer;
+  color: #303030;
+  font-size: 15px;
+}
+
+input[type="checkbox"]{
+  position: absolute;
+  right: 9000px;
+}
+
+input[type="checkbox"] + .label-text:before{
+  content: "\f096";
+  font-family: "FontAwesome";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing:antialiased;
+  width: 1em;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked + .label-text:before{
+  content: "\f14a";
+  color: #303030;
+  animation: effect 250ms ease-in;
+}
+
+input[type="checkbox"]:disabled + .label-text{
+  color: #aaa;
+}
+
+input[type="checkbox"]:disabled + .label-text:before{
+  content: "\f0c8";
+  color: #ccc;
+}
+
 </style>
 <script type="text/javascript">
 var rent_start_date = null;
@@ -78,6 +123,14 @@ $(document).ready(function(){
 
 	/** 검색버튼 이벤트 등록 */
 	registSearchSubmit();
+	
+	$('#search-user-login-form').submit(function(e) {
+		loginAction(e);
+	});
+	
+	$('#search-nonuser-login-form').submit(function(e) {
+		nonUserLoginAction(e);
+	});
 });
 
 /** datepicker 이벤트 발생 처리*/
@@ -256,7 +309,7 @@ function setModelList(list) {
 			weekendPrice : list[i].weekendPrice,
 			starPercent : list[i].evalScore * 10,
 			reviewCount : list[i].reviewCount
-		};
+		}; 
 		var model = $('<div></div>').load("<%=application.getContextPath()%>/rent/search_include/search_each.jsp", params);
 		$("#carListRow").append(model);
 	}	//for 끝
@@ -267,9 +320,7 @@ function setModelList(list) {
     var scrollPosition = $("#tg-main").offset().top;
     $("html, body").animate({
     	scrollTop: scrollPosition
-    }, 300, function () {
-		console.log('aa');
-	});
+    }, 300);
 	
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
@@ -499,6 +550,55 @@ function setReviewList(list) {
 			$("#each_review_ul").append(review);
 		}
 }
+
+function loginAction(e) {
+	e.preventDefault();
+	var id = e.currentTarget.id.value;
+	var pw = e.currentTarget.pw.value;
+	var remember = e.currentTarget.remember.checked;			// true or false
+	var where = 'ajax';
+	
+	var params = {
+  		id : id,
+  		pw : pw,
+  		login : where
+	};
+	// 아이디 저장 체크 되어있을 때만 remember를 파라미터로 보냄
+	if(remember == true) {
+		params.remember = remember;
+	}
+	
+	console.log('login : ' + id + "," + pw + "," + remember);
+	window.loginE = e;
+	
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/user/login.rent",
+		type:'POST', 
+		data : params,
+		success:function(result){
+			if(result == 'success') {
+				
+				//goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture);
+				//goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, model.type, model.picture);
+			}
+			else {
+				alert('아이디와 비밀번호를 확인해주세요');
+			}
+		},
+		error : function(result) {
+			console.log("error.... result : " + result);
+		}
+	});
+}
+
+function nonUserLoginAction(e) {
+	e.preventDefault();
+	
+	window.nonUserE = e;
+	console.log('not a user');
+}
+
+
 </script>
 
 <title>SJ 렌트카 - 실시간예약</title>
