@@ -49,7 +49,7 @@
   				<ul class="tg-tripinfo">
   					<li><i class="fas fa-won-sign"></i><span id='detail-weekday-price'>weekday price field</span></li>
   					<li><i class="fas fa-won-sign"></i><span id='detail-weekend-price'>weekend price field</span></li>
-  					<li><i class="fas fa-heart"></i><span id='detail-wish-count'>wish count field</span></li>
+  					<li><i class="fas fa-heart"></i><span id='detail-wish-count'> 3 Time Added on Wish List </span></li>
   					<li><i class="fas fa-user-alt"></i><span id='detail-reserve-count'>reserved count field</span></li>
   				</ul>
   				<div class="tg-refundshare">

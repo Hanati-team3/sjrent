@@ -369,7 +369,7 @@ function setModelList(list) {
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
 		var modelName = $(e.relatedTarget).data('model-name');
-		int wishCount = getWishcount(modelName);
+		getWishcount(modelName);
 		window.e = $(e.currentTarget);
 		$.ajax({	
 			url:"<%=application.getContextPath()%>/model/detail.rent",
@@ -401,7 +401,23 @@ function setModelList(list) {
 		detailModel = null;
 	})
 }
-
+function getWishcount(modelName) {
+	console.log(modelName);
+	$.ajax({	
+		url:"<%=application.getContextPath()%>/model/wishcount.rent",
+		type:'POST', 
+		data : {
+             'modelName' : modelName
+        },
+		success:function(data){
+			console.log(data);
+			$('#detail-wish-count').html(' ' + data + ' Times Added on Wish List');
+		},
+        error : function(result) {
+        	console.log('error in openning detail show' + result);
+        }
+	});
+}
 function setReviewTab(name, reviewCount, page) {
 	$('#new_review_tab').remove();
 	var params = {
@@ -431,7 +447,6 @@ function setDetailModal(model) {
 	$('#detail-amount-money').html('&#8361 '+ model.amountMoney);
 	$('#detail-weekday-price').html(' ' + model.weekdayPrice + ' on Weekday');
 	$('#detail-weekend-price').html(' ' + model.weekendPrice + ' on Weekend');
-	$('#detail-wish-count').html(' ' + model.rentalCount + ' Times Added on Wish List');
 	$('#detail-reserve-count').html(' ' + model.rentalCount + ' Times Reserved');
 	$('#about-this-model').html('<p>'+ model.name +' 모델 차량은 '+ model.fuelType +' 타입 연료를 사용하는 차량으로 최대 '+model.seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
 			'<p>'+ model.name +' 모델의 주중 가격은 '+model.weekdayPrice+' 원입니다. 주말 가격은 '+model.weekendPrice+'원 입니다.</p>');
@@ -762,8 +777,7 @@ function nonUserLoginAction(e) {
     <div class="tg-homebannerslider"
       class="tg-homebannerslider tg-haslayout">
       <div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
-        <figure class="item" >
-        <%--<figure class="item" data-vide-bg="mp4: <%=application.getContextPath()%>/video/backgroud_car" data-vide-options="none, position: 50% 50%"> --%>
+        <figure class="item" data-vide-bg="mp4: <%=application.getContextPath()%>/video/backgroud_car" data-vide-options="none, position: 50% 50%">
           <figcaption>
             <div class="container">
               <div class="row">
@@ -959,7 +973,6 @@ function nonUserLoginAction(e) {
                Login method
    *************************************-->
 
-  <jsp:include page="/rent/search_include/search_login.jsp" />
 	<script>
   var map;
 	var markers = [];
