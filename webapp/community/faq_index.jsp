@@ -21,14 +21,30 @@ request.getAttribute("page");
 //pageBuilder.build();
 
 %>
-
 <c:set var="context" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
-   <jsp:include page="../common/commoncss.jsp" />
-   <jsp:include page="../common/commonjs.jsp" />
+<jsp:include page="../common/commoncss.jsp" />
+<jsp:include page="../common/commonjs.jsp"/> 
+<!-- 스타일 시작 -->
 <style type="text/css">
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+	background-color:#f5f5f5;
+	color: black;
+	}
+
 /* Style tab links */
 .tablink {
     background-color: #555;
@@ -59,28 +75,55 @@ request.getAttribute("page");
 #공지사항 {background-color: #006699;}
 
 </style>
+<!-- 스타일 종료 -->
+<!-- 스크립트 시작 -->
 <script type="text/javascript">
 /**
  * qna_index.jsp가 로드될 때 실행되는 함수
  */
-$(document).ready(function(){
-	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
 
-	
-	/** QnA List를 불러오는 QnAListController로 요청 전달 */
-      $.ajax({
-         type : "POST",
-         url : "<%=application.getContextPath()%>/qna/qnaIndex.rent",
-         dataType: "json",
-         success: function(data){
-//           	setModelList(data);
-         }
-      });
+$(document).ready(function(){
+ $.ajax({
+     type: "POST",
+     url: "<%=application.getContextPath()%>/qna/qnaIndex.rent",
+      //data: modelParams,
+      dataType: "json",
+      success: function(data) {
+          setQnAList(data);
+      }
+  });
+});
       
-   });
-   
+
+function setQnAList(list) {
+	
+	for ( var i in list) {
+		var title = list[i].title;
+		var userId = list[i].userId;
+		var date = list[i].date;
+		var content = list[i].content;
+		
+		//document.getElementById("td").innerHTML = title; 
+		
+		
+		
+		
+		
+		  /* <td id="tdNumber"></td>
+          <td id="tdTitle"></td>
+          <td id="tdUserId" ></td>
+          <td id="tdDate"></td> */
+		
+		//console.log("제목:"+list[i].title +" 내용:"+ list[i].content +" 작성자:"+ list[i].userId + " 날짜:"+list[i].date);
+		//$("#carListRow").append(model);
+	}	//for 끝
+	
+	
+
+}
 
 </script>
+<!-- 스크립트 종료 -->
 </head>
 
 <!--************************************
@@ -123,9 +166,10 @@ $(document).ready(function(){
 										<button class="tablink" onclick="openPage('공지사항', this, '#006699')"  >공지사항</button>
 									</div>
 								<div id="QnA" class="tabcontent">
-									 
-									 <table class="w3-table w3-striped w3-bordered" style="text-align: center; ">
-							          <thead>
+										
+									 <!-- table에 원래 있던 class="w3-table w3-striped w3-bordered" -->
+									 <table style="text-align: center; ">
+							          <thead class="thisTh">
 							            <tr class="w3-theme" style="color: white; font-size: 14pt">
 							              <th>번호</th>
 							              <th>제목</th>
@@ -134,12 +178,11 @@ $(document).ready(function(){
 							            </tr>
 							          </thead>
 							          <tbody>
-							          
 							              <tr style="color: white;">
-							                  <td>dd</td>
-							                  <td>d</td>
-							                  <td>d</td>
-							                  <td>d</td>
+							                  <td id="tdNumber" ></td>
+							                  <td id="tdTitle" ></td>
+							                  <td id="tdUserId" ></td>
+							                  <td id="tdDate" ></td>
 							            </tr>
 							          </tbody>
 							        </table>

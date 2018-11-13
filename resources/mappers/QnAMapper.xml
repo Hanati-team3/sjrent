@@ -60,9 +60,9 @@
 	</select>
 	
 	<!-- 전체 QnA Count -->
-	<select id="count" resultType="Integer" resultMap="qnaResultMap">
+	<select id="count" resultType="Integer">
 		SELECT Count(qna_seq) 
-		FROM   QnA 
+		FROM   QnA
 	</select>
 	
 	<!-- QnA 리스트 page 선택 -->
@@ -72,7 +72,7 @@
 		       X.user_id, 
 		       X.qna_title, 
 		       X.qna_content, 
-		       X.qna_date, 
+		       TO_CHAR(X.qna_date, 'YYYY/MM/DD') qna_date, 
 		       X.qna_answer 
 		FROM   (SELECT ROWNUM AS rnum, 
 		               A.qna_seq, 

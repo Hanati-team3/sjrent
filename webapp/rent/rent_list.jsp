@@ -32,6 +32,10 @@
  }
 </style>
 <script type="text/javascript">
+
+var modelNames = <%=request.getAttribute("modelNames")%>;
+console.log(modelNames);
+
 $(document).ready(function(){
 	
 	/* Modal 작동 */
@@ -224,9 +228,6 @@ function setReviewList(list) {
 		        *************************************-->
 				<div class="row">
 					<div id="tg-twocolumns" class="tg-twocolumns">
-						<div class="info_car" style="display: none">
-							<jsp:include page="rent_detail.jsp"/>
-						</div>
 						
 						<!-- 예약된 차 목록 보여주기 -->
 						<form class="tg-formtheme tg-formtourpayment">
@@ -242,7 +243,7 @@ function setReviewList(list) {
 												</figure>
 												<div class="tg-populartourcontent">
 													<div class="tg-populartourtitle">
-														<h3><a>${fn:split(item.picture,'.')[0]}</a></h3>
+														<h3><a>modelNames[0]</a></h3>
 													</div>
 													<div class="tg-populartourfoot form-control" style="background: inherit;" >
 														<div class="tg-durationrating"></div>
@@ -283,6 +284,82 @@ function setReviewList(list) {
 				Main End
 		*************************************-->
 	</div>
+		<script>
+  var map;
+	var markers = [];
 	
+	// Initialize and add the map
+	function initMap() {
+	  // The location of Uluru
+	  var latlng = {lat: 37.478748, lng: 126.881872};
+	  // The map, centered at Uluru
+	  map = new google.maps.Map(
+	      document.getElementById('map'), {zoom: 17, center: latlng});
+	  // The marker, positioned at Uluru
+	  addMarker(latlng);
+	  var geocoder = new google.maps.Geocoder;
+	  google.maps.event.addListener(map, "click", function (event) {
+		  geocodeLatLng(geocoder, map, new google.maps.InfoWindow, event);	
+	  });
+	  document.getElementById('findPlace').addEventListener('click', function() {
+        geocodeAddress(geocoder, map);
+      });
+		        
+	}
+	function geocodeAddress(geocoder, resultsMap) {
+      var address = document.getElementById('yourAddress').value;
+      geocoder.geocode({'address': address}, function(results, status) {
+        if (status === 'OK') {
+          resultsMap.setCenter(results[0].geometry.location);
+          deleteMarkers();
+          addMarker(results[0].geometry.location);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+	function geocodeLatLng(geocoder, map, infowindow, event) {
+		var latitude = event.latLng.lat();
+      var longitude = event.latLng.lng();
+      //console.log( latitude + ', ' + longitude );
+      var latlng = {lat: latitude, lng: longitude};
+      geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+          	deleteMarkers();
+          	addMarker(latlng);
+          	document.getElementById('yourPlace').innerHTML  = '<p>'+results[0].formatted_address+'</p>';
+              /* console.log(results[0].formatted_address) */
+          	pickupPlace = results[0].formatted_address;
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      
+  }
+	 // Adds a marker to the map and push to the array.
+    function addMarker(location) {
+      var marker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+      markers.push(marker);
+    }
+
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+    function deleteMarkers() {
+  	  setMapOnAll(null);
+        markers = [];
+      }
+  
+  </script>
 </body>
 </html>

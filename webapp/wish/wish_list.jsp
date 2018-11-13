@@ -28,8 +28,7 @@
 	   /* 전체해제 버튼 */
 	   $("#disableall").click(function(){
 		  $('input[type="checkbox"]').prop('checked', false); 
-	   });
-	   
+	   });	   
 	   /* sumbit */
 	   $('#rentCarButton').click(function(){
 		   /* 버튼이 한 개도 안 눌려졌을 경우 */
