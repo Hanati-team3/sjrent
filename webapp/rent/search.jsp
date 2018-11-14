@@ -123,6 +123,9 @@ input[type="checkbox"]:disabled + .label-text:before{
     font-weight: bold;
 }
 
+.tg-bookinginfo .tg-pricearea {
+  margin: 0px;
+}
 </style>
 <script type="text/javascript">
 var rent_start_date = null;
@@ -377,7 +380,7 @@ function setModelList(list) {
     var scrollPosition = $("#tg-main").offset().top;
     $("html, body").animate({
     	scrollTop: scrollPosition
-    }, 300);
+    }, 500);
 	
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
