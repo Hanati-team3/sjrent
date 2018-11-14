@@ -123,6 +123,9 @@ input[type="checkbox"]:disabled + .label-text:before{
     font-weight: bold;
 }
 
+.tg-bookinginfo .tg-pricearea {
+  margin: 0px;
+}
 </style>
 <script type="text/javascript">
 var rent_start_date = null;
@@ -377,7 +380,7 @@ function setModelList(list) {
     var scrollPosition = $("#tg-main").offset().top;
     $("html, body").animate({
     	scrollTop: scrollPosition
-    }, 300);
+    }, 500);
 	
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
@@ -554,9 +557,6 @@ function wishResultHide() {
  * 예약 버튼이 눌렸을 때 Controller로 데이터를 보내는 함수.
  */
  function goToReserve(startDate, endDate, amountMoney, pickupPlace, type, picture) {
-	if(pickupPlace == '방문수령') {
-		alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
-	}
 	// 로그인 중
 	if(isLogin == true){
 		// post로 데이터 전달

@@ -471,19 +471,15 @@ $(document).ready(function(){
 			}
 		});
 	}
-
-	/** 
-	 * 위시리스트 추가 결과 모달을 숨기는 함수.
-	 * 위시리스트 추가 결과 모달에서 'not now' 버튼을 누르면 실행
-	 */
-	function wishResultHide() {
-		$("#wish_result_modal").modal('hide');
-	}
-
-
-	 
 }) 
 
+/** 
+ * 위시리스트 추가 결과 모달을 숨기는 함수.
+ * 위시리스트 추가 결과 모달에서 'not now' 버튼을 누르면 실행
+ */
+function wishResultHide() {
+	$("#wish_result_modal").modal('hide');
+}
 
 function loginAction(e) {
 	e.preventDefault();
