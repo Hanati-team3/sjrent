@@ -118,7 +118,6 @@ public class XMLObjectFactory{
 						}
 					}
 				}else if(beanType.equals("dao")) {
-//					addDataSource(beanObject);
 					NodeList propertyList = bean.getChildNodes();
 					if(propertyList.getLength() > 0) {
 						for(int j=0; j<propertyList.getLength(); j++) {

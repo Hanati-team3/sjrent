@@ -22,6 +22,7 @@ import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
  *
  */
 public class ModelWishCountController implements Controller{
+	//컨트롤러 사용을 위한 객체 선언
 	private ModelService modelService;
 	private ModelAndView mav;
 	private XMLObjectFactory factory;
@@ -31,6 +32,7 @@ public class ModelWishCountController implements Controller{
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		logger.debug("ModelWishCountController");
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
@@ -39,13 +41,11 @@ public class ModelWishCountController implements Controller{
 		// 인자로 받는 차 종 이름
 		String modelName = request.getParameter("modelName");
 		if(modelName == null) {
-			logger.debug("파라미터 오류 modelName : " + modelName);
 			return null;
 		}
-		logger.debug("modelName : " + modelName);
 		try {
+			// 해당 모델의 위시 아이템에 들어간 숫자 받아와서 response에 출력
 			int count = modelService.countWishItemByModelName(modelName);
-			
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().print(count);
 			return null;

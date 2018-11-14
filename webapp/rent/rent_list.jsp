@@ -38,9 +38,7 @@ for(int i = 0; i < modelNameList.length; i++){
 <%	
 }
 %>
-/* console.log(modelNamesList); */
 $(document).ready(function(){
-	<%-- console.log(<%=modelNames.length()%>); --%>
 	if(<%=modelNames.length()%> == 2){
 		$('#notList').append("<h3>예약 내역이 존재하지 않습니다.</h3>");
 	}else{
@@ -48,7 +46,6 @@ $(document).ready(function(){
 	    document.getElementById('modelName'+i).innerHTML = '<h3>'+modelNamesList[i-1]+'</h3>';
 	    document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);
 	    document.getElementById('carImg'+i).setAttribute('src', '../images/cars/'+modelTypesList[i-1]+"/"+modelNamesList[i-1]+".jpg");
-	    /* console.log(modelNamesList[i-1]); */
 	 }
 }
 	
@@ -60,7 +57,6 @@ $(document).ready(function(){
     var modelName = $(e.relatedTarget).data('model-name');
     window.e = $(e.currentTarget);
     var id = $(e.relatedTarget).data('model-num');
-    console.log(id);
     $.ajax({  
       url:"<%=application.getContextPath()%>/model/detail.rent",
       dataType:"json",
@@ -69,14 +65,12 @@ $(document).ready(function(){
                'modelName' : modelName
           },
       success:function(model){
-        console.log(model);
         setDetailModal(model, id);
         setReviewTab(model.name, model.reviewCount);
         $('#location-tab-nav').remove();
         $('#location').remove();
       },
           error : function(result) {
-            console.log('error in openning detail show' + result);
           }
     });
   });
@@ -164,11 +158,9 @@ function getReviewList(modelName, page, listSize) {
         listSzie : listSize
         },
     success:function(result){
-      console.log("ok review list \n" + result);
       setReviewList(result);
     },
     error : function(result) {
-      console.log("error.... result : " + result);
     }
   });
 }

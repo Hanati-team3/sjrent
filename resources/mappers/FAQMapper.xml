@@ -4,6 +4,7 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.faq">
+	<!-- FAQ ResultMap -->
 	<resultMap type="FAQ" id="faqResultMap">
 		<result column="FAQ_num" 		property="number"/>
 		<result column="FAQ_title" 		property="title"/>
@@ -19,7 +20,7 @@
 		WHERE  FAQ_num = #{value} 
 	</select>
 
-	<!-- FAQ List -->
+	<!-- FAQ List 가져오기 -->
 	<select id="listAll" resultType="FAQ" resultMap="faqResultMap">
 		SELECT FAQ_num,
 			   FAQ_title,

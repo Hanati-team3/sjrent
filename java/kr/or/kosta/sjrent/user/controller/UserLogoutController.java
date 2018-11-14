@@ -19,7 +19,6 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
 /**
  * 로그아웃 역할을 수행하는 컨트롤러
- * 
  * @author 유예겸
  *
  */
@@ -32,19 +31,7 @@ public class UserLogoutController implements Controller {
 			throws ServletException {
 		mav = new ModelAndView();
 		
-		/*// 쿠키에서 로그인 id 제거
-		Cookie[] cookies = request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			if (cookies[i].getName().equals("loginId")) {
-				cookies[i].setPath("/");
-				cookies[i].setMaxAge(0);
-				response.addCookie(cookies[i]);
-			}
-		}*/
-	
-		
-		
-		
+		// 로그인 된 유저 쿠키 삭제(로그아웃 처리)
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
@@ -56,8 +43,6 @@ public class UserLogoutController implements Controller {
 				}
 			}
 		}
-		
-		System.out.println("로그아웃 잘 되었음 ...........");
 		mav.setView("redirect:/sjrent/index.jsp");
 		return mav;
 	}

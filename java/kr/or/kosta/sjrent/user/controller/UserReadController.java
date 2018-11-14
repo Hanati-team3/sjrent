@@ -18,12 +18,11 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
 /**
  * id로 user를 검색하는 컨트롤러
- * 
  * @author 유예겸
- *
  */
 
 public class UserReadController implements Controller {
+	//컨트롤러 사용을 위한 객체 선언
 	private ModelAndView mav;
 	private UserService userService;
 	private JSONObject obj;
@@ -32,6 +31,7 @@ public class UserReadController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
@@ -39,27 +39,19 @@ public class UserReadController implements Controller {
 	
 		String id = (String)request.getAttribute("loginId");
 		User user = null;
-
+		
+		//로그인된 아이디로 유저 객체 받기
 		try {
 			user = userService.read(id);
-			//System.out.println("user : 찍어본다 "+user);
 
 			mav.addObject("user", user);
 			mav.setView("/mypage/updateUser.jsp");
 
 			return mav;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		//obj.put("name", user.getName());
-		//obj.put("email", user.getEmail());
-		//obj.put("phone", user.getCellphone());
-		
-		
-		
-		
 		// 응답으로 json 객체 보내고 컨트롤러 종료
 		try {
 			response.getWriter().print(obj);

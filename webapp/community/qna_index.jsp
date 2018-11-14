@@ -9,22 +9,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="context" value="${pageContext.request.contextPath}" />
 <%
-//페이지당 보여지는 페이지수 설정
-
-
-// 페이징 정렬 
-//List<Article> list = dao.listByPage(params);
-
-// 페이징 처리에 필요한 검색 개수 DB조회
-//int rowCount = dao.countBySearch(params);
-
-// PageBuilder를 이용하여 페이징 계산
-//PageBuilder pageBuilder = new PageBuilder(params, rowCount);
-//pageBuilder.build();
-
 
 //넘버링하기
-System.out.println(request.getAttribute("count"));
 int count = (int)request.getAttribute("count"); 
 //int listSize = 10;
 int pageNum = 1;
@@ -167,8 +153,6 @@ tr:hover {
                              
                             <% 
                             String loginId = (String)request.getAttribute("loginId");
-                          	//System.out.println("로그인 아이디1: "+id);//jm
-                          	//System.out.println("로그인 아이디1: "+loginId);
                           	
                              List<QnA> QnAList = (ArrayList<QnA>)request.getAttribute("list");
                              int index = 0;

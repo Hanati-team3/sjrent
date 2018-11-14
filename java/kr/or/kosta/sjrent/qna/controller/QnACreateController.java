@@ -22,6 +22,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  * 
  */
 public class QnACreateController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private QnAService qnaService;
 	private UserService userService;
 	private ModelAndView mav;
@@ -29,14 +30,14 @@ public class QnACreateController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 		
+		// 로그인 된 아이디 정보 받기
 		String loginId = (String) request.getAttribute("loginId");
-		//System.out.println("컨트롤럴에서 찍히는 로그인아이디: "+loginId);
-		
 		User user = new User();
 		int userSeq = 0;
 		try {
@@ -44,7 +45,6 @@ public class QnACreateController implements Controller {
 		} catch (Exception e2) {
 			mav.addObject("message", "needLogin");
 			mav.setView("/qna/qnaIndex.rent");
-			//System.out.println("에러??????");
 		}
 		if(user!=null) {
 			userSeq = user.getSeq();
@@ -52,10 +52,12 @@ public class QnACreateController implements Controller {
 			mav.addObject("message", "needLogin");
 			mav.setView("/qna/qnaIndex.rent");
 		}
+		// 넘어온 값 받기
 		String id = request.getParameter("id");
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String answer = request.getParameter("answer");
+		// QnA 객체 생성 후 값 넣기
 		QnA qna = new QnA();
 		qna.setUserSeq(userSeq);
 		qna.setUserId(loginId);
@@ -63,14 +65,11 @@ public class QnACreateController implements Controller {
 		qna.setContent(content);
 		qna.setAnswer(answer);
 		boolean isCreate = false;
-		System.out.println(qna);
 		try {
+			//DB에 해당 정보 넣기
 			isCreate = qnaService.create(qna);
-			//System.out.println("게시글 잘 생성됨............");
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			//System.out.println("에러남............");
-
 		}
 
 		// QnA 생성 실패시 응답으로 fail 보냄

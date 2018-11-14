@@ -27,20 +27,21 @@ import kr.or.kosta.sjrent.qna.service.QnAServiceImpl;
  */
 
 public class QnAUpdateController implements Controller {
+	//컨트롤러 사용을 위한 객체 선언
 	private QnAService qnaService;
 	private ModelAndView mav;
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
+		// 업데이트 할 정보 받아오기
 		int qna_seq = 0;
-		System.out.println(request.getParameter("들어오는 시퀀스: "+"qna_seq"));
 		if(request.getParameter("qna_seq")!=null) {
 			qna_seq = Integer.parseInt(request.getParameter("qna_seq"));
-			//System.out.println("시퀀스 잘 들어오나? "+qna_seq);
 		}else {
 			mav.setView("/qna/qnaIndex.rent");
 			return mav;
@@ -50,15 +51,14 @@ public class QnAUpdateController implements Controller {
 
 		QnA qna = new QnA();
 		boolean isUpdate = false;
-		System.out.println("업데이트 됐나?" + isUpdate);
 		
 		
 		qna.setNumber(qna_seq);
 		qna.setTitle(title);
 		qna.setContent(content);
-		System.out.println("qna 찍어보기 : "+qna);
 		
 		try {
+			// qna 업데이트
 			isUpdate = qnaService.update(qna);
 		} catch (Exception e1) {
 			e1.printStackTrace();

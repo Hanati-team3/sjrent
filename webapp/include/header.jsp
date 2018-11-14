@@ -1,7 +1,6 @@
 
 <%
 	String loginId = (String) request.getAttribute("loginId");
-	//System.out.println("header에 넘어온 loginId : " + loginId);
 %>
 
 <%@ page contentType="text/html; charset=utf-8"%>

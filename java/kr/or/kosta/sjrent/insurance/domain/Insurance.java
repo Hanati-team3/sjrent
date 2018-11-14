@@ -1,10 +1,13 @@
 package kr.or.kosta.sjrent.insurance.domain;
 
 public class Insurance {
-
+	// 보험 sequence number
 	private int number;
+	// 보험 이름
 	private String name;
+	// 보험 가격
 	private int price;
+	// 보험 조건
 	private String compensationLimit;
 	
 	public Insurance() {

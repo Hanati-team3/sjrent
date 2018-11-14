@@ -13,10 +13,10 @@ import kr.or.kosta.sjrent.review.service.ReviewServiceImpl;
 
 /**
  * Review add 처리
- * 
  * @author 남수현
  */
 public class ReviewUpdateController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private ReviewService reviewService;
 	private ModelAndView mav;
@@ -24,8 +24,11 @@ public class ReviewUpdateController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		reviewService = (ReviewService) factory.getBean(ReviewServiceImpl.class);
+		
+		// 값 수신
 		String reviewNumberS = request.getParameter("number");
 		String modelName = request.getParameter("modelName");
 		String title = request.getParameter("title");
@@ -40,6 +43,8 @@ public class ReviewUpdateController implements Controller {
 		if(reviewNumberS != null && !reviewNumberS.equals("")) {
 			reviewNumber = Integer.parseInt(reviewNumberS);
 		}
+		
+		// 리뷰 객체 생성 및 값 setting
 		Review review = new Review();
 		review.setNumber(reviewNumber);
 		review.setTitle(title);

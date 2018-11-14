@@ -24,6 +24,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  */
 
 public class UserReadController2 implements Controller {
+	//컨트롤러 사용을 위한 객체 선언
 	private ModelAndView mav;
 	private UserService userService;
 	private JSONObject obj;
@@ -32,6 +33,7 @@ public class UserReadController2 implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		//컨트롤러 사용을 위한 객체 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
@@ -41,25 +43,16 @@ public class UserReadController2 implements Controller {
 		User user = null;
 
 		try {
+			// 아이디로 유저 읽기
 			user = userService.read(id);
-			//System.out.println("user : 찍어본다 "+user);
-
 			mav.addObject("user", user);
 			mav.setView("/mypage/myPageLoginOK.jsp");
 
 			return mav;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		//obj.put("name", user.getName());
-		//obj.put("email", user.getEmail());
-		//obj.put("phone", user.getCellphone());
-		
-		
-		
-		
 		// 응답으로 json 객체 보내고 컨트롤러 종료
 		try {
 			response.getWriter().print(obj);

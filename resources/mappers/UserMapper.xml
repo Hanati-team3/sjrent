@@ -4,7 +4,7 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.user">
-
+	<!-- 유저 Result Map -->
 	<resultMap type="User" id="userResultMap">
 		<result column="user_seq" 		property="seq"/>
 		<result column="user_id" 		property="id"/>

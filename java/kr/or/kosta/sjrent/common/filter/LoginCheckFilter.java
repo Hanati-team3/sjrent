@@ -22,7 +22,6 @@ public class LoginCheckFilter implements Filter {
 	private Logger logger = Logger.getLogger(LoginCheckFilter.class);
 	
 	private String loginPage = "/user/login2.jsp";
-//	private String loginPage = "index.jsp";
 
     @Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -41,7 +40,6 @@ public class LoginCheckFilter implements Filter {
 				if(cookie.getName().equals("loginId")) {
 					isLogin = true;
 					id = cookie.getValue();
-					//logger.debug("filter 거친 id : " + id);
 					break;
 				}
 			}

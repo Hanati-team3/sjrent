@@ -48,7 +48,6 @@
 	function checkId() {
 
 		var id = $('#id').val();
-		//console.log("넣은아이디" + id);
 		alert(id); 
 
 		$.ajax({
@@ -81,48 +80,12 @@
 		
 
 	}
-	
-	
-	/* function checkEmail() {
 
-		var email1 = $('#email1').val();
-		console.log("넣은email1" + email1);
 
-		var email2 = $('#email2').val();
-		console.log("넣은email2" + email2);
-
-		var email = email1 + email2;
-		
-		console.log("넣은이메일" + email);
-
-		$.ajax({
-			url : '/sjrent/user/checkEmail.rent',
-			type : 'post',
-			data : {
-				email : email
-			},
-			success : function(data) {
-				if ($.trim(data) == "success") {
-					$('#checkMsg2').html(
-							"<p style='COLOR: blue'>사용가능한 이메일입니다.</p>");
-				} else{
-					$('#checkMsg2').html(
-					"<p style='COLOR: red'>이미 사용중인 이메일입니다.</p>");
-				}
-			},
-			error : function() {
-				alert("에러입니다");
-			}
-		});
-
-	} */
-	
-	//재민 시작-----------------------------------------------------------------
 	
 	function idCheck() {
 		//alert('e');
 		var id = $('#id').val();
-		//console.log("넣은아이디" + id);
 		//alert(id);
 
 		$.ajax({

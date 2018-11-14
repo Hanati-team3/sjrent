@@ -19,6 +19,7 @@ import kr.or.kosta.sjrent.rent.service.RentServiceImpl;
  *
  */
 public class RentDetailController implements Controller {
+	//컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private RentService rentService;
 	private ModelAndView mav;
@@ -26,19 +27,20 @@ public class RentDetailController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		rentService = (RentService) factory.getBean(RentServiceImpl.class);
 		mav = new ModelAndView();
-
+		
+		// 렌트 번호 수신
 		int rentSeq = Integer.parseInt(request.getParameter("rentSeq"));
-		System.out.println("RentDetailController rentSeq : " + rentSeq);
 		Rent rent = null;
 		try {
+			// 해당 번호의 렌트 정보 가져오기
 			rent = rentService.read(rentSeq);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("RentDetailController rent : " + rent);
 		mav.addObject("rent", rent);
 		mav.setView("/rent/rent_detail.jsp");
 		

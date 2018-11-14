@@ -28,6 +28,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  */
 
 public class UserCheckIdController implements Controller {
+	// 컨트롤러 처리를 위해 서비스 민 object 객체, modelandview 선언
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -35,23 +36,20 @@ public class UserCheckIdController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 처리를 위해 서비스 및 object 객체, modelandview 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 
-
+		// 유저 아이디
 		String id = request.getParameter("id");
-		//System.out.println("넘어왓냐???????" + id);
 		
 		boolean isExistId = false;
-		
 		try {
+			// 아이디 중복 여부 확인
 			isExistId = userService.isExistId(id);
-			
-			//System.out.println("아이디중복여부"+isExistId);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -61,7 +59,6 @@ public class UserCheckIdController implements Controller {
 				response.getWriter().print("success");	
 				return null;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -72,7 +69,6 @@ public class UserCheckIdController implements Controller {
 				response.getWriter().print("fail");
 				return null;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

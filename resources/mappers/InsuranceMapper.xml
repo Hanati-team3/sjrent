@@ -4,6 +4,7 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.insurance">
+	<!-- Insurance result map -->
 	<resultMap type="Insurance" id="insuranceResultMap">
 		<result column="ins_num" 						property="number"/>
 		<result column="ins_name" 						property="name"/>
@@ -21,7 +22,7 @@
 		WHERE  ins_num = #{value} 
 	</select>
 
-	<!-- Insurance List -->
+	<!-- Insurance List 받기-->
 	<select id="listAll" resultType="Insurance" resultMap="insuranceResultMap">
 		SELECT ins_num,
 			   ins_name,

@@ -32,6 +32,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  * @author 남수현
  */
 public class ReviewAddController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private ReviewService reviewService;
 	private UserService userService;
@@ -40,21 +41,20 @@ public class ReviewAddController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		reviewService = (ReviewService) factory.getBean(ReviewServiceImpl.class);
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 		User user = new User();
 		String loginId = (String) request.getAttribute("loginId");
 		try {
+			// 로그인 되어 있는 유저 받아오기
 			user = userService.read(loginId);
 		} catch (Exception e1) {
 			throw new RentException("is not logined page");
 		}	
-		// 웹서버 컨테이너 경로
-//	    String root = request.getSession().getServletContext().getRealPath("/");
-//	    System.out.println(root);
+		// 파일 저장 경로
 		String root = "C:\\KOSTA187\\";
-	    // 파일 저장 경로(ex : /home/tour/web/ROOT/upload)
 	    String savePath = root + "images\\review";
 	 
 	    // 업로드 파일명
@@ -69,11 +69,14 @@ public class ReviewAddController implements Controller {
 		String content = null;
 		String picture = null;
 		String evalScoreS = null;
+		// 파일 최대 사이즈
 		int size = 10*1024*1024;
+		// 파일 리네임 규칙 생성
 		ReviewFileRename rfr = new ReviewFileRename();
 		rfr.setUserSeq(user.getSeq());
 		
 		try{
+			// 필요한 값 수신
 		    MultipartRequest multi=new MultipartRequest(request,savePath,size,"utf-8",rfr);
 			modelName = multi.getParameter("modelName");
 			title = multi.getParameter("title");
@@ -82,7 +85,6 @@ public class ReviewAddController implements Controller {
 		    Enumeration files = multi.getFileNames();
 		    String file = (String)files.nextElement();
 		    picture = multi.getFilesystemName(file);
-		    System.out.println(picture);
 		}catch(Exception e){
 		    e.printStackTrace();
 		}
@@ -95,6 +97,7 @@ public class ReviewAddController implements Controller {
 		int userNumber = user.getSeq();
 		String userId = user.getId();
 
+		// 리뷰 객체에 값 setting
 		Review review = new Review();
 		review.setUserNumber(userNumber);
 		review.setUserId(userId);
@@ -103,16 +106,15 @@ public class ReviewAddController implements Controller {
 		review.setModelName(modelName);
 		review.setEvalScore(evalScore);
 		review.setContent(content);
-		System.out.println(review);
 		mav = new ModelAndView();
 		try {
+			//리뷰 생성 및 메시지, mav 처리
 			if (reviewService.create(review)) {
 				mav.addObject("message", "create_success");
 			} else {
 				mav.addObject("message", "create_fail");
 			}
 		} catch (Exception e) {
-			System.out.println(e);
 			mav.addObject("message", "create_error:"+e);
 		}
 		mav.setView("/rent/list.rent");

@@ -22,6 +22,7 @@ import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
  *
  */
 public class ModelDetailController implements Controller{
+	// 컨트롤러 사용을 위한 객체 선언
 	private ModelService modelService;
 	private ModelAndView mav;
 	private XMLObjectFactory factory;
@@ -31,6 +32,7 @@ public class ModelDetailController implements Controller{
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
@@ -38,13 +40,11 @@ public class ModelDetailController implements Controller{
 		// 인자로 받는 차 종 이름
 		String modelName = request.getParameter("modelName");
 		if(modelName == null) {
-			logger.debug("파라미터 오류 modelName : " + modelName);
 			return null;
 		}
-		logger.debug("modelName : " + modelName);
 		try {
+			// 받아온 모델 이름으로 모델 정보 가져오기
 			Model model = modelService.read(modelName);
-			
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().print(otj.ObjectToJsonObject(model));
 			return null;

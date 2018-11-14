@@ -32,10 +32,13 @@ public class WishItemAddController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
-		
+		  
+		  // Factory에서 object를 받아 오기 위한 xmlobjectFactory 받아오기
 	      factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
+	      // 위시 아이템, 유저 서비스 펙토리에서 받아오기
 	      wishItemService = (WishItemService) factory.getBean(WishItemServiceImpl.class);
 	      userService = (UserService) factory.getBean(UserServiceImpl.class);
+	      // 파라미터에서 필요한 정보 수령
 	      String modelName = request.getParameter("modelName");
 	      String startDate = request.getParameter("startDate");
 	      String endDate = request.getParameter("endDate");
@@ -43,6 +46,7 @@ public class WishItemAddController implements Controller {
 	      String picture = request.getParameter("picture");
 	      String type = request.getParameter("type");
 	      String fuelType = request.getParameter("fuelType");
+	      //ajax 출력을 위한 writer 생성
     	  PrintWriter out = null;
 		  try {
 			out = response.getWriter();
@@ -50,6 +54,7 @@ public class WishItemAddController implements Controller {
 		  }
 	      WishItem wishItem = new WishItem();
 	      User user = new User();
+	      //로그인 상태 확인 및 유저 정보 가져오기
 	      if(request.getAttribute("loginId")!=null && !request.getAttribute("loginId").equals("")) {
 	    	  try {
 				user = userService.read((String)request.getAttribute("loginId"));
@@ -57,13 +62,8 @@ public class WishItemAddController implements Controller {
 				out.println(e);
 			}
 	      }else {
-	    	  System.out.println("로그인 하세요");
-	    	  try {
-				user = userService.read("gloomycloud");
-			} catch (Exception e) {
-				out.println(e);
-			}
 	      }
+	      // wishitem 객체에 정보 setting
 	      wishItem.setUserNumber(user.getSeq());
 	      wishItem.setUserId(user.getId());
 	      wishItem.setType(type);
@@ -76,6 +76,7 @@ public class WishItemAddController implements Controller {
 	    	  wishItem.setAmountMoney(Integer.parseInt(amountMoney));
 	      }
 	      try {
+	    	  //위시아이템 만들고 결과 송신
 	    	  if(wishItemService.create(wishItem)) {
 	    		  out.println("success");
 	    	  }else {
