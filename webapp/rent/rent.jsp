@@ -81,7 +81,6 @@ $(document).ready(function(){
 	insurance = insurance.trim();
 	insurance = insurance.substring(1, insurance.length-1);
 	
-	/* console.log(insurance); */
 	var insurances = insurance.split('Insurance').map(function(item){
 		return item.trim();
 	});
@@ -94,14 +93,11 @@ $(document).ready(function(){
 			insurances[i] = insurances[i].substring(1, insurances[i].length-1);
 		}
 		var temp = new Map();
-		/* console.log(insurances[i]); */
 		var insurArray = insurances[i].split(',');
 		for (var j = 0; j < insurArray.length; j++) {
 			var key_value = insurArray[j].split('=');
 			temp.put(key_value[0].trim(), key_value[1].trim());
-			/* console.log(key_value[0].trim()+":"+ key_value[1].trim()); */
 		}
-		/* console.log(temp); */
 		mapInsurance.put(i, temp);
 	}
 	
@@ -109,7 +105,6 @@ $(document).ready(function(){
 	$('#pointValue').keyup(function(){
 		var money = $(this).val();
 		var tempTotal = total;
-		console.log(tempTotal);
 		if(tempTotal > 0){
 			tempTotal -= money;
 			document.getElementById('totalMoney').innerHTML = "<em>￦"+tempTotal+"</em>";
@@ -122,13 +117,7 @@ $(document).ready(function(){
 	
 	
 	
-	/* console.log(insurances[0]);
-	console.log(insurances[1]);
-	console.log(insurances[2]);
-	console.log(insurances[3]);
-	console.log(insurances[4]); */
 	
-	/* console.log(mapInsurance.get(1).get('name'));  */
 	
 	
 });
@@ -344,7 +333,6 @@ function changeSelect(num){
 	/* 포인트 사용 */
 	total -= document.getElementById('pointValue').value;
 	document.getElementById('totalMoney').innerHTML = "<em>￦"+total+"</em>";
-	/* console.log(document.getElementById('amount'+num).value); */
 }
 
 </script>

@@ -25,6 +25,7 @@ import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
  *
  */
 public class ModelSearchController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private ModelService modelService;
 	private ModelAndView mav;
 	private XMLObjectFactory factory;
@@ -34,12 +35,16 @@ public class ModelSearchController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
 		jsonArray = new JSONArray();
+		
+		// 오브젝트를 jsonobject로 변환시키기 위한 객체 생성
 		otj = new ObjectToJson();
 		
+		//값 수신
 		String startDate = request.getParameter("rent_start_date");
 		String endDate = request.getParameter("rent_end_date");
 		String type = request.getParameter("model_type");
@@ -93,12 +98,12 @@ public class ModelSearchController implements Controller {
 		modelParams.setFuelType(fuelType);
 		modelParams.setTransmission(transmission);
 		
-		System.out.println(modelParams);
 		List<Model> list = null;
 		try {
 			// Params로 검색한 리스트를 list에 저장
 			list = modelService.listBySearch(modelParams);
 			for (Model model : list) {
+				// jsonobject로 변환하여 jsonarray에 담기
 				jsonArray.add(otj.ObjectToJsonObject(model));
 			}
 			response.setCharacterEncoding("utf-8");

@@ -27,15 +27,19 @@ import kr.or.kosta.sjrent.qna.service.QnAServiceImpl;
  */
 
 public class QnAAnswerController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private QnAService qnaService;
 	private ModelAndView mav;
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
+		
+		// 답변을 달 qna 번호 받기
 		int qna_seq = 0;
 		if(request.getParameter("qna_seq")!=null) {
 			qna_seq = Integer.parseInt(request.getParameter("qna_seq"));
@@ -48,10 +52,9 @@ public class QnAAnswerController implements Controller {
 		QnA qna = new QnA();
 		boolean isUpdate = false;
 		
-		
+		// qna에 받아온 넘버와 답변을 달아 업데이트
 		qna.setNumber(qna_seq);
 		qna.setAnswer(answer);
-		System.out.println(qna);
 		
 		try {
 			isUpdate = qnaService.update(qna);

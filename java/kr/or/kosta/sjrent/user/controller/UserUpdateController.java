@@ -30,6 +30,7 @@ import sun.nio.cs.HistoricallyNamedCharset;
  */
 
 public class UserUpdateController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -38,8 +39,7 @@ public class UserUpdateController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
 		
-		//System.out.println("야넘어오냐???");
-		
+		// 컨트롤러 사용을 위한 객체 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
@@ -52,13 +52,14 @@ public class UserUpdateController implements Controller {
 		// 회원수정시에 들어오는 param
 		if(request.getParameter("id") != null) {
 					
+			// param 값 받기
 			String id = (String) request.getAttribute("loginId");
 			String password = request.getParameter("password");
 			String name = request.getParameter("name");
 			String email = request.getParameter("email");
 			String cellphone = request.getParameter("cellphone");			
 			
-			
+			// user에 받아 온 값 넣기
 			user.setId(id);
 			user.setName(name);
 			user.setEmail(email);
@@ -66,60 +67,25 @@ public class UserUpdateController implements Controller {
 			user.setCellphone(cellphone);
 			
 			
-			//System.out.println("회원수정요청: "+user);
-			
 			try {
+				// 유저 업데이트
 				isUpdate = userService.update(user);
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
-			// 회원수정 실패시 응답으로 fail 보냄
 			if (isUpdate == false) {
-
 				mav.setView("/sjrent/mypage/update.jsp");
-				
-				/*
-				obj.put("result", "fail");
-				try {
-					response.sendRedirect("/sjrent/mypage/update.jsp");
-					response.getWriter().print(obj);
-					return null;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
-
 			}
-			// 회원수정 성공시 응답으로 success 보냄
 			else {
-				
-				/*
-				obj.put("result", "success");
-				try {
-					response.getWriter().print("success_userUpdate");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
-				
 				mav.addObject("id", id);
 				mav.addObject("name", name);
 				mav.addObject("password", password);
 				mav.addObject("email", email);
 				mav.addObject("cellphone", cellphone);
-
 				mav.setView("/mypage/updateUser_result.jsp");
-				
 			}
-			
 		}
-
-
 		return mav;
 	}
-
 }

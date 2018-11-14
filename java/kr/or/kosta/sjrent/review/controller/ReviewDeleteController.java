@@ -29,6 +29,7 @@ import kr.or.kosta.sjrent.review.service.ReviewServiceImpl;
  * 리뷰삭제 컨트롤러
  */
 public class ReviewDeleteController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private Review review;
 	private ReviewService reviewService;
@@ -37,34 +38,21 @@ public class ReviewDeleteController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		reviewService = (ReviewService) factory.getBean(ReviewServiceImpl.class);
 
 		String inputReviewSeq = request.getParameter("reviewSeq");
-		// String[] inputReviewSeq = request.getParameterValues("reviewSeq");
-
-		/*
-		 * System.out.println(inputReviewSeq); for (int i = 0; i <
-		 * inputReviewSeq.length; i++) { System.out.println(inputReviewSeq[i]); }
-		 */
 
 		// checkBox 여러개 선택시 for문으로 삭제
-
 		int reviewSeq = Integer.parseInt(inputReviewSeq);
-
 		if (inputReviewSeq != null && !inputReviewSeq.equals("")) {
 			try {
 				if (reviewService.delete(reviewSeq)) {
-
-					// mav.addObject("message", "delete_success");
-					System.out.println("삭제 성공");
 					response.sendRedirect("/sjrent/review/list2.rent");
 					return null;
 
 				} else {
-					// mav.addObject("message", "delete_fail");
-					System.out.println("삭제 실패");
-
 				}
 			} catch (Exception e) {
 				mav.addObject("message", "delete_error:" + e);

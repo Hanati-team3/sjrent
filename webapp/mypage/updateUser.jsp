@@ -15,7 +15,6 @@ function emailCheck() {
 
 	var email = $('#email').val();
 
-	console.log("email"+email);
 	$.ajax({
 		url : '/sjrent/user/checkEmail.rent',
 		type : 'post',

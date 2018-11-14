@@ -31,6 +31,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  *
  */
 public class RentController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private UserService userService;
 	private RentService rentService;
@@ -40,6 +41,7 @@ public class RentController implements Controller {
    @Override
    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
          throws ServletException {
+	  // 컨트롤러 사용을 위한 객체 생성
       factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
       userService = (UserService) factory.getBean(UserServiceImpl.class);
       rentService = (RentService) factory.getBean(RentServiceImpl.class);
@@ -48,13 +50,14 @@ public class RentController implements Controller {
       
       User user = null;
       try {
+    	  // 로그인된 아이디 값으로 유저 정보 읽어오기
          user = userService.read((String)request.getAttribute("loginId"));
       } catch (Exception e) {
          mav.addObject("result", "fail");
          mav.setView("/rent/search.jsp");
          return mav;
       }
-      
+      // 예약 관련 데이터 수신
       String[] startDates = request.getParameterValues("startDate");
       String[] endDates = request.getParameterValues("endDate");
       String[] insuranceNumbers = request.getParameterValues("insuranceNumber");
@@ -68,15 +71,16 @@ public class RentController implements Controller {
       for(int i = 0; i < modelNames.length; i++) {
          List<String> enableCarList = null;
          try {
+        	 // 사용 가능한 차 목록 받아오기
             enableCarList = modelService.checkEnableCar(startDates[i], endDates[i], modelNames[i]);
          } catch (Exception e) {
-        	 System.out.println("아웃");
             mav.addObject("result", "fail");
             mav.setView("/rent/search.jsp");
             return mav;
          }
          if(!(enableCarList.isEmpty()||enableCarList.size()<1)) {
-            Rent rent = new Rent();
+        	// 사용 가능한 차가 있을 경우 렌트 정보 setting
+        	Rent rent = new Rent();
             rent.setInsuranceNumber(Integer.parseInt(insuranceNumbers[i]));
             rent.setCarNumber(enableCarList.get((int)(Math.random() * enableCarList.size())));
             rent.setStartDate(startDates[i]);
@@ -88,7 +92,9 @@ public class RentController implements Controller {
             rent.setUserSeq(user.getSeq());
             rent.setUserId(user.getId());
             try {
+            	// 렌트 생성하여 db에 insert
                if(rentService.create(rent)){
+            	   // 성공 list에 담아 송신
             	  Map<String, String> temp = new HashMap<String,String>();
             	  temp.put("modelName", modelNames[i]);
             	  temp.put("startDate", startDates[i]);
@@ -97,6 +103,7 @@ public class RentController implements Controller {
                   resultRents.add(temp);
                   modelService.changeCount(modelNames[i], 1);
                }else{
+            	   // 실패 리스트에 담아 송신
              	  Map<String, String> temp = new HashMap<String,String>();
              	  temp.put("modelName", modelNames[i]);
              	  temp.put("startDate", startDates[i]);
@@ -105,6 +112,7 @@ public class RentController implements Controller {
              	  failRents.add(temp);
                }
             } catch (Exception e) {
+              // 실패 리스트에 담아 송신
            	  Map<String, String> temp = new HashMap<String,String>();
            	  temp.put("modelName", modelNames[i]);
            	  temp.put("startDate", startDates[i]);
@@ -113,6 +121,7 @@ public class RentController implements Controller {
            	  failRents.add(temp);
             }
          }else {
+        	 // 실패 리스트에 담아 송신
         	 Map<String, String> temp = new HashMap<String,String>();
         	 temp.put("modelName", modelNames[i]);
         	 temp.put("startDate", startDates[i]);
@@ -121,6 +130,7 @@ public class RentController implements Controller {
         	 failRents.add(temp);
          }
       }
+      // 비회원일 경우 쿠키 삭제
       if(user.getIsUser()==0) {
     	  Cookie[] cookies = request.getCookies();
     	  for(Cookie cookie : cookies) {

@@ -3,17 +3,27 @@ package kr.or.kosta.sjrent.user.domain;
 import java.util.Date;
 
 public class User {
-	
+	// 유저 sequence
 	private int seq;
+	// 유저 아이디
 	private String id;
+	// 유저 이름
 	private String name;
+	// 유저 이메일
 	private String email;
+	// 유저 비밀번호
 	private String password;
+	// 유저 생일
 	private String birthday;
+	// 유저 성별
 	private int gender;
+	// 유저 포인트
 	private int point;
+	// 유저 전화번호
 	private String cellphone;
+	// 유저 유저 여부(0 false 비회원, 1 true 회원)
 	private int isUser;
+	// 유저 등록 날짜
 	private String regdate;
 	
 	

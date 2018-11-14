@@ -6,22 +6,6 @@
 <head>
    <jsp:include page="../common/commoncss.jsp" />
    <jsp:include page="../common/commonjs.jsp" />
-   
-<%-- <%
-	String id = null;
-	Cookie[] cookies = request.getCookies();
-	if (cookies != null) {
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("saveId")) {
-				id = cookie.getValue();
-			}
-		}
-	}
-	// 초기화면 아이디 null시
-	if (id == null) {
-		id = "";
-	}
-%> --%>
 
 <script type="text/javascript">
 

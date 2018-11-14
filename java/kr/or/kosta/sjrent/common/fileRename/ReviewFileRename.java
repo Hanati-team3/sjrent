@@ -7,6 +7,11 @@ import java.util.Date;
 
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 
+/**
+ * 파일 업로드 시 중복 방지 및 일관된 네이밍 규칙 적용을 위한 네이밍 클래스
+ * @author 남수현
+ *
+ */
 public class ReviewFileRename implements FileRenamePolicy {
 	private int userSeq;
 	@Override

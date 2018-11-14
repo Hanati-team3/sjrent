@@ -43,7 +43,6 @@ public class FrontControllerServlet extends HttpServlet {
 			throw new ServletException("XMLObjectFactory Exception", e);
 		}
 		viewResolver = new ViewResolver();
-		System.out.println(controllerFactory.getObjectList());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

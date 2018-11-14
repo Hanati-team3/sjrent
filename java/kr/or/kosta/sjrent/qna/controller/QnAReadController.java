@@ -22,36 +22,32 @@ import kr.or.kosta.sjrent.review.domain.Review;
 
 /**
  * /qna/qnaList.rent에 대한 요청 처리 컨트롤러
- * 
  * @author 윤형철, 남수현
- *
  */
 public class QnAReadController implements Controller {
-	//private XMLObjectFactory factory;
-	//private JSONArray jsonArray;
-	//private ObjectToJson otj;
+	// 컨트롤러 사용을 위한 객체 선언
 	private QnAService qnaService;
 	private ModelAndView mav;
 	
 	@Override 
 	public ModelAndView handleRequest(HttpServletRequest request,HttpServletResponse response) 
 			throws ServletException {
-        
+        // 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView(); 
 		XMLObjectFactory factory =  (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
 		
+		//정보를 가져올 qna sequence number 읽어오기
         String qnaSeqS = (String)request.getParameter("qnaSeq");
         int qnaSeq = 0;
         if (qnaSeqS != null) {
         	 qnaSeq = Integer.parseInt(qnaSeqS);
-        	 //System.out.println("넘어온 qnaSeq: "+ qnaSeq);
         }
         QnA qna = null;
 		try {
+			// 해당 qna 값 가져와서 QnA 객체에 담아서 리턴
 			mav.addObject("QnA",qnaService.read(qnaSeq));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         

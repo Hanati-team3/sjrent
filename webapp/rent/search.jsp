@@ -140,7 +140,6 @@ var isLogin = false;
  * search.jsp가 로드될 때 실행되는 함수
  */
 $(document).ready(function(){
-	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
 	if('<%=request.getAttribute("loginId")%>' != 'null') isLogin = true;
 	// 검색된 모델과 랭킹을 시작할 때는 표시 안하게
 	$('#ModelDisplayRow').hide();
@@ -244,7 +243,6 @@ function formatDate(date){
  */
 function getModelTypeOption(modelParams) {
 	var model_type = $('.selectpicker[title=차종]').val();
-	console.log(model_type);
     var type_name;
     switch (model_type) {
         case '소형':
@@ -406,7 +404,6 @@ function setModelList(list) {
 				setReviewTab(model.name, model.reviewCount);
 			},
 	        error : function(result) {
-	        	console.log('error in openning detail show' + result);
 	        }
 		});
 	});
@@ -418,7 +415,6 @@ function setModelList(list) {
 	})
 }
 function getWishcount(modelName) {
-	console.log(modelName);
 	$.ajax({	
 		url:"<%=application.getContextPath()%>/model/wishcount.rent",
 		type:'POST', 
@@ -426,11 +422,9 @@ function getWishcount(modelName) {
              'modelName' : modelName
         },
 		success:function(data){
-			console.log(data);
 			$('#detail-wish-count').html(' ' + data + ' Times Added on Wish List');
 		},
         error : function(result) {
-        	console.log('error in openning detail show' + result);
         }
 	});
 }
@@ -500,10 +494,8 @@ function setDetailModal(model) {
 	
 	
 	if('<%=request.getAttribute("loginId")%>' == 'null') {
-		console.log('id null');
 	}
 	else {
-		console.log('<%=request.getAttribute("loginId")%>');
 		$('#wish-list-anchor').on('click', function(e) {
 			e.stopPropagation();
 			e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, model.amountMoney, model.picture, model.type, model.fuelType);
@@ -609,7 +601,6 @@ function onlyUserLogin(e) {
 		params.remember = remember;
 	}
 	
-	console.log('login : ' + id + "," + pw + "," + remember);
 	window.loginE = e;
 	
 	$.ajax({	
@@ -627,7 +618,6 @@ function onlyUserLogin(e) {
 			}
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -646,11 +636,9 @@ function getReviewList(modelName, page, listSize) {
 	  		listSzie : listSize
         },
 		success:function(result){
-			console.log("ok review list \n" + result);
 			setReviewList(result);
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -661,7 +649,6 @@ function getReviewList(modelName, page, listSize) {
 function setReviewList(list) {
 	$("#each_review_ul").html("");
 	if(list.length == 0 ) {
-		console.log('review length == 0');
 		$("#each_review_ul").append("<li>리뷰가 없습니다</li>");
 	}
 	for ( var i in list) {
@@ -695,7 +682,6 @@ function loginAction(e) {
 		params.remember = remember;
 	}
 	
-	console.log('login : ' + id + "," + pw + "," + remember);
 	window.loginE = e;
 	
 	$.ajax({	
@@ -705,7 +691,6 @@ function loginAction(e) {
 		success:function(result){
 			if(result == 'success') {
 				isLogin = true;
-				console.log('login Success');
 				goToReserve(rent_start_date, rent_end_date, detailModel.amountMoney, pickupPlace, detailModel.type, detailModel.picture);
 			}
 			else {
@@ -713,7 +698,6 @@ function loginAction(e) {
 			}
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -732,7 +716,6 @@ function nonUserLoginAction(e) {
 		where : where
 	};
 	
-	console.log('non login : ' + name + "," + email + "," + cellphone);
 	window.nonloginE = e;
 	
 	$.ajax({	
@@ -741,10 +724,8 @@ function nonUserLoginAction(e) {
 		data : params,
 		dataType:"json",
 		success:function(result){
-			console.log(result);
 			if(result['result'] == 'success') {
 				isLogin = true;
-				console.log('nonuser Success');
 				goToReserve(rent_start_date, rent_end_date, detailModel.amountMoney, pickupPlace, detailModel.type, detailModel.picture);
 			}
 			else {
@@ -752,7 +733,6 @@ function nonUserLoginAction(e) {
 			}
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -1023,7 +1003,6 @@ function nonUserLoginAction(e) {
 	function geocodeLatLng(geocoder, map, infowindow, event) {
 		var latitude = event.latLng.lat();
       var longitude = event.latLng.lng();
-      //console.log( latitude + ', ' + longitude );
       var latlng = {lat: latitude, lng: longitude};
       geocoder.geocode({'location': latlng}, function(results, status) {
           if (status === 'OK') {
@@ -1031,7 +1010,6 @@ function nonUserLoginAction(e) {
           	deleteMarkers();
           	addMarker(latlng);
           	document.getElementById('yourPlace').innerHTML  = '<p>'+results[0].formatted_address+'</p>';
-              /* console.log(results[0].formatted_address) */
           	pickupPlace = results[0].formatted_address;
             } else {
               window.alert('No results found');

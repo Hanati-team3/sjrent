@@ -23,12 +23,12 @@ import sun.nio.cs.HistoricallyNamedCharset;
 
 /**
  * 로그인 역할을 수행하는 컨트롤러
- * 
  * @author 윤형철
  *
  */
 
 public class UserSignupController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -36,7 +36,7 @@ public class UserSignupController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
-
+		// 컨트롤러 사용을 위한 객체 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
@@ -47,7 +47,7 @@ public class UserSignupController implements Controller {
 
 		// 회원가입시에 들어오는 param
 		if (request.getParameter("id") != null) {
-
+			// 값 받아오기
 			String id = request.getParameter("id");
 			String name = request.getParameter("name");
 			String email1 = request.getParameter("email1");
@@ -58,12 +58,14 @@ public class UserSignupController implements Controller {
 			String birthday = request.getParameter("birthday");
 			int point = 10000;
 			int gender = Integer.parseInt(request.getParameter("gender"));
+			// 구분 되어 들어온 전화번호 합치기
 			String cellphone1 = request.getParameter("cellphone1");
 			String cellphone2 = request.getParameter("cellphone2");
 			String cellphone3 = request.getParameter("cellphone3");
 			String cellphone = cellphone1 + "-" + cellphone2 + "-" + cellphone3;
 			int isUser = 1;
-
+			
+			// 유저 객체에 값 넣기
 			user.setId(id);
 			user.setName(name);
 			user.setEmail(email);
@@ -74,9 +76,8 @@ public class UserSignupController implements Controller {
 			user.setIsUser(isUser);
 			user.setPoint(point);
 
-			System.out.println("회원가입요청: " + user);
-
 			try {
+				// 유저 새성
 				isCreate = userService.create(user);
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -88,10 +89,8 @@ public class UserSignupController implements Controller {
 				obj.put("result", "fail");
 				try {
 					response.sendRedirect("/sjrent/user/regist.jsp");
-					// response.getWriter().print(obj);
 					return null;
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -103,7 +102,6 @@ public class UserSignupController implements Controller {
 				mav.addObject("email", email);
 				mav.addObject("cellphone", cellphone);
 				mav.addObject("name", name);
-
 				mav.setView("/user/regist_result.jsp");
 
 				return mav;
@@ -121,11 +119,8 @@ public class UserSignupController implements Controller {
 			String where = request.getParameter("where");
 			int isUser = 0;
 			
-			System.out.println(where);
-
 			// 비회원 이메일 유무 체크
 			try {
-				System.out.println(1);
 				user = userService.readByEmail(email_non);
 				// 예약페이지로 이동 요청
 				if (where.equals("rent")) {
@@ -133,7 +128,6 @@ public class UserSignupController implements Controller {
 					if (user != null) {
 						boolean isUpdate = false;
 
-						System.out.println(2);
 						user.setName(name_non);
 						user.setEmail(email_non);
 						user.setCellphone(cellphone_non);
@@ -143,14 +137,12 @@ public class UserSignupController implements Controller {
 						// user_seq를 가져와서 해당 update
 						// 업데이트 성공
 						if (isUpdate == true) {
-							System.out.println(3);
 							obj.put("result", "success");
 							obj.put("seq", user.getId());
 							// 쿠키에 longinId 올리기
 							String loginId = user.getId();
 
-							System.out.println("비회원 예약.." + loginId);
-
+							
 							Cookie cookie = null;
 							cookie = new Cookie("loginId", loginId);
 							cookie.setMaxAge(60 * 60 * 24 * 30);
@@ -168,7 +160,6 @@ public class UserSignupController implements Controller {
 					
 					// 예약하려고 했는데 DB에 없으면 비회원 계정 생성
 					else {
-						System.out.println(4);
 						user = new User();
 						user.setName(name_non);
 						user.setEmail(email_non);
@@ -183,8 +174,6 @@ public class UserSignupController implements Controller {
 							user = userService.readByEmail(email_non);
 							String loginId = user.getId();
 
-							System.out.println("비회원 예약.." + loginId);
-
 							Cookie cookie = null;
 							cookie = new Cookie("loginId", loginId);
 							cookie.setMaxAge(60 * 60 * 24 * 30);
@@ -192,7 +181,6 @@ public class UserSignupController implements Controller {
 							response.addCookie(cookie);
 							
 							obj.put("result", "success");
-							System.out.println(5);
 						}
 						// 비회원 생성이 실패시 login2.jsp
 						else {
@@ -210,9 +198,6 @@ public class UserSignupController implements Controller {
 					if (user != null) {
 						// 쿠키에 longinId 올리기
 						String loginId = user.getId();
-
-						System.out.println("비회원 예약확인.." + loginId);
-
 						Cookie cookie = null;
 						cookie = new Cookie("loginId", loginId);
 						cookie.setMaxAge(60 * 60 * 24 * 30);
@@ -230,11 +215,9 @@ public class UserSignupController implements Controller {
 				}
 
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-
 		return mav;
 	}
 

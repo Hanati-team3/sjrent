@@ -1,16 +1,25 @@
 package kr.or.kosta.sjrent.wishitem.domain;
 
 public class WishItem {
-	
+	// 위시아이템 sequence
 	private int number;
+	// 위시 아이템을 입력 한 유저 sequence
 	private int userNumber;
+	// 위시 아이템을 입력 한 유저 아이디
 	private String userId;
+	// 위시 아이템에 들어온 차의 모델 이름
 	private String modelName;
+	// 위시 아이템의 렌트 시작 날짜
 	private String startDate;
+	// 위시 아이템의 렌트 종료 날짜
 	private String endDate;
+	// 위시 아이템의 총 결제 금액
 	private int amountMoney;
+	// 위시 아이템의 차 모델 사진
 	private String picture;
+	// 위시 아이템의 차 타입(중형, 대형 등)
 	private String type;
+	// 위시 아이템의 차 연료 타입
 	private String fuelType;
 	
 	public WishItem() {

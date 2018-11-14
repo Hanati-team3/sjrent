@@ -27,16 +27,15 @@ import kr.or.kosta.sjrent.review.domain.Review;
  *
  */
 public class QnAListController implements Controller {
-	//private XMLObjectFactory factory;
-	//private JSONArray jsonArray;
-	//private ObjectToJson otj;
+	// 컨트롤러 사용을 위한 객체 선언
 	private QnAService qnaService;
 	private ModelAndView mav;
 	
 	@Override 
 	public ModelAndView handleRequest(HttpServletRequest request,HttpServletResponse response) 
 			throws ServletException {
-        
+		
+        // 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView(); 
 		XMLObjectFactory factory =  (XMLObjectFactory)request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
@@ -51,7 +50,6 @@ public class QnAListController implements Controller {
         //총 QnA 갯수
         int count = 0; 
         
-        //System.out.println("리퀘스트에 담은 페이지 정보 : " + (String)request.getParameter("page"));
         String pageS = (String)request.getParameter("page");
         if (pageS != null) {
         	page = Integer.parseInt(pageS);

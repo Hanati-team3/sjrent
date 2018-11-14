@@ -27,6 +27,7 @@ import kr.or.kosta.sjrent.review.service.ReviewServiceImpl;
  * @author 남수현
  */
 public class ReviewCountController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private ModelAndView mav;
 	private Review review;
@@ -36,12 +37,14 @@ public class ReviewCountController implements Controller {
    @Override
    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
          throws ServletException {
+	   // 컨트롤러 사용을 위한 객체 생성
       factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
       reviewService = (ReviewService)factory.getBean(ReviewServiceImpl.class);
       jsonArray = new JSONArray();
       String modelName = request.getParameter("modelName");
       String userId = request.getParameter("userId");
       int resultCount = 0;
+      // 모델 네임 유무, 유저 네임 유무에 따라 분기하여 해당 정보로 리뷰 숫자 카운트
       if(modelName != null) {
     	  try {
 			resultCount = reviewService.countByModel(modelName);
@@ -55,6 +58,7 @@ public class ReviewCountController implements Controller {
 
 		}
       }
+      //ajax로 카운트 결과 송신
       PrintWriter out = null;
 	  try {
 		out = response.getWriter();
