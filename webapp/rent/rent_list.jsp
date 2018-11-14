@@ -40,14 +40,18 @@ for(int i = 0; i < modelNameList.length; i++){
 %>
 /* console.log(modelNamesList); */
 $(document).ready(function(){
-  
-  for (var i = 1; i <= modelNamesList.length; i++) {
-    document.getElementById('modelName'+i).innerHTML = '<h3>'+modelNamesList[i-1]+'</h3>';
-    document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);
-    document.getElementById('carImg'+i).setAttribute('src', '../images/cars/'+modelTypesList[i-1]+"/"+modelNamesList[i-1]+".jpg");
-    /* console.log(modelNamesList[i-1]); */
-  }
-  
+	
+	var ll = <%=request.getAttribute("list")%>;
+	if(ll.length == 0){
+		$('#notList').append("<h3>예약 내역이 존재하지 않습니다.</h3>");
+	}else{
+	  for (var i = 1; i <= modelNamesList.length; i++) {
+	    document.getElementById('modelName'+i).innerHTML = '<h3>'+modelNamesList[i-1]+'</h3>';
+	    document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);
+	    document.getElementById('carImg'+i).setAttribute('src', '../images/cars/'+modelTypesList[i-1]+"/"+modelNamesList[i-1]+".jpg");
+	    /* console.log(modelNamesList[i-1]); */
+	  }
+	}
   /* Modal 작동 */
   $('#ModelDisplayRow').show();
     
@@ -108,6 +112,7 @@ function setDetailModal(model, id) {
   $('#detail-review-count').html('(' + model.reviewCount + ' Review)');
   $('#detail-weekday-price').html(' ' + model.weekdayPrice + ' on Weekday');
   $('#detail-weekend-price').html(' ' + model.weekendPrice + ' on Weekend');
+  $('#getModelName').val(document.getElementById('rentList'+id).getAttribute('data-model-name'));
   $('#detail-wish-count').html(' ' + model.rentalCount + ' Times Added on Wish List');
   $('#detail-reserve-count').html(' ' + model.rentalCount + ' Times Reserved');
   $('#about-this-model').html('<p>'+ model.name +' 모델 차량은 '+ model.fuelType +' 타입 연료를 사용하는 차량으로 최대 '+model.seater+' 명의 승객이 탑승할 수 있습니다.</p>'+
@@ -233,9 +238,10 @@ function setReviewList(list) {
 						<form class="tg-formtheme tg-formtourpayment">
 							<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-left">
 								<div id="tg-content" class="tg-content">
+									<span id= "notList"></span>
 									<!-- 여태 렌트했던 목록들 띄우기 -->
 									<c:forEach var="item" items="${list}" varStatus="status">
-										<div class="tg-tourpaymentdetail" id="rentList${status.count}" class="listRent" data-toggle='modal' data-target='#detail_show' data-model-name="" data-model-num="${status.count-1}">
+										<div class="tg-tourpaymentdetail" id="rentList${status.count}" class="listRent" data-toggle='modal' data-target='#detail_show' data-model-name="" data-model-num="${status.count}">
 											<div class="tg-tourname" style="padding:20px;">
 												<!--  결제 완료된 것만 -->
 												<a class="tg-btnedit" href="<%=application.getContextPath() %>/rent/cancel.rent?rentSeq=${item.seq}" style="padding:20px;">예약취소</a>
