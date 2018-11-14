@@ -20,7 +20,7 @@
 }
 </style>
 <script type="text/javascript">
-
+/* 존재하는 모델이름과 타입 */
 var modelNamesList=[];
 var modelTypesList=[];
 <%
@@ -42,6 +42,7 @@ $(document).ready(function(){
 	if(<%=modelNames.length()%> == 2){
 		$('#notList').append("<h3>예약 내역이 존재하지 않습니다.</h3>");
 	}else{
+		/* 데이터 입력 */
 	  for (var i = 1; i <= modelNamesList.length; i++) {
 	    document.getElementById('modelName'+i).innerHTML = '<h3>'+modelNamesList[i-1]+'</h3>';
 	    document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);

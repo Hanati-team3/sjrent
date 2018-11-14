@@ -118,14 +118,12 @@ function getImagePath() {
   	   return result; 
 }
   	
- /** 시작하자마자 */
 $(document).ready(function(){ 
 	if('<%=request.getAttribute("loginId")%>' != 'null') isLogin = true;
 	var imagePath = getImagePath(); 
  			
 	var resultCar = document.getElementById('resultCar');
  			resultCar.src = imagePath;
-	
 	$('#search-user-login-form').submit(function(e) {
 		loginAction(e);
 	});
@@ -137,7 +135,9 @@ $(document).ready(function(){
 	/* DatePicker */
    function setDisabledate(id, disabledDates, count){
 	   $("#datepicker"+id).datepicker({
+		  	  minDate: new Date(),
 		      onRenderCell: function(d, type) {
+		    	  /* 불가능한 날짜 처리 */
 		    	    if (type == 'day') {
 		    			var disabled = false,
 		    	      	formatted = getFormattedDate(d);
@@ -149,57 +149,58 @@ $(document).ready(function(){
 		    	          }
 		    	    }
 		    	},
+		    	/* 선택 시 이벤트 처리 */
 			   onSelect: function(selectedDate){
-				   var date = 1;
-			          if(selectedDate.includes('~')){
-			             start_date = new Date(selectedDate.split('~')[0]);
-			             end_date = new Date(selectedDate.split('~')[1]);
-			             for (var i = 0; i < disabledDates.length; i++) {
-							var mustCheck = new Date(disabledDates[i]);
-							if((mustCheck - start_date) > 0 && (end_date - mustCheck) > 0){
-								alert('불가능한 날짜입니다.');
-								$("#datepicker"+id).val('');
-								return;
-							}
+				  var date = 1;
+		          if(selectedDate.includes('~')){
+		             start_date = new Date(selectedDate.split('~')[0]);
+		             end_date = new Date(selectedDate.split('~')[1]);
+		             for (var i = 0; i < disabledDates.length; i++) {
+						var mustCheck = new Date(disabledDates[i]);
+						if((mustCheck - start_date) > 0 && (end_date - mustCheck) > 0){
+							alert('불가능한 날짜입니다.');
+							$("#datepicker"+id).val('');
+							return;
 						}
-			             rent_start_date = formatDate(start_date);
-			             rent_end_date = formatDate(end_date);
-			             date = ((end_date - start_date) / (1000*60*60*24))+1; 
-			          }else{
-						start_date = new Date(selectedDate);
-						rent_start_date = formatDate(start_date);
-						rent_end_date = rent_start_date;
-			          }
-			             var startDay = start_date.getDate();
-			             var weekend = 0;
-			             var weekday = 0;
-			             /* 주말 주중 계산 */
-			             for(var i = 0; i < date; i++) {
-			         		if(startDay == 0 || startDay == 6) {
-			         			weekend++;
-			         		}
-			         		else {
-			         			weekday++;
-			         		}
-			         		startDay++;
-			         		if(startDay == 7) startDay = 0;
-			         	}
-			             amountMoney = weekdayPrice * weekday + weekendPrice * weekend;
-			     		$('#detail-amount-money').html('&#8361 '+ amountMoney);
-			             /* 다른 것들도 초기화 */
-			             for (var i = 1; i <= count; i++) {
-			            	 if(id != i){
-			            		 $("#datepicker"+i).val('');
-			            	 }
-						}
-			          
+					}
+		             /* 날짜 계산 및 금액 계산 */
+		             rent_start_date = formatDate(start_date);
+		             rent_end_date = formatDate(end_date);
+		             date = ((end_date - start_date) / (1000*60*60*24))+1; 
+		          }else{
+					start_date = new Date(selectedDate);
+					rent_start_date = formatDate(start_date);
+					rent_end_date = rent_start_date;
+		          }
+		             var startDay = start_date.getDate();
+		             var weekend = 0;
+		             var weekday = 0;
+		             /* 주말 주중 계산 */
+		             for(var i = 0; i < date; i++) {
+		         		if(startDay == 0 || startDay == 6) {
+		         			weekend++;
+		         		}
+		         		else {
+		         			weekday++;
+		         		}
+		         		startDay++;
+		         		if(startDay == 7) startDay = 0;
+		         	}
+		             amountMoney = weekdayPrice * weekday + weekendPrice * weekend;
+		     		$('#detail-amount-money').html('&#8361 '+ amountMoney);
+		             /* 다른 것들도 초기화 */
+		             for (var i = 1; i <= count; i++) {
+		            	 if(id != i){
+		            		 $("#datepicker"+i).val('');
+		            	 }
+					}
 			  }
 	   			
-		   })
+		   });
 		   
 		   $("#datepicker"+id).keydown(function (event) {
 		       event.preventDefault();
-		   })
+		   });
 			
 	}
 	/* Datepicker 불가능한 날짜 formatting */
@@ -306,7 +307,7 @@ $(document).ready(function(){
 			}
 		}
 		$('#car-detail-others').html(otherOptionsHTML);
-		/* 달력 가져오기 */
+		/* 달력 가져오기(처번째 인 경우) */
 		if(Object.keys(model).length >= 1 ){
 			$('#showCalendar').html(
 				'<div class="form-group-row" style="padding-bottom: 60px">' +
@@ -320,12 +321,13 @@ $(document).ready(function(){
                            'data-range="true"'								+
                            'data-multiple-dates-separator="  ~  "'			+
                            'placeholder="기간을 선택해 주세요"'				+
-                           'readonly 	'										+
+                           'readonly'										+
                            'class="datepicker-here form-control" required style="height: 50px" />' +
                     '</div>'												+		
             	'</div>'
 			);
 		}
+		/* 개수가 1개 이상인 경우 추가 */
 		if(Object.keys(car_num).length > 1){
 			for (var i = 2; i <= Object.keys(car_num).length; i++) {
 				$('#showCalendar').append(
@@ -340,7 +342,7 @@ $(document).ready(function(){
                             'data-range="true"'								+
                             'data-multiple-dates-separator="  ~  "'			+
                             'placeholder="기간을 선택해 주세요"'				+
-                            'readonly 	'										+
+                            'readonly'										+
                             'class="datepicker-here form-control" required style="height: 50px" />' +
                      '</div>'												+		
              	'</div>'

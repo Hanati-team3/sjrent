@@ -84,7 +84,7 @@ $(document).ready(function(){
 	var insurances = insurance.split('Insurance').map(function(item){
 		return item.trim();
 	});
-	
+	/* 보험을 map으로 저장 */
 	mapInsurance = new Map();
 	for ( var i =1; i< insurances.length; i++) {
 		if(insurances[i].substring(insurances[i].length-1, insurances[i].length) == ','){
@@ -114,12 +114,6 @@ $(document).ready(function(){
 			$(this).val(money.substring(0, money.length-1)); 
 		}
 	});
-	
-	
-	
-	
-	
-	
 });
 </script>
 </head>
@@ -186,6 +180,7 @@ $(document).ready(function(){
                                                 </div>
                                              </div>
                                           </div>
+                                          <!-- 예약 차별마다 정보 출력 -->
                                           <c:forEach var="item" items="${resultMap}" varStatus="status">
                                           		<input type="hidden" value = "${fn:split(item.picture,'.')[0]}" name="modelName">
                                           	  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0">
