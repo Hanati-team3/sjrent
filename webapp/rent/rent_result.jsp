@@ -115,12 +115,13 @@ document.onkeydown = noEvent;
 											<span style="font-size: 14pt; width: 30%">홈으로</span>
 										</button>
 									</div>
-									
+									<% if (request.getParameter("loginId") != null){ %>
 									<div style="display: inline-block; vertical-align: middle; padding: 0px 20px">
 										<button class="tg-btn tg-btn-lg" style="padding: 0px 30px;" onclick="location.href='<%=application.getContextPath()%>/rent/list.rent'">
 											<span style="font-size: 14pt; width: 10%">결제내역</span>
 										</button>
 									</div>
+									<%} %>
 								</div>
 							</div>
 						</div>

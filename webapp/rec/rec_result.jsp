@@ -659,7 +659,7 @@ function nonUserLoginAction(e) {
       <!--************************************
               Search Login Modal Start
          *************************************-->
-      <jsp:include page="/rent/search_include/search_login_modal.jsp" />
+      <jsp:include page="search_login_modal.jsp" />
       <!--************************************
               Search Login Modal End
          *************************************-->
