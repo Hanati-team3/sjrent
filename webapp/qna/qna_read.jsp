@@ -156,7 +156,7 @@ tr:hover {
 			    
 			    <div style="text-align:right">
 		              <input type="button" class="newButton" value='목록' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qnaIndex.rent'">      
-		              <input type="button" class="newButton" value='수정' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qna_update.jsp?qna_seq=<%=qna_seq %>&title=<%=title %>&content=<%=content%>'">      
+		              <%-- <input type="button" class="newButton" value='수정' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qna_update.jsp?qna_seq=<%=qna_seq %>&title=<%=title %>&content=<%=content%>'">  --%>     
 		              <input type="button" class="newButton" value='삭제' style="margin-top:20px; display:inline-block; background-color: #006699 " onclick="location.href='<%=application.getContextPath()%>/qna/qnaDelete.rent?qna_seq=<%=qna_seq %>'">      
 		        </div>
 			    

@@ -40,9 +40,8 @@ for(int i = 0; i < modelNameList.length; i++){
 %>
 /* console.log(modelNamesList); */
 $(document).ready(function(){
-	
-	var ll = <%=request.getAttribute("list")%>;
-	if(ll.length == 0){
+	<%-- console.log(<%=modelNames.length()%>); --%>
+	if(<%=modelNames.length()%> == 2){
 		$('#notList').append("<h3>예약 내역이 존재하지 않습니다.</h3>");
 	}else{
 	  for (var i = 1; i <= modelNamesList.length; i++) {
@@ -50,8 +49,9 @@ $(document).ready(function(){
 	    document.getElementById('rentList'+i).setAttribute('data-model-name', modelNamesList[i-1]);
 	    document.getElementById('carImg'+i).setAttribute('src', '../images/cars/'+modelTypesList[i-1]+"/"+modelNamesList[i-1]+".jpg");
 	    /* console.log(modelNamesList[i-1]); */
-	  }
-	}
+	 }
+}
+	
   /* Modal 작동 */
   $('#ModelDisplayRow').show();
     
@@ -246,7 +246,7 @@ function setReviewList(list) {
 												<!--  결제 완료된 것만 -->
 												<a class="tg-btnedit" href="<%=application.getContextPath() %>/rent/cancel.rent?rentSeq=${item.seq}" style="padding:20px;">예약취소</a>
 												<figure>
-													<a><img id="carImg${status.count}" src="../images/cars" style="width: 100px" height="auto" alt="image destinations"></a>
+													<a><img id="carImg${status.count}" style="width: 100px" height="auto" alt="image destinations"></a>
 												</figure>
 												<div class="tg-populartourcontent">
 													<div class="tg-populartourtitle" id="modelName${status.count}">
@@ -261,15 +261,15 @@ function setReviewList(list) {
 									</c:forEach>
 								</div>
 							</div>
+							<% if(modelNames.length() != 2){ %>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 pull-right">
 								<aside id="tg-sidebar" class="tg-sidebar">
 									<div class="tg-widget tg-widgettourinfo">
 										<div class="tg-widgetcontent">
 											<ul>
-												<li><span>Travel Date</span><em>May 12, 2017</em></li>
-												<li><span>Period</span><em>12 Days</em></li>
-												<li><span>Persons</span><em>5</em></li>
-												<li><span>Rooms</span><em>1</em></li>
+												<li><span>예약자</span><em><%=request.getAttribute("loginId") %></em></li>
+												<li><span>예약 횟수</span><em><%= modelNameList.length%>회</em></li>
+												<li><span></span><em></em></li>
 												<!-- <li class="tg-couponapply">
 													<div class="form-group">
 														<div class="row" style="height:40px;"></div>
@@ -281,6 +281,7 @@ function setReviewList(list) {
 									</div>
 								</aside>
 							</div>
+							<%} %>
 						</form>
 					</div>
 				</div>

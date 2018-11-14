@@ -166,7 +166,7 @@ function setReviewList(list) {
 	$("#each_review_ul").html("");
 	for ( var i in list) {
 		var params = {
-			imgPath : '/sjrent/images/review/image1.jpg',
+			imgPath : list[i].picture,
 			userId : list[i].userId,
 			evalScore : list[i].evalScore,
 			date : list[i].date,
