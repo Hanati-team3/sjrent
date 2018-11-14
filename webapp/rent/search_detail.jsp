@@ -29,6 +29,9 @@
   							<h4 id='detail-amount-money'>
   								model amountMoney filed
   							</h4>
+                            <div class="tg-description" style="margin: 25px 10px 10px 0px;"> 
+                              <p>Location을 설정하지 않으면 방문수령으로 예약됩니다.</p>
+                            </div>
   						</div>
                           <div class="tg-description">
                             <ul class="my-tg-likeshare" >
