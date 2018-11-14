@@ -25,6 +25,7 @@ import kr.or.kosta.sjrent.review.service.ReviewServiceImpl;
  *
  */
 public class RentListController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private RentService rentService;
 	private ModelService modelService;
@@ -33,6 +34,7 @@ public class RentListController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		rentService = (RentService) factory.getBean(RentServiceImpl.class);
 		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
@@ -42,11 +44,12 @@ public class RentListController implements Controller {
 	
 		//list 출력 타입에 따라 분기. all은 해당 유저 전체 예약, cancel은 취소 된 예약, uncancel은 취소하지 않느 예약 past는 과거 예약, upComing은 사용 가능한 예약
 		String type = request.getParameter("type");
-		System.out.println("RentListController id : " + id);
 		List<Rent> list = null;
+		// 추가 정보 전달을 위한 모델명 리스트와 모델 타입 리스트 선언 및 생성
 		List<String> modelNames = new ArrayList<String>();
 		List<String> modelTypes = new ArrayList<String>();
 		if(type != null) {
+			// 조건에 따라 검색하여 해당 값 넣어주기
 			if(type.equals("all")) {
 				try {
 					list = rentService.listByUser(id);
@@ -111,6 +114,7 @@ public class RentListController implements Controller {
 			}
 		}{
 			try {
+				// 아무런 조건이 없을 시 다가올 예약 리스트 반환
 				list = rentService.upComingListByUser(id);
 //				list = rentService.listByUser(id);
 				for(int i = 0; i < list.size(); i++) {

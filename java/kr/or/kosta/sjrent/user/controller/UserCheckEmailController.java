@@ -28,6 +28,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  */
 
 public class UserCheckEmailController implements Controller {
+	// 컨트롤러 처리를 위해 서비스 및 object 객체, modelandview 선언
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -35,21 +36,14 @@ public class UserCheckEmailController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 처리를 위해 서비스 민 object 객체, modelandview 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 
-
+		// 이메일 받아와서 처리
 		String email = request.getParameter("email");
-		
-		//System.out.println("email"+email+"email");
-		
-		/*if(email!=null && !email.equals("")) {
-			
-			System.out.println(email);
-		}*/
-		
 		boolean isExistEmail = false;
 		
 		try {

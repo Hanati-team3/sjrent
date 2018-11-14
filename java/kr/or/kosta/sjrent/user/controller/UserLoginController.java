@@ -19,12 +19,11 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
 
 /**
  * 로그인 역할을 수행하는 컨트롤러
- * 
  * @author 유예겸
- *
  */
 
 public class UserLoginController implements Controller {
+	// 컨트롤러 사용을 위한 객체들 선언
 	private UserService userService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -33,12 +32,13 @@ public class UserLoginController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
-
+		// 컨트롤러 사용을 위한 객체들 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 
+		// 데이터 수신
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		String remember = request.getParameter("remember");
@@ -60,16 +60,7 @@ public class UserLoginController implements Controller {
 			cookie2 = new Cookie("saveId", id);
 			cookie2.setPath("/");
 			response.addCookie(cookie2);
-			// request.getServletContext().setAttribute("loginId", id);
-			// request.setAttribute("loginId", id);
-			// checkbox 클릭 안할시 null
-		} /*
-			 * else {
-			 * 
-			 * cookie2 = new Cookie("saveId", null); cookie2.setMaxAge(0);
-			 * response.addCookie(cookie2); }
-			 */
-
+		}
 
 		if (id != null) { // 로그인
 			try {

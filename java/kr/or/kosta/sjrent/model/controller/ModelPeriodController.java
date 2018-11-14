@@ -26,6 +26,7 @@ import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
  *
  */
 public class ModelPeriodController implements Controller{
+	// 컨트롤러 사용을 위한 객체 선언
 	private ModelService modelService;
 	private ModelAndView mav;
 	private XMLObjectFactory factory;
@@ -35,6 +36,7 @@ public class ModelPeriodController implements Controller{
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
@@ -42,19 +44,20 @@ public class ModelPeriodController implements Controller{
 		// 인자로 받는 차 종 이름
 		String modelName = request.getParameter("modelName");
 		if(modelName == null) {
-			logger.debug("파라미터 오류 modelName : " + modelName);
 			return null;
 		}
-		logger.debug("modelName : " + modelName);
+		//값을 담기 위한 JSONObject 선언 
 		JSONObject resultObject = new JSONObject();
 		JSONObject jo = new JSONObject();
 		try {
+			// 차 이름으로 가능 일자 받기
 			Map<String, ArrayList<String>> result = modelService.periodByModelName(modelName);
 			jo.putAll(result);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		try {
+			// 모델 이름으로 모델 정보 받아서 가능 일자와 함께 보내기
 			Model model = modelService.read(modelName);
 			response.setCharacterEncoding("utf-8");
 			resultObject.put("period", jo);

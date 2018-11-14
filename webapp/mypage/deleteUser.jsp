@@ -93,18 +93,8 @@
 
                   </div>
                 </div>
-                
-                
 
-
-
-
-                <!-- <button type="button" class="btn btn-secondary"
-                  onclick="location.href='/sjrent/mypage/delete.rent'">예</button>
-                <button type="button" class="btn btn-primary"
-                  onclick="location.href='/sjrent/mypage/myPageLoginOK.jsp'">아니오</button> -->
-
-              </div>
+             </div>
 
 
             </div>

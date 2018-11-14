@@ -22,6 +22,7 @@ import kr.or.kosta.sjrent.model.service.ModelServiceImpl;
  * @author 남수현
  */
 public class ModelRecommendController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private ModelService modelService;
 	private ModelAndView mav;
 	private XMLObjectFactory factory;
@@ -29,24 +30,27 @@ public class ModelRecommendController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		mav = new ModelAndView();
 		factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		modelService = (ModelService) factory.getBean(ModelServiceImpl.class);
 		obj = new JSONObject();
+		// result 값 수신
 		String result = request.getParameter("result");
-		//System.out.println("여기까지 들어온다222222");
 		Model resultModel = null;
 		try {
+			// 추천 모델 받아오기
 			resultModel = modelService.recommend(result);
 		} catch (Exception e1) {
-			System.out.println(e1);
 		}
 		if(resultModel!=null) {
+			// 모델 명과 사진, 사진 파일을 가져오기 위한 타입 받아오기
 			obj.put("modelName", resultModel.getName());
 			obj.put("picture", resultModel.getPicture());
 			obj.put("type", resultModel.getType());
 		}
 		try {
+			// ajax로 송신
 			response.getWriter().print(obj);
 			return null;
 		} catch (IOException e) {

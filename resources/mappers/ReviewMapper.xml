@@ -4,6 +4,7 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.review">
+	<!-- 리뷰 Result Map -->
 	<resultMap type="Review" id="reviewResultMap">
 		<result column="review_seq" 			property="number" />
 		<result column="model_name"  			property="modelName" />
@@ -113,7 +114,7 @@
 		WHERE  X.rnum <![CDATA[>=]]> #{startNum}
 	</select>
 	
-		<!-- 특정 유저 Review List page 선택 -->
+	<!-- 특정 유저 Review List page 선택 -->
 	<select id="listByUserByPage" resultType="Review" parameterType="map" resultMap="reviewResultMap">
 		SELECT X.review_seq, 
 		       X.model_name, 

@@ -30,6 +30,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  * @author 남수현
  */
 public class RentCancelController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private XMLObjectFactory factory;
 	private UserService userService;
 	private RentService rentService;
@@ -39,9 +40,11 @@ public class RentCancelController implements Controller {
    @Override
    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
          throws ServletException {
+	   // 컨트롤러 사용을 위한 객체 생성
       factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
       rentService = (RentService) factory.getBean(RentServiceImpl.class);
       mav = new ModelAndView();
+      // 취소 할 렌탈 번호 받아오기
       String inputRentSeq = request.getParameter("rentSeq");
       if(inputRentSeq != null && !inputRentSeq.equals("")) {
           int rentSeq = Integer.parseInt(inputRentSeq);
@@ -52,6 +55,7 @@ public class RentCancelController implements Controller {
 		  } catch (IOException e2) {
 		  }
     	  try {
+    		 // 렌탈 취소 후 액션 결과 보내기
 			result = rentService.cancel(rentSeq);
 		  } catch (Exception e1) {
 			out.println("cancelError : "+e1);

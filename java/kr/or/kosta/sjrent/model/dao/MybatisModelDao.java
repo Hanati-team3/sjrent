@@ -110,7 +110,6 @@ public class MybatisModelDao implements ModelDao {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("name", name);
 		paramMap.put("num",num);
-		System.out.println(paramMap);
 		SqlSession sqlSession = sqlSessionFactory.openSession(true);
 		int result = sqlSession.update(NAMESPACE + "changeCount", paramMap);
 		sqlSession.close();

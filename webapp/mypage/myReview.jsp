@@ -70,7 +70,6 @@ $(document).ready(function(){
 		        $('#location').remove();
 			},
 	        error : function(result) {
-	        	console.log('error in openning detail show' + result);
 	        }
 		});
 	});
@@ -150,11 +149,9 @@ function getReviewList(modelName, page, listSize) {
 	  		listSzie : listSize
         },
 		success:function(result){
-			console.log("ok review list \n" + result);
 			setReviewList(result);
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -166,7 +163,11 @@ function setReviewList(list) {
 	$("#each_review_ul").html("");
 	for ( var i in list) {
 		var params = {
-			imgPath : list[i].picture,
+			if(list[i].picture == null){
+				imgPath : '/sjrent/images/review/image1.jpg',				
+			}else{
+				imgPath : list[i].picture,
+			}
 			userId : list[i].userId,
 			evalScore : list[i].evalScore,
 			date : list[i].date,

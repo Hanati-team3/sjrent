@@ -25,6 +25,7 @@ import kr.or.kosta.sjrent.user.service.UserServiceImpl;
  */
 
 public class UserDeleteController implements Controller {
+	// 컨트롤러 처리를 위해 서비스 민 object 객체, modelandview 선언
 	private ModelAndView mav;
 	private UserService userService;
 	private JSONObject obj;
@@ -33,23 +34,20 @@ public class UserDeleteController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
 		
-		
+		// 컨트롤러 처리를 위해 서비스 및 object 객체, modelandview 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		userService = (UserService) factory.getBean(UserServiceImpl.class);
 
 		String id = (String) request.getAttribute("loginId");
-		System.out.println("삭제할 ID임돠 : " + id);
 		boolean isDelete = false;
 
 		try {
+			// 유저 삭제
 			isDelete = userService.delete(id);
-			System.out.println(isDelete);
-
+			// 쿠키 삭제
 			if (isDelete == true) {
-//					response.getWriter().print("success");
-
 				Cookie[] cookies = request.getCookies();
 				if (cookies != null) {
 					for (Cookie cookie : cookies) {
@@ -61,9 +59,10 @@ public class UserDeleteController implements Controller {
 						}
 					}
 				}
-				
+				// 메인 페이지로
 				mav.setView("/index.jsp");
 			} else {
+				// 로그인 확인 페이지로
 				mav.setView("/sjrent/mypage/myPageLoginOK.jsp");
 			}
 			return mav;

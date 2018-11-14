@@ -16,7 +16,6 @@ public class ViewResolver{
 	
 	public View resolve(String path) throws ServletException{
 		View view = new JSPView(path);
-//		View view = new XXXView(path);
 		return view;
 	}
 }

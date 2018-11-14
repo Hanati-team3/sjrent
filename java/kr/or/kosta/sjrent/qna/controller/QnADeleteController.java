@@ -23,12 +23,12 @@ import kr.or.kosta.sjrent.qna.service.QnAServiceImpl;
 
 /**
  * qna 삭제 컨트롤러
- * 
  * @author 윤형철
  *
  */
 
 public class QnADeleteController implements Controller {
+	// 컨트롤러 사용을 위한 객체 선언
 	private QnAService qnaService;
 	private JSONObject obj;
 	private ModelAndView mav;
@@ -36,21 +36,20 @@ public class QnADeleteController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
+		// 컨트롤러 사용을 위한 객체 생성
 		obj = new JSONObject();
 		mav = new ModelAndView();
 		XMLObjectFactory factory = (XMLObjectFactory) request.getServletContext().getAttribute("objectFactory");
 		qnaService = (QnAService) factory.getBean(QnAServiceImpl.class);
 
-		//System.out.println("큐엔에이 딜릿 컨트롤러 도착이욤....");
-		//System.out.println("나와랏: "+request.getParameter("qna_seq"));
+		// 삭제 할 qna sequence number 수신
 		int qna_seq = Integer.parseInt(request.getParameter("qna_seq"));
-		//System.out.println("qna시퀀스 넘겨받았나? "+qna_seq);
 		boolean isDelete = false;
 		
 		try {
+			//해당 nubmer qna 삭제
 			isDelete = qnaService.delete(qna_seq);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -61,14 +60,12 @@ public class QnADeleteController implements Controller {
 				response.getWriter().print(obj);
 				return null;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 		// QnA 삭제 성공시 응답으로 success 보냄
 		else {
-			//mav.addObject("qna", qna);
 			mav.setView("/qna/qnaIndex.rent");
 			obj.put("result", "success");
 		}

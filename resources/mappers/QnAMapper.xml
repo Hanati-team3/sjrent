@@ -4,6 +4,7 @@
                         
 <!-- 네임스페이스(사용영역) 설정 -->
 <mapper namespace="kr.or.kosta.sjrent.qna">
+	<!--  QnA result Map -->
 	<resultMap type="QnA" id="qnaResultMap">
 		<result column="qna_seq" 				property="number" />
 		<result column="user_seq"  				property="userSeq" />

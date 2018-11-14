@@ -97,8 +97,6 @@ var weekendPrice;
   /** 이미지 경로 받아오기 */
 function getImagePath() {
   	var result; 
-  	console.log('id : ' + '<%=request.getAttribute("loginId")%>');
-	console.log('<%=request.getParameter("hidden")+","+request.getParameter("click")%>');
   $.ajax({
         type : "POST",
          url : "<%=application.getContextPath()%>/model/recommend.rent",
@@ -108,23 +106,15 @@ function getImagePath() {
          },
          dataType: "json",
          success: function(data){
-		//console.log(data.modelName);
-		//console.log(data.picture);
-		//console.log(data.type);
 		
 		var type = data.type; 
 		var picture = data.picture; 
 		car_model = data.modelName;
-		//console.log(typeof modelName);//string
-		//console.log(typeof type);//string
 		
 		result = ("../images/cars/" + type + "/" + picture).trim();
-		console.log('ajax안에서  : ' + result);
-		
 		
          }
       });
-  	   console.log("최종적으로 넘어가는 리절트: " + result);
   	   return result; 
 }
   	
@@ -132,15 +122,9 @@ function getImagePath() {
 $(document).ready(function(){ 
 	if('<%=request.getAttribute("loginId")%>' != 'null') isLogin = true;
 	var imagePath = getImagePath(); 
- 			//console.log('이미지경로 : '+ imagePath);
  			
 	var resultCar = document.getElementById('resultCar');
  			resultCar.src = imagePath;
-	//resultCar.src = "../images/K5.jpg";
- 			console.log('11111111 : '+resultCar.src);
-	//alert(resultCar.src);
-	//console.log('어떤 값이 들어가지? ' + imagePath);
-	//var resultImg = document.getElementsByClassName('resultImg'); 
 	
 	$('#search-user-login-form').submit(function(e) {
 		loginAction(e);
@@ -152,7 +136,6 @@ $(document).ready(function(){
 	
 	/* DatePicker */
    function setDisabledate(id, disabledDates, count){
-	   /* var disabledDates = ['2018.11.18', '2018.11.14', '2018.11.20', '2018.11.24'] */
 	   $("#datepicker"+id).datepicker({
 		      onRenderCell: function(d, type) {
 		    	    if (type == 'day') {
@@ -245,7 +228,6 @@ $(document).ready(function(){
  			
 	/** 모델 클릭 시 모델 이름을 모달에 전달, 리뷰 세팅 */
 	$('#detail_show').on('show.bs.modal', function(e) {
-		/* console.log(car_model); */
 		window.e = $(e.currentTarget);
 		$.ajax({	
 			url:"<%=application.getContextPath()%>/model/detailperiod.rent",
@@ -258,8 +240,6 @@ $(document).ready(function(){
 				var model = result.model;
 				detailModel = model;
 				car_num = result.period;
-				console.log(car_num);
-				/* console.log(Object.keys(car_num).length); */
 				weekdayPrice = model.weekdayPrice;
 				weekendPrice = model.weekendPrice;
 				var i = 1;
@@ -274,7 +254,6 @@ $(document).ready(function(){
 				}
 			},
 	        error : function(result) {
-	        	console.log('error in openning detail show' + result);
 	        }
 		});
 	});
@@ -370,10 +349,8 @@ $(document).ready(function(){
 		}
 		
 		if('<%=request.getAttribute("loginId")%>' == 'null') {
-			console.log('id null');
 		}
 		else {
-			console.log('<%=request.getAttribute("loginId")%>');
 			$('#wish-list-anchor').on('click', function(e) {
 				e.stopPropagation();
 				e.currentTarget.onclick = addToWishList(model.name, rent_start_date, rent_end_date, amountMoney, model.picture, model.type, model.fuelType);
@@ -407,11 +384,9 @@ $(document).ready(function(){
 		  		listSzie : listSize
 	        },
 			success:function(result){
-				console.log("ok review list \n" + result);
 				setReviewList(result);
 			},
 			error : function(result) {
-				console.log("error.... result : " + result);
 			}
 		});
 	}
@@ -422,7 +397,6 @@ $(document).ready(function(){
 	function setReviewList(list) {
 		$("#each_review_ul").html("");
 		if(list.length == 0 ) {
-			console.log('review length == 0');
 			$("#each_review_ul").append("<li>리뷰가 없습니다</li>");
 		}
 		for ( var i in list) {
@@ -498,7 +472,6 @@ function loginAction(e) {
 		params.remember = remember;
 	}
 	
-	console.log('login : ' + id + "," + pw + "," + remember);
 	window.loginE = e;
 	
 	$.ajax({	
@@ -508,7 +481,6 @@ function loginAction(e) {
 		success:function(result){
 			if(result == 'success') {
 				isLogin = true;
-				console.log('login Success');
 				goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, detailModel.type, detailModel.picture);
 			}
 			else {
@@ -516,7 +488,6 @@ function loginAction(e) {
 			}
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -531,11 +502,9 @@ function loginAction(e) {
 		if(pickupPlace == '방문수령') {
 			alert('위치를 선택하지 않아 방문수령으로 설정됩니다.');
 		}
-		console.log('ab');
 		
 	// 로그인 중
 	if(isLogin == true){
-		console.log('11');
 		// post로 데이터 전달
 	    var form = document.createElement("form");
 	    form.setAttribute("method", "post");
@@ -562,7 +531,6 @@ function loginAction(e) {
 	    form.submit();
 	}
 	else {
-		//alert('로그인필요');
 		$("#login_modal").modal('show');
 	}
 }
@@ -580,7 +548,6 @@ function nonUserLoginAction(e) {
 		where : where
 	};
 	
-	console.log('non login : ' + name + "," + email + "," + cellphone);
 	window.nonloginE = e;
 	
 	$.ajax({	
@@ -589,10 +556,8 @@ function nonUserLoginAction(e) {
 		data : params,
 		dataType:"json",
 		success:function(result){
-			console.log(result);
 			if(result['result'] == 'success') {
 				isLogin = true;
-				console.log('nonuser Success');
 				goToReserve(rent_start_date, rent_end_date, amountMoney, pickupPlace, detailModel.type, detailModel.picture);
 			}
 			else {
@@ -600,7 +565,6 @@ function nonUserLoginAction(e) {
 			}
 		},
 		error : function(result) {
-			console.log("error.... result : " + result);
 		}
 	});
 }
@@ -727,7 +691,6 @@ function nonUserLoginAction(e) {
 	function geocodeLatLng(geocoder, map, infowindow, event) {
 		var latitude = event.latLng.lat();
       var longitude = event.latLng.lng();
-      //console.log( latitude + ', ' + longitude );
       var latlng = {lat: latitude, lng: longitude};
       geocoder.geocode({'location': latlng}, function(results, status) {
           if (status === 'OK') {
@@ -735,7 +698,6 @@ function nonUserLoginAction(e) {
           	deleteMarkers();
           	addMarker(latlng);
           	document.getElementById('yourPlace').innerHTML  = '<p>'+results[0].formatted_address+'</p>';
-              /* console.log(results[0].formatted_address) */
           	pickupPlace = results[0].formatted_address;
             } else {
               window.alert('No results found');
