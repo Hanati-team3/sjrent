@@ -54,6 +54,7 @@ document.onkeydown = noEvent;
 				<div class="tg-homeslider tg-homeslidervtwo tg-haslayout">
 					<div class="container">
 						<div class="tg-tabcontent tab-content" style="padding: 0px 350px 0;">
+							<!-- 결제 완료 정보 출력 -->
 							<div role="tabpanel" class="tab-pane active fade in" id="home">
 								<div style="text-align: center; margin: 50px 0px;">
 									<h2>결제 완료</h2>
